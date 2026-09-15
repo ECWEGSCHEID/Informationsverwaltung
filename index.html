@@ -47,9 +47,9 @@ textarea{min-height:120px;resize:vertical}
 .pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:1000;padding:25px}.pdf-modal.show{display:flex}.pdf-dialog{width:min(1200px,96vw);height:min(88vh,900px);background:#f2f2f2;color:#111;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 10px 50px #000}.pdf-dialog h2{margin:0 0 5px}.pdf-pages{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:14px}.pdf-page{background:#fff;border:4px solid transparent;border-radius:8px;padding:5px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);text-align:center}.pdf-page.selected{border-color:#b30000}.admin-preview{padding:12px;background:rgba(255,255,255,.05);border-radius:10px;overflow:auto}.admin-tournament-page{display:grid;gap:10px;align-content:start;justify-content:start;padding:10px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.2);border-radius:10px;min-width:680px}.admin-tournament-slot{position:relative;background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.28);border-radius:8px;min-width:0;overflow:hidden;cursor:grab;display:flex;align-items:center;justify-content:center}.admin-tournament-slot:active{cursor:grabbing}.admin-tournament-slot.filled{background:#fff;border-style:solid;border-color:rgba(255,255,255,.75)}.admin-tournament-slot.drag-over{outline:4px solid #b30000;outline-offset:-3px;background:rgba(179,0,0,.22)}.admin-tournament-slot img{width:100%;height:100%;object-fit:contain;display:block}.admin-tournament-placeholder{font-size:12px;font-weight:700;opacity:.7;text-align:center;padding:8px}.admin-tournament-position{position:absolute;left:5px;top:5px;background:rgba(0,0,0,.7);color:#fff;border-radius:5px;padding:2px 5px;font-size:10px;z-index:2}.admin-tournament-delete{position:absolute;right:4px;bottom:4px;z-index:3;padding:4px 7px!important;font-size:11px!important}.admin-preview-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}.admin-preview-pageinfo{font-weight:700}.admin-preview-help{margin-top:8px}.pdf-page canvas{max-width:100%;height:auto;display:block;margin:auto}.photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.photo-item{background:rgba(0,0,0,.55);border-radius:12px;padding:8px}.photo-item img{width:100%;height:260px;object-fit:contain;background:#111;border-radius:8px}.photo-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}.photo-stage img{max-width:95%;max-height:88%;object-fit:contain;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.5)}.photo-carousel{width:100%;}.photo-carousel-track{width:100%;height:100%;position:relative;overflow:visible}.photo-carousel-item{position:absolute;top:8%;display:flex;align-items:center;justify-content:center;transition:left .8s ease,width .8s ease,height .8s ease,opacity .8s ease;pointer-events:none}.photo-carousel-item img{display:block;width:100%;height:100%;object-fit:contain;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.5)}.photo-carousel-item.center{width:58%;height:88%;left:21%;z-index:3;opacity:1}.photo-carousel-item.side{width:18%;height:48%;z-index:2;opacity:.72}.photo-carousel-item.side img{width:100%;height:100%;}.photo-carousel-item.left{left:2%;top:48%;}.photo-carousel-item.right{left:80%;top:8%;}.photo-carousel-item.incoming{left:101%;top:8%;width:18%;height:48%;z-index:1;opacity:0;visibility:hidden}#photos .header .title{text-align:center;width:100%}.photo-carousel-item.leaving{left:-20%;top:48%;width:18%;height:48%;z-index:1;opacity:0;visibility:hidden}.photo-slide{animation:photoFade 1s ease both}@keyframes photoFade{from{opacity:0}to{opacity:1}}.photo-scroll{width:100%;overflow:hidden;white-space:nowrap}.photo-scroll-track{display:inline-flex;gap:18px;animation:photoScroll 30s linear infinite}.photo-scroll-track img{width:320px;height:240px;object-fit:contain;background:#111;border-radius:10px}@keyframes photoScroll{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
 </style>
 </head>
-<body><div id="appVersion" class="app-version">Version 1.2.31</div>
+<body><div id="appVersion" class="app-version">Version 1.2.32</div>
 <section id="home" class="view active">
-  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 1.2.31 – lokal</div></div><button onclick="showView('login')">🔐 Verwaltung</button></div>
+  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 1.2.32 – lokal</div></div><button onclick="showView('login')">🔐 Verwaltung</button></div>
   <div class="menu">
     <button onclick="showView('tournamentMonths')">1. Turniereinladungen</button>
     <button onclick="showView('news')">2. Vereinsnachrichten</button>
@@ -60,11 +60,11 @@ textarea{min-height:120px;resize:vertical}
 <section id="tournamentMonths" class="view">
   <div class="header"><div><div class="title">Turniereinladungen</div><div class="subtitle">Monatsübersicht</div></div></div>
   <div id="tMonthOverview" class="month-overview"></div>
-  <div class="bottom tournament-bottom"><button onclick="showView('home')">Hauptmenü</button></div>
+  <div class="bottom tournament-bottom"><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
 <section id="tournaments" class="view">
-  <div class="header tournament-header"><div class="tournament-version">Version 1.2.31</div><div class="tournament-title">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
+  <div class="header tournament-header"><div class="tournament-version">Version 1.2.32</div><div class="tournament-title">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
   <div id="tContent" class="tournament-pages"></div>
   <div class="bottom tournament-bottom">
     <button id="prevMonthBtn" onclick="changeMonth(-1)">Voriger Monat</button>
@@ -72,7 +72,7 @@ textarea{min-height:120px;resize:vertical}
     <button id="nextPageBtn" onclick="changePage(1)">Nächste Seite</button>
     <button id="nextMonthBtn" onclick="changeMonth(1)">Nächster Monat</button>
     <button onclick="showView('tournamentMonths')">Monatsübersicht</button>
-    <button onclick="showView('home')">Hauptmenü</button>
+    <button onclick="returnToPowerPoint()">Hauptmenü</button>
   </div>
 </section>
 
@@ -80,13 +80,13 @@ textarea{min-height:120px;resize:vertical}
   <div class="header"><div><div class="title">Vereinsnachrichten</div><div class="subtitle">Aktuelle Informationen</div></div></div>
   <div id="newsArea" class="notice-box"></div>
   <div id="tickerHeadline" class="ticker-headline" style="display:none"></div><div id="ticker" class="ticker" style="display:none"><span id="tickerText"></span></div>
-  <div class="bottom"><button onclick="showView('home')">Hauptmenü</button></div>
+  <div class="bottom"><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
 <section id="photos" class="view">
   <div class="header"><div><div class="title">Fotos</div><div id="photoMonth" class="subtitle"></div></div></div>
   <div id="photoContent" class="content" style="display:flex;flex-direction:column;min-height:0"></div>
-  <div class="bottom"><button id="photoPrev" onclick="changePhotoAlbum(-1)">Voriger Monat</button><button id="photoNext" onclick="changePhotoAlbum(1)">Nächster Monat</button><button onclick="showView('home')">Hauptmenü</button></div>
+  <div class="bottom"><button id="photoPrev" onclick="changePhotoAlbum(-1)">Voriger Monat</button><button id="photoNext" onclick="changePhotoAlbum(1)">Nächster Monat</button><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
 <section id="login" class="view">
@@ -174,6 +174,20 @@ function showView(id){
 
 function populateLoginUsers(){const sel=document.getElementById('loginUser');if(!sel)return;sel.innerHTML=data.users.map(u=>'<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>').join('');}
 function login(){const uid=document.getElementById('loginUser')?.value,pw=document.getElementById('loginPassword')?.value||'',u=data.users.find(x=>x.id===uid);if(u&&u.password===pw){currentUser=u.id;document.getElementById('loginPassword').value='';showView('admin')}else showToast('Falsches Passwort')}
+function returnToPowerPoint(){
+ currentUser=null;
+ try{leavePresentationFullscreen()}catch(e){}
+ // Wenn diese Seite von PowerPoint/als eigenes Browserfenster geöffnet wurde,
+ // versucht der Browser das Fenster direkt zu schließen.
+ try{window.open('','_self');window.close()}catch(e){}
+ // Fallback: zurück zur vorherigen Browser-Seite, sofern vorhanden.
+ setTimeout(()=>{
+   try{
+     if(history.length>1){history.back();return;}
+   }catch(e){}
+   showView('home');
+ },150);
+}
 function logout(){currentUser=null;showView('home')}
 
 function monthKey(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
