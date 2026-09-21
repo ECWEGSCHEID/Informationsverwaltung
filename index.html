@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vereins-Informationssystem – V1.2.56</title>
+<title>Vereins-Informationssystem – V2.1.1</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;overflow:hidden}
@@ -34,8 +34,8 @@ textarea{min-height:120px;resize:vertical}
 .card{background:rgba(0,0,0,.66);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:14px}
 .list-item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px;border-bottom:1px solid rgba(255,255,255,.12)}
 .small{font-size:13px;opacity:.75}
-#news .header{justify-content:center;text-align:center}.notice-box{max-width:1100px;width:90%;min-height:220px;margin:auto;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.22);border-radius:18px;padding:35px}
-.notice-title{font-size:clamp(30px,4vw,56px);font-weight:800;margin-bottom:20px}.notice-text{font-size:clamp(22px,3vw,40px);line-height:1.35}
+#news .header{justify-content:center;text-align:center}.notice-box{max-width:1100px;width:90%;min-height:220px;max-height:100%;margin:auto;display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.22);border-radius:18px;padding:35px;overflow:auto}
+.notice-title{font-size:clamp(30px,4vw,56px);font-weight:800;margin-bottom:20px}.notice-text{font-size:clamp(22px,3vw,40px);line-height:1.35}.notice-stack{display:flex;flex-direction:column;gap:28px;width:100%;max-height:100%;overflow:auto}.notice-block{padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.18)}.notice-block:last-child{border-bottom:none;padding-bottom:0}
 .fade{animation:fadeCycle 1s ease both}@keyframes fadeCycle{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .ticker{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:110px;overflow:hidden;background:rgba(0,0,0,.78);border-top:1px solid rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.22);display:flex;align-items:center;z-index:8}.ticker span{white-space:nowrap;position:absolute;left:0;font-size:clamp(40px,5vw,72px);font-weight:700;will-change:transform}.ticker-headline{position:absolute;left:0;right:0;top:calc(50% - 155px);text-align:center;font-size:clamp(28px,3.2vw,48px);font-weight:800;opacity:0;transition:opacity .7s ease;z-index:9}.ticker-headline.show{opacity:1}
 .month-overview{flex:1;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(110px,1fr);gap:16px;padding:24px 120px 24px 60px;overflow:auto}.month-tile{background:rgba(0,0,0,.72);border:2px solid rgba(255,255,255,.25);border-radius:14px;color:#fff;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:22px;cursor:pointer}.month-tile span{font-size:15px;opacity:.8}.month-tile.has-items{border-color:#fff}.tournament-pages{flex:1;min-height:0;display:grid;gap:4px;overflow:visible;align-content:start;justify-content:start;padding:0}
@@ -57,14 +57,15 @@ textarea{min-height:120px;resize:vertical}
 .inv-zoom-close{position:absolute;top:14px;right:18px;width:48px;height:48px;min-width:0;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(0,0,0,.6);color:#fff;border:2px solid rgba(255,255,255,.55)}
 </style>
 </head>
-<body><div id="appVersion" class="app-version">Version 1.2.56</div>
+<body><div id="appVersion" class="app-version">Version 2.1.1</div>
 <section id="home" class="view active">
-  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 1.2.56</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
+  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.1.1</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
   <div class="menu">
     <button onclick="openTournamentSection('tournaments')">1. Turniereinladungen</button>
     <button onclick="openTournamentSection('ownTournaments')">2. Eigene Turniereinladungen</button>
     <button onclick="openPublicSection('news')">3. Vereinsnachrichten</button>
     <button onclick="openPublicSection('photos')">4. Fotos für Diashow</button>
+    <button onclick="openPublicSection('sponsorPhotos')">5. Fotos Sponsoren für Diashow</button>
   </div>
 </section>
 
@@ -75,7 +76,7 @@ textarea{min-height:120px;resize:vertical}
 </section>
 
 <section id="tournaments" class="view">
-  <div class="header tournament-header"><div class="tournament-version">Version 1.2.56</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
+  <div class="header tournament-header"><div class="tournament-version">Version 2.1.1</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
   <div id="tContent" class="tournament-pages"></div>
   <div id="tFooter" class="tournament-footer" style="display:none">Über eine Meldung würden wir uns freuen</div>
   <div class="bottom tournament-bottom">
@@ -99,6 +100,12 @@ textarea{min-height:120px;resize:vertical}
   <div class="header"><div><div class="title">Fotos für Diashow</div><div id="photoMonth" class="subtitle"></div></div></div>
   <div id="photoContent" class="content" style="display:flex;flex-direction:column;min-height:0"></div>
   <div class="bottom"><button id="photoPrev" onclick="changePhotoAlbum(-1)">Voriger Monat</button><button id="photoNext" onclick="changePhotoAlbum(1)">Nächster Monat</button><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
+</section>
+
+<section id="sponsorPhotos" class="view">
+  <div class="header"><div><div class="title">Fotos Sponsoren für Diashow</div><div id="sponsorPhotoMonth" class="subtitle"></div></div></div>
+  <div id="sponsorPhotoContent" class="content" style="display:flex;flex-direction:column;min-height:0"></div>
+  <div class="bottom"><button id="sponsorPhotoPrev" onclick="changePhotoAlbum(-1)">Voriger Monat</button><button id="sponsorPhotoNext" onclick="changePhotoAlbum(1)">Nächster Monat</button><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
 <section id="login" class="view">
@@ -128,6 +135,7 @@ textarea{min-height:120px;resize:vertical}
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('o')">Eigene Turniereinladungen</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('n')">Vereinsnachrichten</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('p')">Fotos für Diashow</button>
+      <button style="width:100%;margin-bottom:8px" onclick="adminSection('sp')">Fotos Sponsoren für Diashow</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('s')">Speicher verwalten</button><button style="width:100%" onclick="adminSection('u')">Anmeldung</button>
       <hr><div class="small">Lokale Sicherung: Texte/Einstellungen in localStorage, Bilder/PDF-Seiten in IndexedDB.</div><div id="firebaseStatus" class="small" style="margin-top:10px"></div>
     </div>
@@ -158,20 +166,29 @@ try{
 }catch(e){console.error("Firebase Initialisierung:",e);}
 </script>
 <script>
-const APP_VERSION='1.2.56';
+const APP_VERSION='2.1.1';
 const DBKEY='verein_info_test_v2';
 const OLD_DBKEY='verein_info_test_v1';
 const DEFAULT_DB={tournaments:{},ownTournaments:{},news:[],photos:[],photoAlbums:{},settings:{tournamentPerPage:12},users:[{id:'admin',name:'Administrator',protected:true}]};
 let data=JSON.parse(localStorage.getItem(DBKEY)||'null');
 if(!data){try{data=JSON.parse(localStorage.getItem(OLD_DBKEY)||'null')}catch(e){data=null}}
 data=data||JSON.parse(JSON.stringify(DEFAULT_DB));
-data.tournaments=data.tournaments||{};data.ownTournaments=data.ownTournaments||{};data.news=data.news||[];data.photos=data.photos||[];data.photoAlbums=data.photoAlbums||{};data.settings=data.settings||{};data.settings.tournamentPerPage=Number(data.settings.tournamentPerPage)||12;data.users=Array.isArray(data.users)&&data.users.length?data.users:[{id:'admin',name:'Administrator',protected:true}];if(!data.users.some(u=>u.id==='admin'))data.users.unshift({id:'admin',name:'Administrator',protected:true});{let hadPw=false;data.users.forEach(u=>{if(u&&'password' in u){delete u.password;hadPw=true}});if(hadPw){try{localStorage.setItem(DBKEY,JSON.stringify(data))}catch(e){}}}
+data.tournaments=data.tournaments||{};data.ownTournaments=data.ownTournaments||{};data.news=data.news||[];data.photos=data.photos||[];data.photoAlbums=data.photoAlbums||{};data.sponsorPhotos=data.sponsorPhotos||[];data.sponsorPhotoAlbums=data.sponsorPhotoAlbums||{};data.settings=data.settings||{};data.settings.tournamentPerPage=Number(data.settings.tournamentPerPage)||12;data.users=Array.isArray(data.users)&&data.users.length?data.users:[{id:'admin',name:'Administrator',protected:true}];if(!data.users.some(u=>u.id==='admin'))data.users.unshift({id:'admin',name:'Administrator',protected:true});{let hadPw=false;data.users.forEach(u=>{if(u&&'password' in u){delete u.password;hadPw=true}});if(hadPw){try{localStorage.setItem(DBKEY,JSON.stringify(data))}catch(e){}}}
 const T_COLLECTIONS={
   tournaments:{store:'tournaments',prefix:'t',fb:'tournamentInvitations',label:'Turniereinladungen'},
   ownTournaments:{store:'ownTournaments',prefix:'o',fb:'ownTournamentInvitations',label:'Eigene Turniereinladungen'}
 };
 let tCollection='tournaments';
 function tCfg(){return T_COLLECTIONS[tCollection]||T_COLLECTIONS.tournaments}
+const P_COLLECTIONS={
+  photos:{items:'photos',albums:'photoAlbums',prefix:'p',fb:'photos',label:'Fotos für Diashow',view:'photos',contentEl:'photoContent',monthEl:'photoMonth',prevBtn:'photoPrev',nextBtn:'photoNext'},
+  sponsorPhotos:{items:'sponsorPhotos',albums:'sponsorPhotoAlbums',prefix:'sp',fb:'sponsorPhotos',label:'Fotos Sponsoren für Diashow',view:'sponsorPhotos',contentEl:'sponsorPhotoContent',monthEl:'sponsorPhotoMonth',prevBtn:'sponsorPhotoPrev',nextBtn:'sponsorPhotoNext'}
+};
+let pCollection='photos';
+function pCfg(){return P_COLLECTIONS[pCollection]||P_COLLECTIONS.photos}
+function pItems(){const k=pCfg().items;return data[k]||(data[k]=[])}
+function pAlbums(){const k=pCfg().albums;return data[k]||(data[k]={})}
+function tInfoElId(){return tCollection==='ownTournaments'?'firebaseOwnTournamentInfo':'firebaseTournamentInfo'}
 function tStore(){const k=tCfg().store;return data[k]||(data[k]={})}
 function updateTournamentTitles(){const l=(tCollection==='ownTournaments')?'Nächste eigene Turniere':tCfg().label;const a=document.getElementById('tMonthsTitle');if(a)a.textContent=l;const b=document.getElementById('tTitle');if(b)b.textContent=l;}
 function openTournamentSection(kind){tCollection=(kind==='ownTournaments')?'ownTournaments':'tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView(tCollection==='ownTournaments'?'tournaments':'tournamentMonths');}
@@ -190,7 +207,7 @@ function mediaClear(){return openMediaDB().then(db=>new Promise((resolve,reject)
 function dataUrlToBlob(u){const a=u.split(',');const h=a[0]||'',b=a[1]||'';const m=(h.match(/data:([^;]+)/)||[])[1]||'application/octet-stream';const bin=atob(b),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new Blob([bytes],{type:m})}
 function mediaId(prefix,id){return 'media_'+prefix+'_'+String(id)}
 async function storeMedia(prefix,id,dataUrl){const id2=mediaId(prefix,id);await mediaPut(id2,dataUrlToBlob(dataUrl));const url=URL.createObjectURL(dataUrlToBlob(dataUrl));mediaObjectUrls.push(url);return {id:id2,url}}
-function allMediaItems(){const a=[];['tournaments','ownTournaments'].forEach(key=>{const kind=key==='ownTournaments'?'o':'t';Object.keys(data[key]||{}).forEach(m=>(data[key][m]||[]).forEach(x=>{if(x)a.push({kind,item:x})}))});(data.photos||[]).forEach(x=>{if(x)a.push({kind:'p',item:x})});return a}
+function allMediaItems(){const a=[];['tournaments','ownTournaments'].forEach(key=>{const kind=key==='ownTournaments'?'o':'t';Object.keys(data[key]||{}).forEach(m=>(data[key][m]||[]).forEach(x=>{if(x)a.push({kind,item:x})}))});(data.photos||[]).forEach(x=>{if(x)a.push({kind:'p',item:x})});(data.sponsorPhotos||[]).forEach(x=>{if(x)a.push({kind:'sp',item:x})});return a}
 async function migrateLegacyMedia(){let migrated=0;for(const {kind,item} of allMediaItems()){if(item.data&&String(item.data).startsWith('data:')){try{const id=mediaId(kind,item.id||Date.now()+Math.random());await mediaPut(id,dataUrlToBlob(item.data));item.mediaId=id;migrated++;}catch(e){console.error(e)}}}if(migrated){save();showToast(migrated+' große Datei(en) in den neuen Speicher übernommen')}}
 async function hydrateMedia(){mediaObjectUrls.forEach(u=>URL.revokeObjectURL(u));mediaObjectUrls=[];for(const {item} of allMediaItems()){if(item.mediaId){try{const b=await mediaGet(item.mediaId);if(b){item.data=URL.createObjectURL(b);mediaObjectUrls.push(item.data)}}catch(e){console.error(e)}}}}
 function stripMediaData(x){if(!x||typeof x!=='object')return x;const c={};for(const k in x){if(k!=='data')c[k]=x[k]}return c}
@@ -199,10 +216,11 @@ function save(){
     // Nur Metadaten in localStorage: Bilddaten (data) bleiben draußen. Es wird nichts geklont,
     // und leere Plätze (null/Lücken in den Listen) führen nicht mehr zum Abbruch.
     const meta={};
-    for(const k in data){if(k!=='tournaments'&&k!=='ownTournaments'&&k!=='photos')meta[k]=data[k]}
+    for(const k in data){if(k!=='tournaments'&&k!=='ownTournaments'&&k!=='photos'&&k!=='sponsorPhotos')meta[k]=data[k]}
     meta.tournaments={};meta.ownTournaments={};
     ['tournaments','ownTournaments'].forEach(key=>{Object.keys(data[key]||{}).forEach(m=>{meta[key][m]=Array.from(data[key][m]||[],x=>x?stripMediaData(x):null)})});
     meta.photos=Array.from(data.photos||[],x=>x?stripMediaData(x):null);
+    meta.sponsorPhotos=Array.from(data.sponsorPhotos||[],x=>x?stripMediaData(x):null);
     localStorage.setItem(DBKEY,JSON.stringify(meta));
     return true;
   }catch(e){
@@ -213,7 +231,8 @@ function save(){
   }
 }
 async function showStorageInfo(){const el=document.getElementById('storageInfo');if(!el)return;try{const all=await mediaAll(),bytes=all.reduce((n,x)=>n+(x.blob?.size||0),0);el.innerHTML='Gespeicherte Dateien: <b>'+all.length+'</b><br>Belegter Dateispeicher: <b>'+((bytes/1024/1024).toFixed(1))+' MB</b>'; }catch(e){el.textContent='IndexedDB ist in diesem Browser nicht verfügbar.'}}
-async function clearLocalMedia(){if(!confirm('Wirklich alle lokal gespeicherten Bilder und PDF-Seiten löschen?'))return;await mediaClear();['tournaments','ownTournaments'].forEach(key=>Object.keys(data[key]||{}).forEach(m=>(data[key][m]||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}})));(data.photos||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}});save();renderTournamentAdminList();renderPhotoAdminList();showStorageInfo();showToast('Lokale Bilder und PDF-Seiten wurden gelöscht')}
+async function clearLocalMedia(){if(!confirm('Wirklich alle lokal gespeicherten Bilder und PDF-Seiten löschen?'))return;await mediaClear();['tournaments','ownTournaments'].forEach(key=>Object.keys(data[key]||{}).forEach(m=>(data[key][m]||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}})));(data.photos||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}});(data.sponsorPhotos||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}});save();renderTournamentAdminList();renderPhotoAdminList();showStorageInfo();showToast('Lokale Bilder und PDF-Seiten wurden gelöscht')}
+try{cleanupOldTournaments()}catch(e){console.error('Automatische Bereinigung:',e)}
 (async()=>{try{await migrateLegacyMedia();await hydrateMedia()}catch(e){console.error('Medien-Speicher:',e)}})();
 // Verhindert, dass der Browser die lokal gespeicherten Bilder bei Platzmangel selbstständig löscht.
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
@@ -290,7 +309,7 @@ function loadPdfJs(){
 }
 async function syncTournamentsToFirebase(){
   if(!firebaseReady||!firestoreDb){showToast('Firebase ist nicht verbunden',5000);return {ok:false,error:'Firebase ist nicht verbunden'};}
-  const info=document.getElementById('firebaseTournamentInfo');
+  const info=document.getElementById(tInfoElId());
   if(info)info.textContent='Übertragung wird vorbereitet …';
   try{
     let count=0,failed=0;
@@ -306,7 +325,7 @@ async function syncTournamentsToFirebase(){
         const id=firebaseDocId(month,i,item);
         if(info)info.textContent='Übertrage Einladung '+(count+1)+' …';
         await fbTimeout(firestoreDb.collection(tCfg().fb).doc(id).set({
-          month:month,index:i,id:String(item.id||id),name:String(item.name||''),
+          month:month,index:i,id:String(item.id||id),name:String(item.name||''),endDate:String(item.endDate||''),
           data:dataUrl,updatedAt:new Date().toISOString()
         }),90000,'Firebase');
         count++;
@@ -325,7 +344,7 @@ async function syncTournamentsToFirebase(){
 }
 async function loadTournamentsFromFirebase(){
   if(!firebaseReady||!firestoreDb)return showToast('Firebase ist nicht verbunden');
-  const info=document.getElementById('firebaseTournamentInfo');
+  const info=document.getElementById(tInfoElId());
   if(info)info.textContent='Firebase-Daten werden geladen …';
   try{
     const snap=await firestoreDb.collection(tCfg().fb).get();
@@ -334,7 +353,7 @@ async function loadTournamentsFromFirebase(){
       const x=doc.data()||{};
       if(!x.month||!x.data)return;
       (tournaments[x.month]||(tournaments[x.month]=[]))[Number.isFinite(x.index)?x.index:0]={
-        id:x.id||doc.id,name:x.name||'',data:x.data
+        id:x.id||doc.id,name:x.name||'',endDate:x.endDate||'',data:x.data
       };
     });
     data[tCfg().store]=tournaments;
@@ -399,9 +418,9 @@ function openPublicSection(id){
     const el=document.getElementById(id);
     if(!el)return;
     el.classList.add('active');
-    if(['news','photos'].includes(id)) enterPresentationFullscreen();
+    if(['news','photos','sponsorPhotos'].includes(id)) enterPresentationFullscreen();
     if(id==='news') { try{ renderNews(); }catch(e){ console.error('Nachrichtenanzeige:',e); } }
-    if(id==='photos') { Promise.resolve().then(()=>hydrateMedia()).catch(()=>{}).then(()=>{try{initPhotos()}catch(e){console.error('Fotoanzeige:',e);}}); }
+    if(id==='photos'||id==='sponsorPhotos') { pCollection=(id==='sponsorPhotos')?'sponsorPhotos':'photos'; Promise.resolve().then(()=>hydrateMedia()).catch(()=>{}).then(()=>{try{initPhotos()}catch(e){console.error('Fotoanzeige:',e);}}); }
   }catch(e){console.error('Navigation:',e);}
 }
 
@@ -409,9 +428,10 @@ function showView(id){
  try{closeInvitationZoom()}catch(e){}
  if(id!=='news'){try{stopNews()}catch(e){}}
  if(id==='admin' && !firebaseAuthUser && currentUser!=='admin'){ showView('login'); return; }
+ if(id==='login'){const emEl=document.getElementById('firebaseLoginEmail');if(emEl&&!emEl.value){try{emEl.value=localStorage.getItem('verein_admin_email')||''}catch(e){}}}
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
  document.getElementById(id).classList.add('active');
- if(['tournamentMonths','tournaments','news','photos'].includes(id)){
+ if(['tournamentMonths','tournaments','news','photos','sponsorPhotos'].includes(id)){
    enterPresentationFullscreen();
  }else{
    leavePresentationFullscreen();
@@ -420,7 +440,7 @@ function showView(id){
  if(id==='tournamentMonths')renderTournamentMonthOverview();
  if(id==='tournaments'){hydrateMedia().then(()=>initTournaments()).catch(()=>initTournaments());}
  if(id==='news')renderNews();
- if(id==='photos'){hydrateMedia().then(()=>initPhotos()).catch(()=>initPhotos());}
+ if(id==='photos'||id==='sponsorPhotos'){pCollection=(id==='sponsorPhotos')?'sponsorPhotos':'photos';hydrateMedia().then(()=>initPhotos()).catch(()=>initPhotos());}
  if(id==='admin'){const u=data.users.find(x=>x.id===currentUser);const lab=document.getElementById('currentUserLabel');if(lab)lab.textContent=firebaseAuthUser?.email||(u?u.name:'');adminSection('t');}
 }
 
@@ -447,6 +467,7 @@ async function loginFirebaseAdmin(){
    await window.firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.NONE);
    await window.firebaseAuth.signInWithEmailAndPassword(email,pw);
  }catch(e){console.error(e);const t=authErrorText(e);setStatus(t);showToast(t,4000);return;}
+ try{localStorage.setItem('verein_admin_email',email)}catch(e){}
  const pwField=document.getElementById('firebaseLoginPassword');if(pwField)pwField.value='';
  // Erst die öffentlichen Firebase-Daten fertig laden, damit nichts Veraltetes aus dem Browser die Firebase-Daten überschreibt.
  if(window.__publicLoadPromise){
@@ -505,10 +526,104 @@ function existingMonths(){const st=tStore();return Object.keys(st).filter(k=>(st
 function renderTournamentMonthOverview(){const el=document.getElementById('tMonthOverview');if(!el)return;const now=new Date();const arr=[];for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);arr.push(monthKey(d))}el.innerHTML=arr.map(k=>{const count=(tStore()[k]||[]).filter(Boolean).length;return '<button type="button" class="month-tile '+(count?'has-items':'')+'" data-month="'+esc(k)+'"><b>'+monthLabel(k)+'</b><span>'+(count?count+' Einladung'+(count===1?'':'en'):'keine Einladung')+'</span></button>'}).join('');el.querySelectorAll('.month-tile').forEach(btn=>btn.addEventListener('click',()=>openTournamentMonth(btn.dataset.month),{once:true}))}
 async function openTournamentMonth(k){currentMonth=String(k);currentPage=0;adminTournamentPage=0;await showView('tournaments')}
 function initTournaments(){const ms=existingMonths();currentMonth=currentMonth&&ms.includes(currentMonth)?currentMonth:(ms[0]||monthKey());currentPage=0;adminTournamentPage=0;renderTournaments()}
-function tournamentMonthOptions(){const set=new Set(existingMonths());const now=new Date();for(let y=now.getFullYear()-1;y<=now.getFullYear()+2;y++){for(let m=1;m<=12;m++)set.add(y+'-'+String(m).padStart(2,'0'))}return [...set].sort()}
-function ownTournamentItems(){const st=tStore();const out=[];Object.keys(st).sort().forEach(m=>(st[m]||[]).forEach(x=>{if(x)out.push(x)}));return out}
+function monthKeyOffset(offset){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+offset);return monthKey(d)}
+function tournamentMonthOptions(){
+  const set=new Set(existingMonths());
+  const start=new Date();start.setDate(1);start.setMonth(start.getMonth()-3);
+  const end=new Date();end.setDate(1);end.setFullYear(end.getFullYear()+2);
+  for(let d=new Date(start);d<=end;d.setMonth(d.getMonth()+1))set.add(monthKey(d));
+  return [...set].sort();
+}
+function cleanupOldTournaments(){
+  // Turniereinladungen, die 4 Monate oder länger in der Vergangenheit liegen, werden automatisch entfernt.
+  const cutoff=monthKeyOffset(-3);
+  const st=data.tournaments||{};
+  const removedMedia=[];
+  let changed=false;
+  Object.keys(st).forEach(m=>{
+    if(m<cutoff){
+      (st[m]||[]).forEach(x=>{if(x&&x.mediaId)removedMedia.push(x.mediaId)});
+      delete st[m];
+      changed=true;
+    }
+  });
+  if(!changed)return;
+  save();
+  removedMedia.forEach(id=>{mediaDelete(id).catch(()=>{})});
+  if(firebaseReady&&firestoreDb){
+    const desired=new Set(Object.keys(data.tournaments||{}).flatMap(month=>(data.tournaments[month]||[]).map((item,i)=>item?firebaseDocId(month,i,item):null)).filter(Boolean));
+    if(desired.size)removeFirebaseDocsNotInSet('tournamentInvitations',desired).catch(e=>console.warn('Automatische Bereinigung: Firebase-Löschen fehlgeschlagen',e));
+  }
+  if(currentMonth && currentMonth<cutoff){currentMonth=null;currentPage=0;}
+  if(tCollection==='tournaments'){
+    if(document.getElementById('tournamentMonths')?.classList.contains('active'))renderTournamentMonthOverview();
+    if(document.getElementById('tournaments')?.classList.contains('active'))renderTournaments();
+  }
+}
+function ownTournamentEntries(){const st=data.ownTournaments||{};const out=[];Object.keys(st).sort().forEach(m=>{(st[m]||[]).forEach((x,i)=>{if(x)out.push({item:x,month:m,index:i})})});return out}
+function findOwnItemById(id){const st=data.ownTournaments||{};for(const m in st){const arr=st[m]||[];const idx=arr.findIndex(x=>x&&String(x.id)===String(id));if(idx>=0)return{item:arr[idx],month:m,index:idx}}return null}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function activeOwnItems(){
+ const today=todayStr();
+ const items=ownTournamentEntries().map(e=>e.item).filter(x=>!x.endDate||x.endDate>=today);
+ items.sort((a,b)=>{const ea=a.endDate||'9999-99-99',eb=b.endDate||'9999-99-99';return ea<eb?-1:ea>eb?1:0});
+ return items.slice(0,7);
+}
+function setOwnEndDate(id,value){
+ const found=findOwnItemById(id);if(!found)return;
+ found.item.endDate=value;
+ showToast('Enddatum geändert – bitte oben Speichern drücken');
+}
+function renderOwnTournamentAdminList(){
+ const el=document.getElementById('oAdminList');if(!el)return;
+ const entries=ownTournamentEntries();
+ if(!entries.length){el.innerHTML='<div class="small">Noch keine eigenen Einladungen vorhanden.</div>';return}
+ el.innerHTML='';
+ entries.forEach(({item:x,month:m,index:i})=>{
+   const d=document.createElement('div');d.className='list-item';
+   d.innerHTML='<span>'+esc(x.name)+'</span><label class="small" style="margin:0 8px 0 16px;white-space:nowrap">Anzeigen bis</label><input type="date" value="'+esc(x.endDate||'')+'" style="width:170px" onchange="setOwnEndDate('+jsArg(x.id)+',this.value)"><button class="danger" onclick="deleteTournament('+jsArg(m)+','+i+')">Löschen</button>';
+   el.appendChild(d);
+ });
+}
+async function saveOwnTournamentFiles(){
+ tCollection='ownTournaments';
+ const month=monthKey();
+ const files=[...(document.getElementById('ofiles')?.files||[])];
+ const info=document.getElementById('firebaseOwnTournamentInfo');
+ if(info)info.textContent='Einladungen werden gespeichert …';
+ let added=0,failed=0,firstError='';
+ try{
+   for(const file of files){
+     try{
+       if(file.type==='application/pdf'||/\.pdf$/i.test(file.name)) await addTournamentPdfFile(file,month);
+       else if(/\.(png|bmp|jpe?g)$/i.test(file.name)||/^image\/(png|bmp|jpeg)$/i.test(file.type)) await addTournamentImageFile(file,month);
+       else throw new Error('Nur PDF, PNG, JPG oder BMP sind erlaubt');
+       added++;
+     }catch(e){failed++;if(!firstError)firstError=file.name+': '+(e?.message||e);console.error('Datei:',file.name,e)}
+   }
+   if(!save()){if(info)info.textContent='Fehler: lokales Speichern fehlgeschlagen';return}
+   await hydrateMedia();
+   renderOwnTournamentAdminList();
+   if(document.getElementById('tournaments')?.classList.contains('active')&&tCollection==='ownTournaments')renderTournaments();
+   let fb=null;
+   if(firebaseReady&&firestoreDb){
+     if(info)info.textContent='Programm gespeichert. Firebase wird aktualisiert …';
+     fb=await syncTournamentsToFirebase();
+   }
+   if(document.getElementById('ofiles'))document.getElementById('ofiles').value='';
+   const parts=[];
+   if(added)parts.push(added+' neue Datei(en) hinzugefügt');
+   if(failed)parts.push(failed+' Datei(en) fehlgeschlagen ('+firstError+')');
+   if(fb&&!fb.ok)showToast('Lokal gespeichert – aber Firebase: '+(fb.error||fb.message)+(parts.length?' · '+parts.join(' · '):''),8000);
+   else showToast('Einladungen gespeichert'+(fb?' und Firebase aktualisiert':' (nur lokal – Firebase nicht verbunden)')+(parts.length?' · '+parts.join(' · '):''),failed?8000:3500);
+ }catch(e){
+   console.error(e);
+   if(info)info.textContent='Fehler: '+(e?.message||e);
+   showToast('Speichern fehlgeschlagen: '+(e?.message||e),6000);
+ }
+}
 function renderOwnTournaments(){
- const items=ownTournamentItems();
+ const items=activeOwnItems();
  const mEl=document.getElementById('tMonth');if(mEl)mEl.textContent='';
  const f=document.getElementById('tFooter');if(f)f.style.display='block';
  ['prevPageBtn','nextPageBtn','prevMonthBtn','nextMonthBtn','tMonthsBtn'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none'});
@@ -610,21 +725,26 @@ function changePage(d){currentPage+=d;renderTournaments()}
 function changeMonth(d){const ms=existingMonths();let i=ms.indexOf(currentMonth);if(i<0)i=d>0?-1:ms.length;i+=d;if(i>=0&&i<ms.length){currentMonth=ms[i];currentPage=0;renderTournaments()}}
 function adminSection(s){
  const a=document.getElementById('adminMain');
- if(s==='t'||s==='o'){
-  tCollection=(s==='o')?'ownTournaments':'tournaments';
+ if(s==='t'){
+  tCollection='tournaments';
   const tmonths=existingMonths(); const selectedAdminMonth=tmonths.includes(currentMonth)?currentMonth:(tmonths[0]||monthKey());
-  a.innerHTML='<h2>'+tCfg().label+'</h2><div class="card"><label>Monat</label><select id="tm">'+tournamentMonthOptions().map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join('')+'</select><label style="margin-top:10px">Einladungen hinzufügen (PDF, PNG oder BMP)</label><input id="tfiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,image/png,image/bmp"><div id="firebaseTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Die ausgewählten Dateien werden automatisch im Programm und in Firebase gespeichert. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div class="card"><label>Monat auswählen</label><select id="tadminmonth">'+(tmonths.length?tmonths.map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join(''):'<option value="'+monthKey()+'">'+monthLabel(monthKey())+'</option>')+'</select><div id="tAdminPreview" class="admin-preview"></div><div id="tAdminList" style="margin-top:10px"></div></div><div class="card" style="margin-top:16px"><button class="primary" style="width:100%" onclick="saveTournamentFiles()">Speichern</button></div>';
+  a.innerHTML='<h2>'+tCfg().label+'</h2><div class="card"><label>Monat</label><select id="tm">'+tournamentMonthOptions().map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join('')+'</select><label style="margin-top:10px">Einladungen hinzufügen (PDF, PNG, JPG oder BMP)</label><input id="tfiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,.jpg,.jpeg,image/png,image/bmp,image/jpeg"><div id="firebaseTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Die ausgewählten Dateien werden automatisch im Programm und in Firebase gespeichert. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div class="card"><label>Monat auswählen</label><select id="tadminmonth">'+(tmonths.length?tmonths.map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join(''):'<option value="'+monthKey()+'">'+monthLabel(monthKey())+'</option>')+'</select><div id="tAdminPreview" class="admin-preview"></div><div id="tAdminList" style="margin-top:10px"></div></div><div class="card" style="margin-top:16px"><button class="primary" style="width:100%" onclick="saveTournamentFiles()">Speichern</button></div>';
   renderTournamentAdminList(); renderTournamentAdminPreview();
   document.getElementById('tm').onchange=()=>{currentMonth=document.getElementById('tm').value};
-  document.getElementById('tadminmonth').onchange=()=>{currentMonth=document.getElementById('tadminmonth').value;currentPage=0;adminTournamentPage=0;renderTournamentAdminPreview();renderTournamentAdminList()};
+  document.getElementById('tadminmonth').onchange=()=>{currentMonth=document.getElementById('tadminmonth').value;currentPage=0;adminTournamentPage=0;renderTournamentAdminPreview();renderTournamentAdminList();};
+ }else if(s==='o'){
+  tCollection='ownTournaments';
+  a.innerHTML='<h2>Eigene Turniereinladungen</h2><div class="card"><label>Einladungen hinzufügen (PDF, PNG, JPG oder BMP)</label><input id="ofiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,.jpg,.jpeg,image/png,image/bmp,image/jpeg"><button class="primary" style="width:100%;margin-top:10px" onclick="saveOwnTournamentFiles()">Speichern</button><div id="firebaseOwnTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Es werden maximal 7 Einladungen gleichzeitig angezeigt – zuerst die mit dem nächsten Enddatum. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div id="oAdminList"></div>';
+  renderOwnTournamentAdminList();
  }else if(s==='n'){
-  a.innerHTML='<h2>Vereinsnachrichten</h2><div class="card"><input id="neditid" type="hidden"><label>Überschrift</label><input id="ntitle" type="text" placeholder="z. B. Vereinsmeisterschaft"><label style="margin-top:8px"><input id="nshowtitle" type="checkbox" style="width:auto;margin-right:8px"> Überschrift oben</label><label>Nachricht</label><textarea id="ntext" placeholder="Text der Nachricht..."></textarea><label>Anzeigeart</label><select id="nmode"><option value="static">Feststehend</option><option value="fade">Ein-/Ausblenden</option><option value="ticker">Lauftext</option></select><label>Anzeigedauer pro Nachricht (Sekunden)</label><input id="ndur" type="number" min="1" max="180" value="18"><div class="small">Bei „Lauftext“ bestimmt dieser Wert die Dauer eines kompletten Durchlaufs.</div><label>Zeit zwischen den jeweiligen Texten (Sekunden)</label><input id="ngap" type="number" min="0" max="180" value="2"><div class="small">Diese Pause wird beim Wechsel zwischen mehreren Nachrichten verwendet.</div><div class="row"><div style="flex:1"><label>Startdatum</label><input id="nstart" type="date"></div><div style="flex:1"><label>Enddatum</label><input id="nend" type="date"></div></div><div class="small">Ohne Start- oder Enddatum ist die Nachricht zeitlich unbegrenzt aktiv.</div><div class="row" style="margin-top:14px"><button id="newsCancelBtn" style="display:none" onclick="cancelNewsEdit()">Bearbeitung abbrechen</button></div></div><h3>Gespeicherte Nachrichten</h3><div id="newsAdminList"></div><div class="card" style="margin-top:16px"><div id="firebaseNewsInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllNewsChanges()">Speichern</button></div>';renderNewsAdminList();
+  a.innerHTML='<h2>Vereinsnachrichten</h2><div class="card"><input id="neditid" type="hidden"><label>Überschrift</label><input id="ntitle" type="text" placeholder="z. B. Vereinsmeisterschaft"><label style="margin-top:8px"><input id="nshowtitle" type="checkbox" style="width:auto;margin-right:8px"> Überschrift oben</label><label>Nachricht</label><textarea id="ntext" placeholder="Text der Nachricht..."></textarea><label>Anzeigeart</label><select id="nmode" onchange="updateNewsModeFields()"><option value="static">Feststehend</option><option value="fade">Ein-/Ausblenden</option><option value="ticker">Lauftext</option></select><div id="ndurWrap"><label>Anzeigedauer pro Nachricht (Sekunden)</label><input id="ndur" type="number" min="1" max="180" value="18"><div class="small">Bei „Lauftext“ bestimmt dieser Wert die Dauer eines kompletten Durchlaufs.</div></div><div id="ngapWrap"><label>Zeit zwischen den jeweiligen Texten (Sekunden)</label><input id="ngap" type="number" min="0" max="180" value="2"><div class="small">Diese Pause wird beim Wechsel zwischen mehreren Nachrichten verwendet.</div></div><div class="row"><div style="flex:1"><label>Startdatum</label><input id="nstart" type="date"></div><div style="flex:1"><label>Enddatum</label><input id="nend" type="date"></div></div><div class="small">Ohne Start- oder Enddatum ist die Nachricht zeitlich unbegrenzt aktiv.</div><div class="row" style="margin-top:14px"><button id="newsCancelBtn" style="display:none" onclick="cancelNewsEdit()">Bearbeitung abbrechen</button></div></div><h3>Gespeicherte Nachrichten</h3><div id="newsAdminList"></div><div class="card" style="margin-top:16px"><div id="firebaseNewsInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllNewsChanges()">Speichern</button></div>';renderNewsAdminList();updateNewsModeFields();
  }else if(s==='s'){
   a.innerHTML='<h2>Speicher verwalten</h2><div class="card"><h3>Lokaler Dateispeicher</h3><p class="small">Bilder und PDF-Seiten werden in IndexedDB gespeichert. Dadurch bleibt der begrenzte localStorage für Texte und Einstellungen frei.</p><div id="storageInfo" class="small" style="margin:10px 0">Speicher wird ermittelt …</div><button class="primary" onclick="showStorageInfo()">Speicher aktualisieren</button><button class="danger" style="margin-left:8px" onclick="clearLocalMedia()">Alle Bilder/PDF-Seiten löschen</button></div>';showStorageInfo();
  }else if(s==='u'){
   a.innerHTML='<h2>Anmeldung</h2><div class="card"><p>Angemeldet als: <b>'+esc(firebaseAuthUser?.email||'')+'</b></p><p class="small">Die Anmeldung erfolgt über Firebase mit E-Mail und Kennwort. Kennwörter werden weder in dieser Datei noch im Browser gespeichert.</p><button class="primary" onclick="sendOwnPasswordReset()">Kennwort per E-Mail zurücksetzen</button><div id="authInfo" class="small" style="margin-top:10px"></div></div>';
- }else{
-  a.innerHTML='<h2>Fotos für Diashow</h2><div class="card"><label>Fotos hinzufügen</label><input id="pfiles" type="file" multiple accept=".png,.bmp,.jpg,.jpeg,.webp"><label>Ordner / Monat</label><input id="pmonth" type="month" value="'+monthKey()+'"><label>Ordnername</label><input id="palbum" type="text" placeholder="z. B. Sommerfest 2026"><label>Darstellung</label><select id="pmode"><option value="slideshow" selected>Diashow – Karussell</option><option value="static">Feststehend – Fotowand</option><option value="fade">Verschwinden / Erscheinen</option><option value="scroll">Durchlaufen</option></select><label>Wechselzeit (Sekunden)</label><input id="pdur" type="number" min="2" value="5"></div><h3>Gespeicherte Foto-Ordner</h3><div id="photoAdminList"></div><div class="card" style="margin-top:16px"><div id="firebasePhotosInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllPhotoChanges()">Speichern</button></div>';renderPhotoAdminList();updatePhotoAlbumForm();document.getElementById('pmonth').onchange=updatePhotoAlbumForm;
+ }else if(s==='p'||s==='sp'){
+  pCollection=(s==='sp')?'sponsorPhotos':'photos';
+  a.innerHTML='<h2>'+pCfg().label+'</h2><div class="card"><label>Fotos hinzufügen</label><input id="pfiles" type="file" multiple accept=".png,.bmp,.jpg,.jpeg,.webp"><label>Ordner / Monat</label><input id="pmonth" type="month" value="'+monthKey()+'"><label>Ordnername</label><input id="palbum" type="text" placeholder="z. B. Sommerfest 2026"><label>Darstellung</label><select id="pmode"><option value="slideshow" selected>Diashow – Karussell</option><option value="static">Feststehend – Fotowand</option><option value="fade">Verschwinden / Erscheinen</option><option value="scroll">Durchlaufen</option></select><label>Wechselzeit (Sekunden)</label><input id="pdur" type="number" min="2" value="5"></div><h3>Gespeicherte Foto-Ordner</h3><div id="photoAdminList"></div><div class="card" style="margin-top:16px"><div id="firebasePhotosInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllPhotoChanges()">Speichern</button></div>';renderPhotoAdminList();updatePhotoAlbumForm();document.getElementById('pmonth').onchange=updatePhotoAlbumForm;
  }
 }
 async function getLocalPhotoDataUrl(item){
@@ -639,13 +759,13 @@ async function syncPhotosToFirebase(){
  try{
   let count=0,failed=0,albums=0;
   const desired=new Set();
-  for(const month of Object.keys(data.photoAlbums||{}).sort()){
-   const a=data.photoAlbums[month]||{};
+  for(const month of Object.keys(pAlbums()).sort()){
+   const a=pAlbums()[month]||{};
    const albumId='album_'+String(month).replace(/[^0-9-]/g,'_');
-   await fbTimeout(firestoreDb.collection('photos').doc(albumId).set({type:'album',month,name:String(a.name||''),mode:String(a.mode||'slideshow'),duration:Number(a.duration)||5,updatedAt:new Date().toISOString()}),60000,'Firebase');
+   await fbTimeout(firestoreDb.collection(pCfg().fb).doc(albumId).set({type:'album',month,name:String(a.name||''),mode:String(a.mode||'slideshow'),duration:Number(a.duration)||5,updatedAt:new Date().toISOString()}),60000,'Firebase');
    desired.add(albumId);albums++;
   }
-  const arr=data.photos||[];
+  const arr=pItems();
   for(let i=0;i<arr.length;i++){
    const item=arr[i];if(!item)continue;
    const docId=firebasePhotoDocId(item,i);
@@ -655,10 +775,10 @@ async function syncPhotosToFirebase(){
    if(dataUrl&&dataUrl.length>FIREBASE_MAX_CHARS)dataUrl=await shrinkDataUrlForFirebase(dataUrl);
    if(!dataUrl||dataUrl.length>FIREBASE_MAX_CHARS){failed++;continue}
    if(info)info.textContent='Übertrage Foto '+(count+1)+' …';
-   await fbTimeout(firestoreDb.collection('photos').doc(docId).set({type:'photo',month:String(item.month||''),index:i,id:String(item.id||''),name:String(item.name||''),data:dataUrl,updatedAt:new Date().toISOString()}),90000,'Firebase');
+   await fbTimeout(firestoreDb.collection(pCfg().fb).doc(docId).set({type:'photo',month:String(item.month||''),index:i,id:String(item.id||''),name:String(item.name||''),data:dataUrl,updatedAt:new Date().toISOString()}),90000,'Firebase');
    count++;
   }
-  await removeFirebaseDocsNotInSet('photos',desired);
+  await removeFirebaseDocsNotInSet(pCfg().fb,desired);
   const message=count+' Foto(s) und '+albums+' Ordner zu Firebase übertragen'+(failed?' · '+failed+' Foto(s) ohne Datei/zu groß übersprungen':'')+'.';
   if(info)info.textContent=message;
   return {ok:failed===0,count,failed,message};
@@ -673,13 +793,13 @@ async function loadPhotosFromFirebase(){
  if(!firebaseReady||!firestoreDb)return showToast('Firebase ist nicht verbunden');
  const info=document.getElementById('firebasePhotosInfo');if(info)info.textContent='Firebase-Fotos werden geladen …';
  try{
-  const snap=await firestoreDb.collection('photos').get();
+  const snap=await firestoreDb.collection(pCfg().fb).get();
   const photos=[],albums={};
   snap.forEach(doc=>{const x=doc.data()||{};if(x.type==='album'&&x.month){albums[x.month]={name:x.name||'',mode:x.mode||'slideshow',duration:Number(x.duration)||5};}else if(x.type==='photo'&&x.data&&x.month){photos.push({id:x.id||doc.id,month:x.month,name:x.name||'',data:x.data,order:Number.isFinite(x.index)?x.index:0});}});
   photos.sort(comparePhotos);
-  data.photos=photos;data.photoAlbums=albums;save();await hydrateMedia();
+  data[pCfg().items]=photos;data[pCfg().albums]=albums;save();await hydrateMedia();
   photoAlbumMonth=null;renderPhotoAdminList();
-  if(document.getElementById('photos').classList.contains('active'))initPhotos();
+  if(document.getElementById(pCfg().view).classList.contains('active'))initPhotos();
   const count=photos.length; if(info)info.textContent=count+' Foto(s) und '+Object.keys(albums).length+' Ordner aus Firebase geladen.';showToast(count+' Foto(s) aus Firebase geladen');
  }catch(e){console.error(e);if(info)info.textContent='Fehler: '+(e?.message||e);showToast('Firebase-Laden fehlgeschlagen: '+(e?.code||'Regeln prüfen'));}
 }
@@ -721,7 +841,7 @@ async function compressInvitationImage(img){
 async function addTournamentImageFile(file,month){
  const raw=await readFile(file);
  let dataUrl=raw;
- if(file.type==='image/png'||file.type==='image/bmp'||/\.(png|bmp)$/i.test(file.name)){
+ if(file.type==='image/png'||file.type==='image/bmp'||file.type==='image/jpeg'||/\.(png|bmp|jpe?g)$/i.test(file.name)){
    const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=raw});
    const maxSide=1600,scale=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
    const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.naturalWidth*scale));c.height=Math.max(1,Math.round(img.naturalHeight*scale));c.getContext('2d').drawImage(img,0,0,c.width,c.height);dataUrl=c.toDataURL('image/jpeg',.78);
@@ -751,8 +871,8 @@ async function saveTournamentFiles(){
    for(const file of files){
      try{
        if(file.type==='application/pdf'||/\.pdf$/i.test(file.name)) await addTournamentPdfFile(file,month);
-       else if(/\.(png|bmp)$/i.test(file.name)||/^image\/(png|bmp)$/i.test(file.type)) await addTournamentImageFile(file,month);
-       else throw new Error('Nur PDF, PNG oder BMP sind erlaubt');
+       else if(/\.(png|bmp|jpe?g)$/i.test(file.name)||/^image\/(png|bmp|jpeg)$/i.test(file.type)) await addTournamentImageFile(file,month);
+       else throw new Error('Nur PDF, PNG, JPG oder BMP sind erlaubt');
        added++;
      }catch(e){failed++;if(!firstError)firstError=file.name+': '+(e?.message||e);console.error('Datei:',file.name,e)}
    }
@@ -795,20 +915,19 @@ async function deleteTournament(m,i){
  showToast('Einladung gelöscht. Bitte jetzt unten auf „Speichern“ drücken.');
 }
 function resizeImage(file,maxSide=1600,quality=.82){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{let w=img.naturalWidth,h=img.naturalHeight,scale=Math.min(1,maxSide/Math.max(w,h));w=Math.max(1,Math.round(w*scale));h=Math.max(1,Math.round(h*scale));const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',quality))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
-function updatePhotoAlbumForm(){const m=document.getElementById('pmonth')?.value;if(!m)return;const a=data.photoAlbums[m]||{};document.getElementById('palbum').value=a.name||'';document.getElementById('pmode').value=a.mode||'slideshow';document.getElementById('pdur').value=a.duration||5}
+function updatePhotoAlbumForm(){const m=document.getElementById('pmonth')?.value;if(!m)return;const a=pAlbums()[m]||{};document.getElementById('palbum').value=a.name||'';document.getElementById('pmode').value=a.mode||'slideshow';document.getElementById('pdur').value=a.duration||5}
 async function addPhotos(){
  const month=document.getElementById('pmonth')?.value||monthKey(),files=[...(document.getElementById('pfiles')?.files||[])];
  if(!files.length){showToast('Bitte mindestens ein Foto auswählen');return {added:0,failed:0}}
  const albumName=document.getElementById('palbum')?.value.trim()||monthLabel(month);
- data.photoAlbums[month]={name:albumName,mode:document.getElementById('pmode')?.value||'slideshow',duration:Number(document.getElementById('pdur')?.value)||5};
- if(!data.photos)data.photos=[];
+ pAlbums()[month]={name:albumName,mode:document.getElementById('pmode')?.value||'slideshow',duration:Number(document.getElementById('pdur')?.value)||5};
  let added=0,failed=0;
  for(const f of files){
    try{
      const img=await resizeImage(f);
      const id=String(Date.now())+'_'+Math.random().toString(36).slice(2);
-     const stored=await storeMedia('p',id,img);
-     data.photos.push({id,month,name:f.name,mediaId:stored.id,data:stored.url});
+     const stored=await storeMedia(pCfg().prefix,id,img);
+     pItems().push({id,month,name:f.name,mediaId:stored.id,data:stored.url});
      added++;
    }catch(e){failed++;console.error('Foto:',f.name,e)}
  }
@@ -816,9 +935,9 @@ async function addPhotos(){
  const inp=document.getElementById('pfiles');if(inp)inp.value='';
  return {added,failed};
 }
-function renderPhotoAdminList(){const el=document.getElementById('photoAdminList');if(!el)return;el.innerHTML='';const months=[...new Set((data.photos||[]).map(p=>p.month))].sort().reverse();if(!months.length){el.innerHTML='<div class="small">Noch keine Fotos vorhanden.</div>';return}months.forEach(m=>{const a=data.photoAlbums[m]||{};const box=document.createElement('div');box.className='card';box.style.marginBottom='12px';const count=data.photos.filter(p=>p.month===m).length;box.innerHTML='<b>'+esc(a.name||monthLabel(m))+'</b><div class="small">'+monthLabel(m)+' · '+count+' Foto(s)</div><div class="thumb-grid"></div><label>Ordnername</label><input id="albumName_'+m+'" type="text" value="'+esc(a.name||monthLabel(m))+'"><label>Darstellung</label><select id="albumMode_'+m+'"><option value="static" '+((a.mode||'static')==='static'?'selected':'')+'>Feststehend – Fotowand</option><option value="fade" '+(a.mode==='fade'?'selected':'')+'>Verschwinden / Erscheinen</option><option value="slideshow" '+(a.mode==='slideshow'?'selected':'')+'>Diashow</option><option value="scroll" '+(a.mode==='scroll'?'selected':'')+'>Durchlaufen</option></select><label>Wechselzeit (Sekunden)</label><input id="albumDur_'+m+'" type="number" min="2" value="'+(a.duration||5)+'"><div class="row" style="margin-top:8px"><button class="danger" onclick="deletePhotoAlbum('+jsArg(m)+')">Ordner löschen</button></div></div>';el.appendChild(box);
+function renderPhotoAdminList(){const el=document.getElementById('photoAdminList');if(!el)return;el.innerHTML='';const months=[...new Set(pItems().map(p=>p.month))].sort().reverse();if(!months.length){el.innerHTML='<div class="small">Noch keine Fotos vorhanden.</div>';return}months.forEach(m=>{const a=pAlbums()[m]||{};const box=document.createElement('div');box.className='card';box.style.marginBottom='12px';const count=pItems().filter(p=>p.month===m).length;box.innerHTML='<b>'+esc(a.name||monthLabel(m))+'</b><div class="small">'+monthLabel(m)+' · '+count+' Foto(s)</div><div class="thumb-grid"></div><label>Ordnername</label><input id="albumName_'+m+'" type="text" value="'+esc(a.name||monthLabel(m))+'"><label>Darstellung</label><select id="albumMode_'+m+'"><option value="static" '+((a.mode||'static')==='static'?'selected':'')+'>Feststehend – Fotowand</option><option value="fade" '+(a.mode==='fade'?'selected':'')+'>Verschwinden / Erscheinen</option><option value="slideshow" '+(a.mode==='slideshow'?'selected':'')+'>Diashow</option><option value="scroll" '+(a.mode==='scroll'?'selected':'')+'>Durchlaufen</option></select><label>Wechselzeit (Sekunden)</label><input id="albumDur_'+m+'" type="number" min="2" value="'+(a.duration||5)+'"><div class="row" style="margin-top:8px"><button class="danger" onclick="deletePhotoAlbum('+jsArg(m)+')">Ordner löschen</button></div></div>';el.appendChild(box);
   const grid=box.querySelector('.thumb-grid');
-  if(grid)data.photos.filter(p=>p&&p.month===m).forEach(p=>{
+  if(grid)pItems().filter(p=>p&&p.month===m).forEach(p=>{
     const t=document.createElement('div');t.className='thumb';
     const img=document.createElement('img');img.src=p.data||'';img.alt=p.name||'';
     const b=document.createElement('button');b.type='button';b.className='danger';b.title='Foto löschen';b.textContent='✕';
@@ -828,20 +947,21 @@ function renderPhotoAdminList(){const el=document.getElementById('photoAdminList
  })}
 function deletePhoto(p){
  if(!p||!confirm('Dieses Foto wirklich löschen?'))return;
- const i=(data.photos||[]).indexOf(p);if(i<0)return;
+ const items=pItems();
+ const i=items.indexOf(p);if(i<0)return;
  const month=p.month;
  if(p.mediaId)pendingMediaDeletes.push(p.mediaId);
- data.photos.splice(i,1);
- if(!data.photos.some(x=>x&&x.month===month))delete data.photoAlbums[month];
+ items.splice(i,1);
+ if(!items.some(x=>x&&x.month===month))delete pAlbums()[month];
  renderPhotoAdminList();
  showToast('Foto gelöscht – bitte unten Speichern');
 }
-function savePhotoAlbumSettings(m){data.photoAlbums[m]={name:document.getElementById('albumName_'+m).value.trim()||monthLabel(m),mode:document.getElementById('albumMode_'+m).value,duration:Number(document.getElementById('albumDur_'+m).value)||5};renderPhotoAdminList();showToast('Ordneränderung übernommen – bitte unten Speichern')}
-function deletePhotoAlbum(m){if(!confirm('Den gesamten Foto-Ordner inklusive Fotos löschen?'))return;(data.photos||[]).forEach(p=>{if(p&&p.month===m&&p.mediaId)pendingMediaDeletes.push(p.mediaId)});data.photos=data.photos.filter(p=>p.month!==m);delete data.photoAlbums[m];renderPhotoAdminList();showToast('Foto-Ordner gelöscht – bitte unten Speichern')}
+function savePhotoAlbumSettings(m){pAlbums()[m]={name:document.getElementById('albumName_'+m).value.trim()||monthLabel(m),mode:document.getElementById('albumMode_'+m).value,duration:Number(document.getElementById('albumDur_'+m).value)||5};renderPhotoAdminList();showToast('Ordneränderung übernommen – bitte unten Speichern')}
+function deletePhotoAlbum(m){if(!confirm('Den gesamten Foto-Ordner inklusive Fotos löschen?'))return;pItems().forEach(p=>{if(p&&p.month===m&&p.mediaId)pendingMediaDeletes.push(p.mediaId)});data[pCfg().items]=pItems().filter(p=>p.month!==m);delete pAlbums()[m];renderPhotoAdminList();showToast('Foto-Ordner gelöscht – bitte unten Speichern')}
 function collectPhotoAlbumSettings(){
- (Object.keys(data.photoAlbums||{})).forEach(m=>{
+ (Object.keys(pAlbums())).forEach(m=>{
   const name=document.getElementById('albumName_'+m),mode=document.getElementById('albumMode_'+m),dur=document.getElementById('albumDur_'+m);
-  if(name&&mode&&dur)data.photoAlbums[m]={name:name.value.trim()||monthLabel(m),mode:mode.value,duration:Number(dur.value)||5};
+  if(name&&mode&&dur)pAlbums()[m]={name:name.value.trim()||monthLabel(m),mode:mode.value,duration:Number(dur.value)||5};
  });
 }
 async function saveAllPhotoChanges(){
@@ -859,21 +979,21 @@ async function saveAllPhotoChanges(){
  if(info)info.textContent='Fotos und Ordner werden in Programm und Firebase gespeichert …';
  let fb=null;
  if(firebaseReady&&firestoreDb)fb=await syncPhotosToFirebase();
- if(document.getElementById('photos')?.classList.contains('active')){try{await hydrateMedia();initPhotos()}catch(e){}}
+ if(document.getElementById(pCfg().view)?.classList.contains('active')){try{await hydrateMedia();initPhotos()}catch(e){}}
  const parts=[];
  if(added)parts.push(added+' Foto(s) hinzugefügt');
  if(failedPhotos)parts.push(failedPhotos+' Foto(s) konnten nicht gelesen werden');
  if(fb&&!fb.ok)showToast('Lokal gespeichert – aber Firebase: '+(fb.error||fb.message)+(parts.length?' · '+parts.join(' · '):''),8000);
  else showToast('Fotos gespeichert'+(fb?' und Firebase aktualisiert':' (nur lokal – Firebase nicht verbunden)')+(parts.length?' · '+parts.join(' · '):''),failedPhotos?8000:3500);
 }
-function initPhotos(){clearInterval(photoTimer);if(photoScrollTimer)clearInterval(photoScrollTimer);const ms=[...new Set((data.photos||[]).map(p=>p.month))].sort();photoAlbumMonth=photoAlbumMonth&&ms.includes(photoAlbumMonth)?photoAlbumMonth:(ms[0]||null);renderPhotos()}
+function initPhotos(){clearInterval(photoTimer);if(photoScrollTimer)clearInterval(photoScrollTimer);const ms=[...new Set(pItems().map(p=>p.month))].sort();photoAlbumMonth=photoAlbumMonth&&ms.includes(photoAlbumMonth)?photoAlbumMonth:(ms[0]||null);renderPhotos()}
 function renderPhotos(){
  clearInterval(photoTimer);if(photoScrollTimer)cancelAnimationFrame(photoScrollTimer);photoScrollTimer=null;
- const c=document.getElementById('photoContent'),photos=(data.photos||[]).filter(p=>p.month===photoAlbumMonth),ms=[...new Set((data.photos||[]).map(p=>p.month))].sort();
- const a=data.photoAlbums[photoAlbumMonth]||{};const mode=(a.mode||'static').toLowerCase();
- document.getElementById('photoMonth').textContent=photoAlbumMonth?(a.name||monthLabel(photoAlbumMonth)):'Keine Fotos vorhanden';
- if(!photos.length){c.innerHTML='<div class="empty">Noch keine Fotos vorhanden.</div>';document.getElementById('photoPrev').style.display='none';document.getElementById('photoNext').style.display='none';return}
- const idx=ms.indexOf(photoAlbumMonth);document.getElementById('photoPrev').style.display=idx>0?'inline-block':'none';document.getElementById('photoNext').style.display=idx>=0&&idx<ms.length-1?'inline-block':'none';
+ const c=document.getElementById(pCfg().contentEl),photos=pItems().filter(p=>p.month===photoAlbumMonth),ms=[...new Set(pItems().map(p=>p.month))].sort();
+ const a=pAlbums()[photoAlbumMonth]||{};const mode=(a.mode||'static').toLowerCase();
+ document.getElementById(pCfg().monthEl).textContent=photoAlbumMonth?(a.name||monthLabel(photoAlbumMonth)):'Keine Fotos vorhanden';
+ if(!photos.length){c.innerHTML='<div class="empty">Noch keine Fotos vorhanden.</div>';document.getElementById(pCfg().prevBtn).style.display='none';document.getElementById(pCfg().nextBtn).style.display='none';return}
+ const idx=ms.indexOf(photoAlbumMonth);document.getElementById(pCfg().prevBtn).style.display=idx>0?'inline-block':'none';document.getElementById(pCfg().nextBtn).style.display=idx>=0&&idx<ms.length-1?'inline-block':'none';
  const dur=Math.max(2,Number(a.duration)||5)*1000;
  if(mode==='fade'||mode==='slideshow'){
    c.className='photo-stage photo-carousel';
@@ -931,7 +1051,14 @@ function renderPhotos(){
    c.className='content';c.innerHTML='<div class="photo-grid">'+photos.map(p=>'<div class="photo-item"><img src="'+p.data+'" alt="'+esc(p.name)+'"></div>').join('')+'</div>';
  }
 }
-function changePhotoAlbum(d){const ms=[...new Set((data.photos||[]).map(p=>p.month))].sort();let i=ms.indexOf(photoAlbumMonth);i+=d;if(i>=0&&i<ms.length){photoAlbumMonth=ms[i];renderPhotos()}}
+function changePhotoAlbum(d){const ms=[...new Set(pItems().map(p=>p.month))].sort();let i=ms.indexOf(photoAlbumMonth);i+=d;if(i>=0&&i<ms.length){photoAlbumMonth=ms[i];renderPhotos()}}
+function updateNewsModeFields(){
+ const mode=document.getElementById('nmode')?.value||'static';
+ const isStatic=mode==='static';
+ const durW=document.getElementById('ndurWrap'),gapW=document.getElementById('ngapWrap');
+ if(durW)durW.style.display=isStatic?'none':'block';
+ if(gapW)gapW.style.display=isStatic?'none':'block';
+}
 function saveNewsForm(){
  const title=document.getElementById('ntitle')?.value.trim()||'';
  const text=document.getElementById('ntext')?.value.trim()||'';
@@ -973,7 +1100,7 @@ function editNews(id){
  editingNewsId=n.id;
  document.getElementById('ntitle').value=n.title||'';
  document.getElementById('ntext').value=n.text||'';
- document.getElementById('nmode').value=n.mode||'static';
+ document.getElementById('nmode').value=n.mode||'static';updateNewsModeFields();
  document.getElementById('nshowtitle').checked=!!n.showTitle;
  document.getElementById('ndur').value=n.duration||18;
  document.getElementById('ngap').value=n.gap??2;
@@ -1071,45 +1198,50 @@ function renderNews(){
  const token=newsToken;
  const alive=()=>token===newsToken;
  const active=data.news.filter(n=>n.active&&newsDateActive(n));
+ const stacked=active.filter(n=>n.mode!=='ticker');
+ const tickerItems=active.filter(n=>n.mode==='ticker');
  const area=document.getElementById('newsArea'),ticker=document.getElementById('ticker'),tickerText=document.getElementById('tickerText'),headline=document.getElementById('tickerHeadline');
- ticker.style.display='none';area.style.display='flex';headline.style.display='none';headline.classList.remove('show');
- if(!active.length){area.innerHTML='<div class="small">Keine aktuellen Vereinsnachrichten.</div>';return}
- newsIndex=0;
- const showOne=()=>{
+ // Alle offenen (aktiven) Nachrichten werden gemeinsam, untereinander, auf einer Seite dargestellt.
+ area.style.display='flex';
+ if(!stacked.length){
+   area.innerHTML='<div class="small">Keine aktuellen Vereinsnachrichten.</div>';
+ }else{
+   area.innerHTML='<div class="notice-stack">'+stacked.map(n=>'<div class="fade notice-block">'+(n.showTitle&&n.title?'<div class="notice-title">'+esc(n.title)+'</div>':'')+'<div class="notice-text">'+esc(n.text).replace(/\n/g,'<br>')+'</div></div>').join('')+'</div>';
+ }
+ if(!tickerItems.length){
+   ticker.style.display='none';headline.style.display='none';headline.classList.remove('show');
+   return;
+ }
+ ticker.style.display='flex';
+ let tIndex=0;
+ const showTicker=()=>{
    if(!alive())return;
-   const n=active[newsIndex%active.length];
+   const n=tickerItems[tIndex%tickerItems.length];
    const duration=Math.max(1,Number(n.duration)||18)*1000;
    const gap=Math.max(0,Number(n.gap??2))*1000;
-   if(n.mode==='ticker'){
-     area.style.display='none';ticker.style.display='flex';
-     tickerText.textContent=n.text;
-     if(n.showTitle && n.title){headline.textContent=n.title;headline.style.display='block';requestAnimationFrame(()=>headline.classList.add('show'));}
-     else{headline.style.display='none';headline.classList.remove('show');}
-     tickerText.style.transform='translateX(0px)';
-     const run=()=>{
+   tickerText.textContent=n.text;
+   if(n.showTitle && n.title){headline.textContent=n.title;headline.style.display='block';requestAnimationFrame(()=>headline.classList.add('show'));}
+   else{headline.style.display='none';headline.classList.remove('show');}
+   tickerText.style.transform='translateX(0px)';
+   const run=()=>{
+     if(!alive())return;
+     const startX=ticker.clientWidth;
+     const endX=-tickerText.scrollWidth;
+     const distance=startX-endX;
+     const t0=performance.now();
+     tickerText.style.transform='translateX('+startX+'px)';
+     const frame=(now)=>{
        if(!alive())return;
-       const startX=ticker.clientWidth;
-       const endX=-tickerText.scrollWidth;
-       const distance=startX-endX;
-       const t0=performance.now();
-       tickerText.style.transform='translateX('+startX+'px)';
-       const frame=(now)=>{
-         if(!alive())return;
-         const p=Math.min(1,((now||performance.now())-t0)/duration);
-         tickerText.style.transform='translateX('+(startX-distance*p)+'px)';
-         if(p<1){newsRaf=requestAnimationFrame(frame)}else{newsRaf=0;newsTimer=setTimeout(next,gap)}
-       };
-       newsRaf=requestAnimationFrame(frame);
+       const p=Math.min(1,((now||performance.now())-t0)/duration);
+       tickerText.style.transform='translateX('+(startX-distance*p)+'px)';
+       if(p<1){newsRaf=requestAnimationFrame(frame)}else{newsRaf=0;newsTimer=setTimeout(next,gap)}
      };
-     newsRaf=requestAnimationFrame(run);
-   }else{
-     ticker.style.display='none';headline.style.display='none';headline.classList.remove('show');area.style.display='flex';
-     area.innerHTML='<div class="fade"><div class="notice-title">'+esc(n.title||'')+'</div><div class="notice-text">'+esc(n.text).replace(/\n/g,'<br>')+'</div></div>';
-     newsTimer=setTimeout(next,duration);
-   }
-   function next(){if(!alive())return;newsIndex=(newsIndex+1)%active.length;showOne();}
+     newsRaf=requestAnimationFrame(frame);
+   };
+   newsRaf=requestAnimationFrame(run);
+   function next(){if(!alive())return;tIndex=(tIndex+1)%tickerItems.length;showTicker();}
  };
- showOne();
+ showTicker();
 }
 window.addEventListener('resize',()=>{if(document.getElementById('tournaments').classList.contains('active'))renderTournaments()});
 window.addEventListener('resize',()=>{if(document.getElementById('tournaments')?.classList.contains('active')) requestAnimationFrame(renderTournaments)});
@@ -1126,6 +1258,7 @@ window.__directRouteV1248=function(){
     else if(turn==='monatsuebersicht' || hash==='#turniere-monatsuebersicht') openTournamentSection('tournaments');
     else if(seite==='nachrichten' || hash==='#nachrichten') showView('news');
     else if(seite==='fotos' || hash==='#fotos') showView('photos');
+    else if(seite==='fotos-sponsoren' || hash==='#fotos-sponsoren') showView('sponsorPhotos');
   }catch(e){console.error('Direktaufruf konnte nicht verarbeitet werden:',e)}
 };
 /* V1.2.45: Öffentliche Firebase-Daten laden, ohne die lokale Sicherung zu überschreiben.
@@ -1145,7 +1278,7 @@ async function autoLoadPublicFirebaseDataV1245(){
     try{
       const snap=await firestoreDb.collection('ownTournamentInvitations').get();
       const own={};
-      snap.forEach(doc=>{const x=doc.data()||{};if(x.month&&x.data){const i=Number.isFinite(x.index)?x.index:0;(own[x.month]||(own[x.month]=[]))[i]={id:x.id||doc.id,name:x.name||'',data:x.data}}});
+      snap.forEach(doc=>{const x=doc.data()||{};if(x.month&&x.data){const i=Number.isFinite(x.index)?x.index:0;(own[x.month]||(own[x.month]=[]))[i]={id:x.id||doc.id,name:x.name||'',endDate:x.endDate||'',data:x.data}}});
       if(snap.size && currentUser!=='admin'){data.ownTournaments=own;if(tCollection==='ownTournaments'){currentPage=0;if(document.getElementById('tournamentMonths')?.classList.contains('active'))renderTournamentMonthOverview();if(document.getElementById('tournaments')?.classList.contains('active')){initTournaments();}}}
     }catch(e){console.warn('Firebase eigene Turniere:',e);}
   };
@@ -1160,11 +1293,18 @@ async function autoLoadPublicFirebaseDataV1245(){
     try{
       const snap=await firestoreDb.collection('photos').get(); const photos=[],albums={};
       snap.forEach(doc=>{const x=doc.data()||{};if(x.type==='album'&&x.month)albums[x.month]={name:x.name||'',mode:x.mode||'slideshow',duration:Number(x.duration)||5};else if(x.type==='photo'&&x.data&&x.month)photos.push({id:x.id||doc.id,month:x.month,name:x.name||'',data:x.data,order:Number.isFinite(x.index)?x.index:0});});
-      if(snap.size && currentUser!=='admin'){photos.sort(comparePhotos);data.photos=photos;data.photoAlbums=albums;photoAlbumMonth=null;if(document.getElementById('photos')?.classList.contains('active')){try{initPhotos()}catch(e){console.error('Firebase Fotos Anzeige:',e);}}}
+      if(snap.size && currentUser!=='admin'){photos.sort(comparePhotos);data.photos=photos;data.photoAlbums=albums;if(pCollection==='photos'){photoAlbumMonth=null;if(document.getElementById('photos')?.classList.contains('active')){try{initPhotos()}catch(e){console.error('Firebase Fotos Anzeige:',e);}}}}
     }catch(e){console.warn('Firebase Fotos:',e);}
   };
+  const loadSP=async()=>{
+    try{
+      const snap=await firestoreDb.collection('sponsorPhotos').get(); const photos=[],albums={};
+      snap.forEach(doc=>{const x=doc.data()||{};if(x.type==='album'&&x.month)albums[x.month]={name:x.name||'',mode:x.mode||'slideshow',duration:Number(x.duration)||5};else if(x.type==='photo'&&x.data&&x.month)photos.push({id:x.id||doc.id,month:x.month,name:x.name||'',data:x.data,order:Number.isFinite(x.index)?x.index:0});});
+      if(snap.size && currentUser!=='admin'){photos.sort(comparePhotos);data.sponsorPhotos=photos;data.sponsorPhotoAlbums=albums;if(pCollection==='sponsorPhotos'){photoAlbumMonth=null;if(document.getElementById('sponsorPhotos')?.classList.contains('active')){try{initPhotos()}catch(e){console.error('Firebase Sponsoren-Fotos Anzeige:',e);}}}}
+    }catch(e){console.warn('Firebase Sponsoren-Fotos:',e);}
+  };
   // Parallel laden, damit ein großer Foto-Datensatz die Navigation nicht blockiert.
-  return Promise.allSettled([loadT(),loadO(),loadN(),loadP()]);
+  return Promise.allSettled([loadT(),loadO(),loadN(),loadP(),loadSP()]);
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>(window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245()).then(()=>{if(window.__directRouteV1248)window.__directRouteV1248();}),250));
