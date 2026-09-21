@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vereins-Informationssystem – V1.2.55</title>
+<title>Vereins-Informationssystem – V1.2.56</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;overflow:hidden}
@@ -19,10 +19,10 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .view.active{display:flex;flex-direction:column}
 .header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 20px;background:rgba(10,10,10,.76);border:1px solid rgba(255,255,255,.22);border-radius:14px;backdrop-filter:blur(4px)}
 .title{font-size:clamp(26px,3vw,44px);font-weight:700}.subtitle{opacity:.8;margin-top:4px}
-.tournament-header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;padding:9px 18px;min-height:52px}.tournament-version{font-size:12px;font-weight:700;opacity:.8;white-space:nowrap}.tournament-title{font-size:clamp(22px,2.2vw,32px);font-weight:700;line-height:1.1;text-align:center}.tournament-month{font-size:clamp(16px,1.7vw,24px);font-weight:600;opacity:.82;white-space:nowrap}.view.active#tournaments ~ *{}
+.tournament-header{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;padding:9px 18px;min-height:52px}.tournament-version{font-size:12px;font-weight:700;opacity:.8;white-space:nowrap}.tournament-title{font-size:clamp(22px,2.2vw,32px);font-weight:700;line-height:1.1;text-align:center}.tournament-month{font-size:clamp(16px,1.7vw,24px);font-weight:600;opacity:.82;white-space:nowrap}.tournament-footer{flex:none;text-align:center;font-size:clamp(17px,2vw,30px);font-weight:700;padding:8px 190px 10px 18px;text-shadow:0 2px 8px rgba(0,0,0,.6)}@media(max-width:900px){.tournament-footer{padding:8px 18px 10px}}.view.active#tournaments ~ *{}
 body:has(#tournaments.active) #appVersion{display:none}
-.menu{flex:1;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}
-.menu button{min-width:300px;min-height:90px;font-size:26px;font-weight:700}
+.menu{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;flex-wrap:nowrap;overflow:auto;padding:10px 0}
+.menu button{width:min(620px,92%);min-width:0;min-height:clamp(56px,11vh,90px);font-size:clamp(19px,2.4vw,26px);font-weight:700}
 .bottom{position:absolute;right:25px;bottom:20px;display:flex;gap:10px;z-index:20}.bottom.tournament-bottom{flex-direction:column;align-items:stretch;gap:8px}.bottom.tournament-bottom button{min-width:146px;width:146px;display:block}.app-version{position:fixed;left:12px;top:8px;z-index:3000;font-size:13px;font-weight:700;background:rgba(0,0,0,.55);padding:5px 9px;border-radius:7px;pointer-events:none}
 .content{flex:1;min-height:0;margin-top:18px;padding:18px;background:rgba(0,0,0,.36);border-radius:14px}
 .admin-grid{display:grid;grid-template-columns:340px 1fr;gap:18px;min-height:0;flex:1;margin-top:18px}
@@ -42,7 +42,7 @@ textarea{min-height:120px;resize:vertical}
 .page-slot{width:100%;height:100%;aspect-ratio:210/297;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
 .page-slot img{width:100%;height:100%;object-fit:contain;display:block;}.empty{opacity:.75;text-align:center;padding:40px}
 .toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#111;padding:12px 18px;border-radius:10px;display:none;z-index:200}
-@media(max-width:900px){.admin-grid{grid-template-columns:1fr;overflow:auto}.menu button{min-width:220px}}
+@media(max-width:900px){.admin-grid{grid-template-columns:1fr;overflow:auto}.menu button{min-width:0;width:94%}}
 
 .pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:1000;padding:25px}.pdf-modal.show{display:flex}.pdf-dialog{width:min(1200px,96vw);height:min(88vh,900px);background:#f2f2f2;color:#111;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 10px 50px #000}.pdf-dialog h2{margin:0 0 5px}.pdf-pages{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:14px}.pdf-page{background:#fff;border:4px solid transparent;border-radius:8px;padding:5px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);text-align:center}.pdf-page.selected{border-color:#b30000}.admin-preview{padding:12px;background:rgba(255,255,255,.05);border-radius:10px;overflow:auto}.admin-tournament-page{display:grid;gap:10px;align-content:start;justify-content:start;padding:10px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.2);border-radius:10px;min-width:680px}.admin-tournament-slot{position:relative;background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.28);border-radius:8px;min-width:0;overflow:hidden;cursor:grab;display:flex;align-items:center;justify-content:center}.admin-tournament-slot:active{cursor:grabbing}.admin-tournament-slot.filled{background:#fff;border-style:solid;border-color:rgba(255,255,255,.75)}.admin-tournament-slot.drag-over{outline:4px solid #b30000;outline-offset:-3px;background:rgba(179,0,0,.22)}.admin-tournament-slot img{width:100%;height:100%;object-fit:contain;display:block}.admin-tournament-placeholder{font-size:12px;font-weight:700;opacity:.7;text-align:center;padding:8px}.admin-tournament-position{position:absolute;left:5px;top:5px;background:rgba(0,0,0,.7);color:#fff;border-radius:5px;padding:2px 5px;font-size:10px;z-index:2}.admin-tournament-delete{position:absolute;right:4px;bottom:4px;z-index:3;padding:4px 7px!important;font-size:11px!important}.admin-preview-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}.admin-preview-pageinfo{font-weight:700}.admin-preview-help{margin-top:8px}.pdf-page canvas{max-width:100%;height:auto;display:block;margin:auto}.photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.photo-item{background:rgba(0,0,0,.55);border-radius:12px;padding:8px}.photo-item img{width:100%;height:260px;object-fit:contain;background:#111;border-radius:8px}.photo-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}.photo-stage img{max-width:95%;max-height:88%;object-fit:contain;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.5)}.photo-carousel{width:100%;}.photo-carousel-track{width:100%;height:100%;position:relative;overflow:visible}.photo-carousel-item{position:absolute;top:8%;display:flex;align-items:center;justify-content:center;transition:left .8s ease,width .8s ease,height .8s ease,opacity .8s ease;pointer-events:none}.photo-carousel-item img{display:block;width:100%;height:100%;object-fit:contain;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.5)}.photo-carousel-item.center{width:58%;height:88%;left:21%;z-index:3;opacity:1}.photo-carousel-item.side{width:18%;height:48%;z-index:2;opacity:.72}.photo-carousel-item.side img{width:100%;height:100%;}.photo-carousel-item.left{left:2%;top:48%;}.photo-carousel-item.right{left:80%;top:8%;}.photo-carousel-item.incoming{left:101%;top:8%;width:18%;height:48%;z-index:1;opacity:0;visibility:hidden}#photos .header .title{text-align:center;width:100%}.photo-carousel-item.leaving{left:-20%;top:48%;width:18%;height:48%;z-index:1;opacity:0;visibility:hidden}.photo-slide{animation:photoFade 1s ease both}@keyframes photoFade{from{opacity:0}to{opacity:1}}.photo-scroll{width:100%;overflow:hidden;white-space:nowrap}.photo-scroll-track{display:inline-flex;gap:18px;animation:photoScroll 30s linear infinite}.photo-scroll-track img{width:320px;height:240px;object-fit:contain;background:#111;border-radius:10px}@keyframes photoScroll{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
 .thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin:10px 0}
@@ -57,31 +57,33 @@ textarea{min-height:120px;resize:vertical}
 .inv-zoom-close{position:absolute;top:14px;right:18px;width:48px;height:48px;min-width:0;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(0,0,0,.6);color:#fff;border:2px solid rgba(255,255,255,.55)}
 </style>
 </head>
-<body><div id="appVersion" class="app-version">Version 1.2.55</div>
+<body><div id="appVersion" class="app-version">Version 1.2.56</div>
 <section id="home" class="view active">
-  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 1.2.55</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
+  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 1.2.56</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
   <div class="menu">
-    <button onclick="showView('tournamentMonths')">1. Turniereinladungen</button>
-    <button onclick="openPublicSection('news')">2. Vereinsnachrichten</button>
-    <button onclick="openPublicSection('photos')">3. Fotos</button>
+    <button onclick="openTournamentSection('tournaments')">1. Turniereinladungen</button>
+    <button onclick="openTournamentSection('ownTournaments')">2. Eigene Turniereinladungen</button>
+    <button onclick="openPublicSection('news')">3. Vereinsnachrichten</button>
+    <button onclick="openPublicSection('photos')">4. Fotos für Diashow</button>
   </div>
 </section>
 
 <section id="tournamentMonths" class="view">
-  <div class="header"><div><div class="title">Turniereinladungen</div><div class="subtitle">Monatsübersicht</div></div></div>
+  <div class="header"><div><div class="title" id="tMonthsTitle">Turniereinladungen</div><div class="subtitle">Monatsübersicht</div></div></div>
   <div id="tMonthOverview" class="month-overview"></div>
   <div class="bottom tournament-bottom"><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
 <section id="tournaments" class="view">
-  <div class="header tournament-header"><div class="tournament-version">Version 1.2.55</div><div class="tournament-title">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
+  <div class="header tournament-header"><div class="tournament-version">Version 1.2.56</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
   <div id="tContent" class="tournament-pages"></div>
+  <div id="tFooter" class="tournament-footer" style="display:none">Über eine Meldung würden wir uns freuen</div>
   <div class="bottom tournament-bottom">
     <button id="prevMonthBtn" onclick="changeMonth(-1)">Voriger Monat</button>
     <button id="prevPageBtn" onclick="changePage(-1)">Vorige Seite</button>
     <button id="nextPageBtn" onclick="changePage(1)">Nächste Seite</button>
     <button id="nextMonthBtn" onclick="changeMonth(1)">Nächster Monat</button>
-    <button onclick="showView('tournamentMonths')">Monatsübersicht</button>
+    <button id="tMonthsBtn" onclick="showView('tournamentMonths')">Monatsübersicht</button>
     <button onclick="returnToPowerPoint()">Hauptmenü</button>
   </div>
 </section>
@@ -94,7 +96,7 @@ textarea{min-height:120px;resize:vertical}
 </section>
 
 <section id="photos" class="view">
-  <div class="header"><div><div class="title">Fotos</div><div id="photoMonth" class="subtitle"></div></div></div>
+  <div class="header"><div><div class="title">Fotos für Diashow</div><div id="photoMonth" class="subtitle"></div></div></div>
   <div id="photoContent" class="content" style="display:flex;flex-direction:column;min-height:0"></div>
   <div class="bottom"><button id="photoPrev" onclick="changePhotoAlbum(-1)">Voriger Monat</button><button id="photoNext" onclick="changePhotoAlbum(1)">Nächster Monat</button><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
@@ -123,8 +125,9 @@ textarea{min-height:120px;resize:vertical}
     <div class="admin-side">
       <h2>Bereiche</h2>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('t')">Turniereinladungen</button>
+      <button style="width:100%;margin-bottom:8px" onclick="adminSection('o')">Eigene Turniereinladungen</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('n')">Vereinsnachrichten</button>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('p')">Fotos</button>
+      <button style="width:100%;margin-bottom:8px" onclick="adminSection('p')">Fotos für Diashow</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('s')">Speicher verwalten</button><button style="width:100%" onclick="adminSection('u')">Anmeldung</button>
       <hr><div class="small">Lokale Sicherung: Texte/Einstellungen in localStorage, Bilder/PDF-Seiten in IndexedDB.</div><div id="firebaseStatus" class="small" style="margin-top:10px"></div>
     </div>
@@ -155,14 +158,23 @@ try{
 }catch(e){console.error("Firebase Initialisierung:",e);}
 </script>
 <script>
-const APP_VERSION='1.2.55';
+const APP_VERSION='1.2.56';
 const DBKEY='verein_info_test_v2';
 const OLD_DBKEY='verein_info_test_v1';
-const DEFAULT_DB={tournaments:{},news:[],photos:[],photoAlbums:{},settings:{tournamentPerPage:12},users:[{id:'admin',name:'Administrator',protected:true}]};
+const DEFAULT_DB={tournaments:{},ownTournaments:{},news:[],photos:[],photoAlbums:{},settings:{tournamentPerPage:12},users:[{id:'admin',name:'Administrator',protected:true}]};
 let data=JSON.parse(localStorage.getItem(DBKEY)||'null');
 if(!data){try{data=JSON.parse(localStorage.getItem(OLD_DBKEY)||'null')}catch(e){data=null}}
 data=data||JSON.parse(JSON.stringify(DEFAULT_DB));
-data.tournaments=data.tournaments||{};data.news=data.news||[];data.photos=data.photos||[];data.photoAlbums=data.photoAlbums||{};data.settings=data.settings||{};data.settings.tournamentPerPage=Number(data.settings.tournamentPerPage)||12;data.users=Array.isArray(data.users)&&data.users.length?data.users:[{id:'admin',name:'Administrator',protected:true}];if(!data.users.some(u=>u.id==='admin'))data.users.unshift({id:'admin',name:'Administrator',protected:true});{let hadPw=false;data.users.forEach(u=>{if(u&&'password' in u){delete u.password;hadPw=true}});if(hadPw){try{localStorage.setItem(DBKEY,JSON.stringify(data))}catch(e){}}}
+data.tournaments=data.tournaments||{};data.ownTournaments=data.ownTournaments||{};data.news=data.news||[];data.photos=data.photos||[];data.photoAlbums=data.photoAlbums||{};data.settings=data.settings||{};data.settings.tournamentPerPage=Number(data.settings.tournamentPerPage)||12;data.users=Array.isArray(data.users)&&data.users.length?data.users:[{id:'admin',name:'Administrator',protected:true}];if(!data.users.some(u=>u.id==='admin'))data.users.unshift({id:'admin',name:'Administrator',protected:true});{let hadPw=false;data.users.forEach(u=>{if(u&&'password' in u){delete u.password;hadPw=true}});if(hadPw){try{localStorage.setItem(DBKEY,JSON.stringify(data))}catch(e){}}}
+const T_COLLECTIONS={
+  tournaments:{store:'tournaments',prefix:'t',fb:'tournamentInvitations',label:'Turniereinladungen'},
+  ownTournaments:{store:'ownTournaments',prefix:'o',fb:'ownTournamentInvitations',label:'Eigene Turniereinladungen'}
+};
+let tCollection='tournaments';
+function tCfg(){return T_COLLECTIONS[tCollection]||T_COLLECTIONS.tournaments}
+function tStore(){const k=tCfg().store;return data[k]||(data[k]={})}
+function updateTournamentTitles(){const l=(tCollection==='ownTournaments')?'Nächste eigene Turniere':tCfg().label;const a=document.getElementById('tMonthsTitle');if(a)a.textContent=l;const b=document.getElementById('tTitle');if(b)b.textContent=l;}
+function openTournamentSection(kind){tCollection=(kind==='ownTournaments')?'ownTournaments':'tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView(tCollection==='ownTournaments'?'tournaments':'tournamentMonths');}
 let currentMonth=null,currentPage=0,adminTournamentPage=0,newsTimer=null,newsIndex=0,photoAlbumMonth=null,photoTimer=null,photoScrollTimer=null,currentUser=null;
 let pdfPendingFiles=[],pdfPendingIndex=0,pdfSelectedPages=new Set(),editingNewsId=null;
 
@@ -178,7 +190,7 @@ function mediaClear(){return openMediaDB().then(db=>new Promise((resolve,reject)
 function dataUrlToBlob(u){const a=u.split(',');const h=a[0]||'',b=a[1]||'';const m=(h.match(/data:([^;]+)/)||[])[1]||'application/octet-stream';const bin=atob(b),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new Blob([bytes],{type:m})}
 function mediaId(prefix,id){return 'media_'+prefix+'_'+String(id)}
 async function storeMedia(prefix,id,dataUrl){const id2=mediaId(prefix,id);await mediaPut(id2,dataUrlToBlob(dataUrl));const url=URL.createObjectURL(dataUrlToBlob(dataUrl));mediaObjectUrls.push(url);return {id:id2,url}}
-function allMediaItems(){const a=[];Object.keys(data.tournaments||{}).forEach(m=>(data.tournaments[m]||[]).forEach(x=>{if(x)a.push({kind:'t',item:x})}));(data.photos||[]).forEach(x=>{if(x)a.push({kind:'p',item:x})});return a}
+function allMediaItems(){const a=[];['tournaments','ownTournaments'].forEach(key=>{const kind=key==='ownTournaments'?'o':'t';Object.keys(data[key]||{}).forEach(m=>(data[key][m]||[]).forEach(x=>{if(x)a.push({kind,item:x})}))});(data.photos||[]).forEach(x=>{if(x)a.push({kind:'p',item:x})});return a}
 async function migrateLegacyMedia(){let migrated=0;for(const {kind,item} of allMediaItems()){if(item.data&&String(item.data).startsWith('data:')){try{const id=mediaId(kind,item.id||Date.now()+Math.random());await mediaPut(id,dataUrlToBlob(item.data));item.mediaId=id;migrated++;}catch(e){console.error(e)}}}if(migrated){save();showToast(migrated+' große Datei(en) in den neuen Speicher übernommen')}}
 async function hydrateMedia(){mediaObjectUrls.forEach(u=>URL.revokeObjectURL(u));mediaObjectUrls=[];for(const {item} of allMediaItems()){if(item.mediaId){try{const b=await mediaGet(item.mediaId);if(b){item.data=URL.createObjectURL(b);mediaObjectUrls.push(item.data)}}catch(e){console.error(e)}}}}
 function stripMediaData(x){if(!x||typeof x!=='object')return x;const c={};for(const k in x){if(k!=='data')c[k]=x[k]}return c}
@@ -187,9 +199,9 @@ function save(){
     // Nur Metadaten in localStorage: Bilddaten (data) bleiben draußen. Es wird nichts geklont,
     // und leere Plätze (null/Lücken in den Listen) führen nicht mehr zum Abbruch.
     const meta={};
-    for(const k in data){if(k!=='tournaments'&&k!=='photos')meta[k]=data[k]}
-    meta.tournaments={};
-    Object.keys(data.tournaments||{}).forEach(m=>{meta.tournaments[m]=Array.from(data.tournaments[m]||[],x=>x?stripMediaData(x):null)});
+    for(const k in data){if(k!=='tournaments'&&k!=='ownTournaments'&&k!=='photos')meta[k]=data[k]}
+    meta.tournaments={};meta.ownTournaments={};
+    ['tournaments','ownTournaments'].forEach(key=>{Object.keys(data[key]||{}).forEach(m=>{meta[key][m]=Array.from(data[key][m]||[],x=>x?stripMediaData(x):null)})});
     meta.photos=Array.from(data.photos||[],x=>x?stripMediaData(x):null);
     localStorage.setItem(DBKEY,JSON.stringify(meta));
     return true;
@@ -201,7 +213,7 @@ function save(){
   }
 }
 async function showStorageInfo(){const el=document.getElementById('storageInfo');if(!el)return;try{const all=await mediaAll(),bytes=all.reduce((n,x)=>n+(x.blob?.size||0),0);el.innerHTML='Gespeicherte Dateien: <b>'+all.length+'</b><br>Belegter Dateispeicher: <b>'+((bytes/1024/1024).toFixed(1))+' MB</b>'; }catch(e){el.textContent='IndexedDB ist in diesem Browser nicht verfügbar.'}}
-async function clearLocalMedia(){if(!confirm('Wirklich alle lokal gespeicherten Bilder und PDF-Seiten löschen?'))return;await mediaClear();Object.keys(data.tournaments||{}).forEach(m=>(data.tournaments[m]||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}}));(data.photos||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}});save();renderTournamentAdminList();renderPhotoAdminList();showStorageInfo();showToast('Lokale Bilder und PDF-Seiten wurden gelöscht')}
+async function clearLocalMedia(){if(!confirm('Wirklich alle lokal gespeicherten Bilder und PDF-Seiten löschen?'))return;await mediaClear();['tournaments','ownTournaments'].forEach(key=>Object.keys(data[key]||{}).forEach(m=>(data[key][m]||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}})));(data.photos||[]).forEach(x=>{if(x){delete x.mediaId;delete x.data}});save();renderTournamentAdminList();renderPhotoAdminList();showStorageInfo();showToast('Lokale Bilder und PDF-Seiten wurden gelöscht')}
 (async()=>{try{await migrateLegacyMedia();await hydrateMedia()}catch(e){console.error('Medien-Speicher:',e)}})();
 // Verhindert, dass der Browser die lokal gespeicherten Bilder bei Platzmangel selbstständig löscht.
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
@@ -282,8 +294,9 @@ async function syncTournamentsToFirebase(){
   if(info)info.textContent='Übertragung wird vorbereitet …';
   try{
     let count=0,failed=0;
-    for(const month of Object.keys(data.tournaments||{}).sort()){
-      const arr=data.tournaments[month]||[];
+    const store=tStore();
+    for(const month of Object.keys(store).sort()){
+      const arr=store[month]||[];
       for(let i=0;i<arr.length;i++){
         const item=arr[i]; if(!item)continue;
         let dataUrl=await getLocalTournamentDataUrl(item);
@@ -292,14 +305,14 @@ async function syncTournamentsToFirebase(){
         if(!dataUrl||dataUrl.length>FIREBASE_MAX_CHARS){failed++;continue;}
         const id=firebaseDocId(month,i,item);
         if(info)info.textContent='Übertrage Einladung '+(count+1)+' …';
-        await fbTimeout(firestoreDb.collection('tournamentInvitations').doc(id).set({
+        await fbTimeout(firestoreDb.collection(tCfg().fb).doc(id).set({
           month:month,index:i,id:String(item.id||id),name:String(item.name||''),
           data:dataUrl,updatedAt:new Date().toISOString()
         }),90000,'Firebase');
         count++;
       }
     }
-    await removeFirebaseDocsNotInSet('tournamentInvitations', new Set(Object.keys(data.tournaments||{}).flatMap(month=>(data.tournaments[month]||[]).map((item,i)=>item?firebaseDocId(month,i,item):null)).filter(Boolean)));
+    await removeFirebaseDocsNotInSet(tCfg().fb, new Set(Object.keys(store).flatMap(month=>(store[month]||[]).map((item,i)=>item?firebaseDocId(month,i,item):null)).filter(Boolean)));
     const message=count+' Einladung(en) zu Firebase übertragen'+(failed?' · '+failed+' ohne Datei/zu groß übersprungen':'')+'.';
     if(info)info.textContent=message;
     return {ok:failed===0,count,failed,message};
@@ -315,7 +328,7 @@ async function loadTournamentsFromFirebase(){
   const info=document.getElementById('firebaseTournamentInfo');
   if(info)info.textContent='Firebase-Daten werden geladen …';
   try{
-    const snap=await firestoreDb.collection('tournamentInvitations').get();
+    const snap=await firestoreDb.collection(tCfg().fb).get();
     const tournaments={};
     snap.forEach(doc=>{
       const x=doc.data()||{};
@@ -324,7 +337,7 @@ async function loadTournamentsFromFirebase(){
         id:x.id||doc.id,name:x.name||'',data:x.data
       };
     });
-    data.tournaments=tournaments;
+    data[tCfg().store]=tournaments;
     save();
     await hydrateMedia();
     currentMonth=null;currentPage=0;
@@ -403,6 +416,7 @@ function showView(id){
  }else{
    leavePresentationFullscreen();
  }
+ if(['tournamentMonths','tournaments'].includes(id))updateTournamentTitles();
  if(id==='tournamentMonths')renderTournamentMonthOverview();
  if(id==='tournaments'){hydrateMedia().then(()=>initTournaments()).catch(()=>initTournaments());}
  if(id==='news')renderNews();
@@ -487,14 +501,48 @@ function monthKey(d=new Date()){return d.getFullYear()+'-'+String(d.getMonth()+1
 function monthLabel(k){const [y,m]=k.split('-').map(Number);return new Intl.DateTimeFormat('de-DE',{month:'long',year:'numeric'}).format(new Date(y,m-1,1))}
 function jsArg(v){return "'"+String(v).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/</g,'&lt;')+"'"}
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function existingMonths(){return Object.keys(data.tournaments).filter(k=>(data.tournaments[k]||[]).some(Boolean)).sort()}
-function renderTournamentMonthOverview(){const el=document.getElementById('tMonthOverview');if(!el)return;const now=new Date();const arr=[];for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);arr.push(monthKey(d))}el.innerHTML=arr.map(k=>{const count=(data.tournaments[k]||[]).filter(Boolean).length;return '<button type="button" class="month-tile '+(count?'has-items':'')+'" data-month="'+esc(k)+'"><b>'+monthLabel(k)+'</b><span>'+(count?count+' Einladung'+(count===1?'':'en'):'keine Einladung')+'</span></button>'}).join('');el.querySelectorAll('.month-tile').forEach(btn=>btn.addEventListener('click',()=>openTournamentMonth(btn.dataset.month),{once:true}))}
+function existingMonths(){const st=tStore();return Object.keys(st).filter(k=>(st[k]||[]).some(Boolean)).sort()}
+function renderTournamentMonthOverview(){const el=document.getElementById('tMonthOverview');if(!el)return;const now=new Date();const arr=[];for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);arr.push(monthKey(d))}el.innerHTML=arr.map(k=>{const count=(tStore()[k]||[]).filter(Boolean).length;return '<button type="button" class="month-tile '+(count?'has-items':'')+'" data-month="'+esc(k)+'"><b>'+monthLabel(k)+'</b><span>'+(count?count+' Einladung'+(count===1?'':'en'):'keine Einladung')+'</span></button>'}).join('');el.querySelectorAll('.month-tile').forEach(btn=>btn.addEventListener('click',()=>openTournamentMonth(btn.dataset.month),{once:true}))}
 async function openTournamentMonth(k){currentMonth=String(k);currentPage=0;adminTournamentPage=0;await showView('tournaments')}
 function initTournaments(){const ms=existingMonths();currentMonth=currentMonth&&ms.includes(currentMonth)?currentMonth:(ms[0]||monthKey());currentPage=0;adminTournamentPage=0;renderTournaments()}
 function tournamentMonthOptions(){const set=new Set(existingMonths());const now=new Date();for(let y=now.getFullYear()-1;y<=now.getFullYear()+2;y++){for(let m=1;m<=12;m++)set.add(y+'-'+String(m).padStart(2,'0'))}return [...set].sort()}
+function ownTournamentItems(){const st=tStore();const out=[];Object.keys(st).sort().forEach(m=>(st[m]||[]).forEach(x=>{if(x)out.push(x)}));return out}
+function renderOwnTournaments(){
+ const items=ownTournamentItems();
+ const mEl=document.getElementById('tMonth');if(mEl)mEl.textContent='';
+ const f=document.getElementById('tFooter');if(f)f.style.display='block';
+ ['prevPageBtn','nextPageBtn','prevMonthBtn','nextMonthBtn','tMonthsBtn'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none'});
+ const c=document.getElementById('tContent');c.innerHTML='';
+ if(!items.length){c.style.gridTemplateColumns='1fr';c.style.gridTemplateRows='1fr';c.innerHTML='<div class="empty">Zurzeit sind keine eigenen Turniere vorhanden.</div>';return}
+ /* Alle Einladungen werden auf einer einzigen Seite gezeigt. Zeilen und Spalten
+    werden so gewaehlt, dass die A4-Seiten moeglichst gross dargestellt werden. */
+ const availableH=Math.max(200,c.clientHeight),availableW=Math.max(200,c.clientWidth),gap=6;
+ let best={cols:1,rows:items.length,w:0,h:0};
+ for(let cols=1;cols<=items.length;cols++){
+   const rows=Math.ceil(items.length/cols);
+   const slotH=Math.floor((availableH-(rows-1)*gap)/rows);
+   const slotW=Math.floor((availableW-(cols-1)*gap)/cols);
+   const w=Math.max(40,Math.min(slotW,Math.floor(slotH*(210/297))));
+   if(w>best.w)best={cols,rows,w,h:Math.round(w*(297/210))};
+ }
+ c.style.gridTemplateColumns='repeat('+best.cols+','+best.w+'px)';
+ c.style.gridTemplateRows='repeat('+best.rows+','+best.h+'px)';
+ c.style.alignContent='center';c.style.justifyContent='center';
+ c.style.columnGap=gap+'px';c.style.rowGap=gap+'px';
+ items.forEach(x=>{
+   const slot=document.createElement('div');
+   slot.className='page-slot';
+   slot.innerHTML='<img src="'+x.data+'" alt="'+esc(x.name)+'">';
+   slot.onclick=()=>openInvitationZoom(x);
+   c.appendChild(slot)
+ });
+}
 function renderTournaments(){
+ if(tCollection==='ownTournaments')return renderOwnTournaments();
+ const fEl=document.getElementById('tFooter');if(fEl)fEl.style.display='none';
+ const mbEl=document.getElementById('tMonthsBtn');if(mbEl)mbEl.style.display='block';
  const ms=existingMonths();if(!currentMonth)currentMonth=ms[0]||monthKey();
- const rawItems=data.tournaments[currentMonth]||[];
+ const rawItems=tStore()[currentMonth]||[];
  const items=rawItems.filter(Boolean);
  const perPage=Math.max(1,Math.min(30,Number(data.settings.tournamentPerPage)||12));
  const totalPages=Math.max(1,Math.ceil(items.length/perPage));currentPage=Math.max(0,Math.min(currentPage,totalPages-1));
@@ -562,9 +610,10 @@ function changePage(d){currentPage+=d;renderTournaments()}
 function changeMonth(d){const ms=existingMonths();let i=ms.indexOf(currentMonth);if(i<0)i=d>0?-1:ms.length;i+=d;if(i>=0&&i<ms.length){currentMonth=ms[i];currentPage=0;renderTournaments()}}
 function adminSection(s){
  const a=document.getElementById('adminMain');
- if(s==='t'){
+ if(s==='t'||s==='o'){
+  tCollection=(s==='o')?'ownTournaments':'tournaments';
   const tmonths=existingMonths(); const selectedAdminMonth=tmonths.includes(currentMonth)?currentMonth:(tmonths[0]||monthKey());
-  a.innerHTML='<h2>Turniereinladungen</h2><div class="card"><label>Monat</label><select id="tm">'+tournamentMonthOptions().map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join('')+'</select><label style="margin-top:10px">Einladungen hinzufügen (PDF, PNG oder BMP)</label><input id="tfiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,image/png,image/bmp"><div id="firebaseTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Die ausgewählten Dateien werden automatisch im Programm und in Firebase gespeichert. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div class="card"><label>Monat auswählen</label><select id="tadminmonth">'+(tmonths.length?tmonths.map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join(''):'<option value="'+monthKey()+'">'+monthLabel(monthKey())+'</option>')+'</select><div id="tAdminPreview" class="admin-preview"></div><div id="tAdminList" style="margin-top:10px"></div></div><div class="card" style="margin-top:16px"><button class="primary" style="width:100%" onclick="saveTournamentFiles()">Speichern</button></div>';
+  a.innerHTML='<h2>'+tCfg().label+'</h2><div class="card"><label>Monat</label><select id="tm">'+tournamentMonthOptions().map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join('')+'</select><label style="margin-top:10px">Einladungen hinzufügen (PDF, PNG oder BMP)</label><input id="tfiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,image/png,image/bmp"><div id="firebaseTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Die ausgewählten Dateien werden automatisch im Programm und in Firebase gespeichert. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div class="card"><label>Monat auswählen</label><select id="tadminmonth">'+(tmonths.length?tmonths.map(m=>'<option value="'+m+'" '+(m===selectedAdminMonth?'selected':'')+'>'+monthLabel(m)+'</option>').join(''):'<option value="'+monthKey()+'">'+monthLabel(monthKey())+'</option>')+'</select><div id="tAdminPreview" class="admin-preview"></div><div id="tAdminList" style="margin-top:10px"></div></div><div class="card" style="margin-top:16px"><button class="primary" style="width:100%" onclick="saveTournamentFiles()">Speichern</button></div>';
   renderTournamentAdminList(); renderTournamentAdminPreview();
   document.getElementById('tm').onchange=()=>{currentMonth=document.getElementById('tm').value};
   document.getElementById('tadminmonth').onchange=()=>{currentMonth=document.getElementById('tadminmonth').value;currentPage=0;adminTournamentPage=0;renderTournamentAdminPreview();renderTournamentAdminList()};
@@ -575,7 +624,7 @@ function adminSection(s){
  }else if(s==='u'){
   a.innerHTML='<h2>Anmeldung</h2><div class="card"><p>Angemeldet als: <b>'+esc(firebaseAuthUser?.email||'')+'</b></p><p class="small">Die Anmeldung erfolgt über Firebase mit E-Mail und Kennwort. Kennwörter werden weder in dieser Datei noch im Browser gespeichert.</p><button class="primary" onclick="sendOwnPasswordReset()">Kennwort per E-Mail zurücksetzen</button><div id="authInfo" class="small" style="margin-top:10px"></div></div>';
  }else{
-  a.innerHTML='<h2>Fotos</h2><div class="card"><label>Fotos hinzufügen</label><input id="pfiles" type="file" multiple accept=".png,.bmp,.jpg,.jpeg,.webp"><label>Ordner / Monat</label><input id="pmonth" type="month" value="'+monthKey()+'"><label>Ordnername</label><input id="palbum" type="text" placeholder="z. B. Sommerfest 2026"><label>Darstellung</label><select id="pmode"><option value="slideshow" selected>Diashow – Karussell</option><option value="static">Feststehend – Fotowand</option><option value="fade">Verschwinden / Erscheinen</option><option value="scroll">Durchlaufen</option></select><label>Wechselzeit (Sekunden)</label><input id="pdur" type="number" min="2" value="5"></div><h3>Gespeicherte Foto-Ordner</h3><div id="photoAdminList"></div><div class="card" style="margin-top:16px"><div id="firebasePhotosInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllPhotoChanges()">Speichern</button></div>';renderPhotoAdminList();updatePhotoAlbumForm();document.getElementById('pmonth').onchange=updatePhotoAlbumForm;
+  a.innerHTML='<h2>Fotos für Diashow</h2><div class="card"><label>Fotos hinzufügen</label><input id="pfiles" type="file" multiple accept=".png,.bmp,.jpg,.jpeg,.webp"><label>Ordner / Monat</label><input id="pmonth" type="month" value="'+monthKey()+'"><label>Ordnername</label><input id="palbum" type="text" placeholder="z. B. Sommerfest 2026"><label>Darstellung</label><select id="pmode"><option value="slideshow" selected>Diashow – Karussell</option><option value="static">Feststehend – Fotowand</option><option value="fade">Verschwinden / Erscheinen</option><option value="scroll">Durchlaufen</option></select><label>Wechselzeit (Sekunden)</label><input id="pdur" type="number" min="2" value="5"></div><h3>Gespeicherte Foto-Ordner</h3><div id="photoAdminList"></div><div class="card" style="margin-top:16px"><div id="firebasePhotosInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllPhotoChanges()">Speichern</button></div>';renderPhotoAdminList();updatePhotoAlbumForm();document.getElementById('pmonth').onchange=updatePhotoAlbumForm;
  }
 }
 async function getLocalPhotoDataUrl(item){
@@ -643,8 +692,8 @@ function saveTournamentPerPage(){
    if(document.getElementById('tournaments').classList.contains('active')) renderTournaments();
  }
 }
-function renderTournamentAdminList(){const el=document.getElementById('tAdminList');if(!el)return;const m=document.getElementById('tadminmonth')?.value||currentMonth;el.innerHTML='';const items=data.tournaments[m]||[];const count=items.filter(Boolean).length;if(count){const h=document.createElement('h4');h.textContent=monthLabel(m)+' – '+count+' Einladung(en)';el.appendChild(h);items.forEach((x,i)=>{if(!x)return;const d=document.createElement('div');d.className='list-item';d.innerHTML='<span>'+esc(x.name)+'</span><button class="danger" onclick="deleteTournament('+jsArg(m)+','+i+')">Löschen</button>';el.appendChild(d)})}else el.innerHTML='<div class="small">Für den ausgewählten Monat sind noch keine Einladungen vorhanden.</div>';}
-function renderTournamentAdminPreview(){const el=document.getElementById('tAdminPreview');const m=document.getElementById('tadminmonth')?.value||currentMonth;if(!el||!m)return;const items=data.tournaments[m]||[],perPage=Math.max(1,Math.min(30,Number(data.settings.tournamentPerPage)||12)),totalPages=Math.max(1,Math.ceil(items.length/perPage));adminTournamentPage=Math.max(0,Math.min(adminTournamentPage,totalPages-1));const start=adminTournamentPage*perPage;const cols=Math.ceil(perPage/2),rows=2;el.innerHTML='';const controls=document.createElement('div');controls.className='admin-preview-controls';controls.innerHTML='<button '+(adminTournamentPage<=0?'disabled':'')+' onclick=\"changeAdminTournamentPage(-1)\">◀ Vorige Seite</button><div class=\"admin-preview-pageinfo\">Präsentationsseite '+(adminTournamentPage+1)+' / '+totalPages+'</div><button '+(adminTournamentPage>=totalPages-1?'disabled':'')+' onclick=\"changeAdminTournamentPage(1)\">Nächste Seite ▶</button>';el.appendChild(controls);const page=document.createElement('div');page.className='admin-tournament-page';page.style.gridTemplateColumns='repeat('+cols+',minmax(110px,1fr))';page.style.gridTemplateRows='repeat('+rows+',minmax(170px,auto))';for(let pos=0;pos<perPage;pos++){const absolute=start+pos,x=items[absolute],d=document.createElement('div');d.className='admin-tournament-slot'+(x?' filled':'');d.dataset.pos=String(absolute);d.innerHTML='<div class=\"admin-tournament-position\">Platz '+(pos+1)+'</div>'+(x?'<img src=\"'+x.data+'\" alt=\"'+esc(x.name)+'\"><button class=\"danger admin-tournament-delete\" onclick=\"event.stopPropagation();deleteTournament('+jsArg(m)+','+absolute+')\">Löschen</button>':'<div class=\"admin-tournament-placeholder\">Freier Platz<br>Einladung hierher ziehen</div>');d.draggable=!!x;d.ondragstart=e=>{if(!x)return;e.dataTransfer.setData('text/plain',String(absolute));d.style.opacity='.5'};d.ondragend=()=>d.style.opacity='1';d.ondragover=e=>{e.preventDefault();d.classList.add('drag-over')};d.ondragleave=()=>d.classList.remove('drag-over');d.ondrop=e=>{e.preventDefault();d.classList.remove('drag-over');const from=Number(e.dataTransfer.getData('text/plain')),to=Number(d.dataset.pos);if(!Number.isFinite(from)||from===to)return;const arr=data.tournaments[m]||[];if(from<0||from>=arr.length||!arr[from])return;const moved=arr[from];arr[from]=null;if(to>=arr.length)arr.length=to+1;arr[to]=moved;while(arr.length&&arr[arr.length-1]==null)arr.pop();renderTournamentAdminPreview();renderTournamentAdminList();showToast('Reihenfolge geändert – bitte Speichern')};page.appendChild(d)}el.appendChild(page);const help=document.createElement('div');help.className='small admin-preview-help';help.textContent='Die Platzhalter entsprechen den Positionen der Präsentationsseite. Per Drag & Drop können Einladungen frei umsortiert werden.';el.appendChild(help)}
+function renderTournamentAdminList(){const el=document.getElementById('tAdminList');if(!el)return;const m=document.getElementById('tadminmonth')?.value||currentMonth;el.innerHTML='';const items=tStore()[m]||[];const count=items.filter(Boolean).length;if(count){const h=document.createElement('h4');h.textContent=monthLabel(m)+' – '+count+' Einladung(en)';el.appendChild(h);items.forEach((x,i)=>{if(!x)return;const d=document.createElement('div');d.className='list-item';d.innerHTML='<span>'+esc(x.name)+'</span><button class="danger" onclick="deleteTournament('+jsArg(m)+','+i+')">Löschen</button>';el.appendChild(d)})}else el.innerHTML='<div class="small">Für den ausgewählten Monat sind noch keine Einladungen vorhanden.</div>';}
+function renderTournamentAdminPreview(){const el=document.getElementById('tAdminPreview');const m=document.getElementById('tadminmonth')?.value||currentMonth;if(!el||!m)return;const items=tStore()[m]||[],perPage=Math.max(1,Math.min(30,Number(data.settings.tournamentPerPage)||12)),totalPages=Math.max(1,Math.ceil(items.length/perPage));adminTournamentPage=Math.max(0,Math.min(adminTournamentPage,totalPages-1));const start=adminTournamentPage*perPage;const cols=Math.ceil(perPage/2),rows=2;el.innerHTML='';const controls=document.createElement('div');controls.className='admin-preview-controls';controls.innerHTML='<button '+(adminTournamentPage<=0?'disabled':'')+' onclick=\"changeAdminTournamentPage(-1)\">◀ Vorige Seite</button><div class=\"admin-preview-pageinfo\">Präsentationsseite '+(adminTournamentPage+1)+' / '+totalPages+'</div><button '+(adminTournamentPage>=totalPages-1?'disabled':'')+' onclick=\"changeAdminTournamentPage(1)\">Nächste Seite ▶</button>';el.appendChild(controls);const page=document.createElement('div');page.className='admin-tournament-page';page.style.gridTemplateColumns='repeat('+cols+',minmax(110px,1fr))';page.style.gridTemplateRows='repeat('+rows+',minmax(170px,auto))';for(let pos=0;pos<perPage;pos++){const absolute=start+pos,x=items[absolute],d=document.createElement('div');d.className='admin-tournament-slot'+(x?' filled':'');d.dataset.pos=String(absolute);d.innerHTML='<div class=\"admin-tournament-position\">Platz '+(pos+1)+'</div>'+(x?'<img src=\"'+x.data+'\" alt=\"'+esc(x.name)+'\"><button class=\"danger admin-tournament-delete\" onclick=\"event.stopPropagation();deleteTournament('+jsArg(m)+','+absolute+')\">Löschen</button>':'<div class=\"admin-tournament-placeholder\">Freier Platz<br>Einladung hierher ziehen</div>');d.draggable=!!x;d.ondragstart=e=>{if(!x)return;e.dataTransfer.setData('text/plain',String(absolute));d.style.opacity='.5'};d.ondragend=()=>d.style.opacity='1';d.ondragover=e=>{e.preventDefault();d.classList.add('drag-over')};d.ondragleave=()=>d.classList.remove('drag-over');d.ondrop=e=>{e.preventDefault();d.classList.remove('drag-over');const from=Number(e.dataTransfer.getData('text/plain')),to=Number(d.dataset.pos);if(!Number.isFinite(from)||from===to)return;const arr=tStore()[m]||[];if(from<0||from>=arr.length||!arr[from])return;const moved=arr[from];arr[from]=null;if(to>=arr.length)arr.length=to+1;arr[to]=moved;while(arr.length&&arr[arr.length-1]==null)arr.pop();renderTournamentAdminPreview();renderTournamentAdminList();showToast('Reihenfolge geändert – bitte Speichern')};page.appendChild(d)}el.appendChild(page);const help=document.createElement('div');help.className='small admin-preview-help';help.textContent='Die Platzhalter entsprechen den Positionen der Präsentationsseite. Per Drag & Drop können Einladungen frei umsortiert werden.';el.appendChild(help)}
 function changeAdminTournamentPage(d){adminTournamentPage+=d;renderTournamentAdminPreview()}
 function readFile(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
 async function compressInvitationCanvas(sourceCanvas){
@@ -677,8 +726,8 @@ async function addTournamentImageFile(file,month){
    const maxSide=1600,scale=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
    const c=document.createElement('canvas');c.width=Math.max(1,Math.round(img.naturalWidth*scale));c.height=Math.max(1,Math.round(img.naturalHeight*scale));c.getContext('2d').drawImage(img,0,0,c.width,c.height);dataUrl=c.toDataURL('image/jpeg',.78);
  }
- const id=Date.now()+'_'+Math.random();const stored=await storeMedia('t',id,dataUrl);
- const arr=data.tournaments[month]||(data.tournaments[month]=[]);let slot=arr.findIndex(v=>!v);if(slot<0)slot=arr.length;arr[slot]={id,name:file.name,mediaId:stored.id,data:stored.url};
+ const id=Date.now()+'_'+Math.random();const stored=await storeMedia(tCfg().prefix,id,dataUrl);
+ const st=tStore();const arr=st[month]||(st[month]=[]);let slot=arr.findIndex(v=>!v);if(slot<0)slot=arr.length;arr[slot]={id,name:file.name,mediaId:stored.id,data:stored.url};
  return {item:arr[slot],index:slot};
 }
 async function addTournamentPdfFile(file,month){
@@ -688,8 +737,8 @@ async function addTournamentPdfFile(file,month){
    const pg=await pdf.getPage(n),vp=pg.getViewport({scale:2}),can=document.createElement('canvas');can.width=Math.ceil(vp.width);can.height=Math.ceil(vp.height);
    await pg.render({canvasContext:can.getContext('2d'),viewport:vp}).promise;
    let dataUrl=can.toDataURL('image/jpeg',.8);
-   const id=Date.now()+'_'+Math.random();const stored=await storeMedia('t',id,dataUrl);
-   const arr=data.tournaments[month]||(data.tournaments[month]=[]);let slot=arr.findIndex(v=>!v);if(slot<0)slot=arr.length;arr[slot]={id,name:file.name+' – Seite '+n,mediaId:stored.id,data:stored.url};
+   const id=Date.now()+'_'+Math.random();const stored=await storeMedia(tCfg().prefix,id,dataUrl);
+   const st=tStore();const arr=st[month]||(st[month]=[]);let slot=arr.findIndex(v=>!v);if(slot<0)slot=arr.length;arr[slot]={id,name:file.name+' – Seite '+n,mediaId:stored.id,data:stored.url};
  }
 }
 async function saveTournamentFiles(){
@@ -730,14 +779,14 @@ async function saveTournamentFiles(){
  }
 }
 async function deleteTournament(m,i){
- const arr=data.tournaments[m]||[];
+ const st=tStore();const arr=st[m]||[];
  const item=arr[i];
  if(!item)return;
  if(!confirm('Einladung wirklich löschen?'))return;
  try{if(item.mediaId)await mediaDelete(item.mediaId)}catch(e){console.error('Medienlöschung:',e)}
  arr.splice(i,1);
- if(!arr.filter(Boolean).length)delete data.tournaments[m];
- else data.tournaments[m]=arr;
+ if(!arr.filter(Boolean).length)delete st[m];
+ else st[m]=arr;
  save();
  currentMonth=m;
  adminTournamentPage=Math.max(0,adminTournamentPage);
@@ -1073,7 +1122,8 @@ window.__directRouteV1248=function(){
     const hash=(window.location.hash||'').toLowerCase();
     const turn=params.get('turniere');
     const seite=(params.get('seite')||'').toLowerCase();
-    if(turn==='monatsuebersicht' || hash==='#turniere-monatsuebersicht') showView('tournamentMonths');
+    if(seite==='eigene-turniere' || hash==='#eigene-turniere') openTournamentSection('ownTournaments');
+    else if(turn==='monatsuebersicht' || hash==='#turniere-monatsuebersicht') openTournamentSection('tournaments');
     else if(seite==='nachrichten' || hash==='#nachrichten') showView('news');
     else if(seite==='fotos' || hash==='#fotos') showView('photos');
   }catch(e){console.error('Direktaufruf konnte nicht verarbeitet werden:',e)}
@@ -1088,8 +1138,16 @@ async function autoLoadPublicFirebaseDataV1245(){
       const snap=await firestoreDb.collection('tournamentInvitations').get();
       const tournaments={};
       snap.forEach(doc=>{const x=doc.data()||{};if(x.month&&x.data){const i=Number.isFinite(x.index)?x.index:0;(tournaments[x.month]||(tournaments[x.month]=[]))[i]={id:x.id||doc.id,name:x.name||'',data:x.data};}});
-      if(snap.size && currentUser!=='admin'){data.tournaments=tournaments;currentPage=0;if(document.getElementById('tournamentMonths')?.classList.contains('active'))renderTournamentMonthOverview();if(document.getElementById('tournaments')?.classList.contains('active')){if(!currentMonth||!(data.tournaments[currentMonth]||[]).some(Boolean)) currentMonth=existingMonths()[0]||monthKey();renderTournaments();}}
+      if(snap.size && currentUser!=='admin'){data.tournaments=tournaments;if(tCollection==='tournaments'){currentPage=0;if(document.getElementById('tournamentMonths')?.classList.contains('active'))renderTournamentMonthOverview();if(document.getElementById('tournaments')?.classList.contains('active')){if(!currentMonth||!(data.tournaments[currentMonth]||[]).some(Boolean)) currentMonth=existingMonths()[0]||monthKey();renderTournaments();}}}
     }catch(e){console.warn('Firebase Turniere:',e);}
+  };
+  const loadO=async()=>{
+    try{
+      const snap=await firestoreDb.collection('ownTournamentInvitations').get();
+      const own={};
+      snap.forEach(doc=>{const x=doc.data()||{};if(x.month&&x.data){const i=Number.isFinite(x.index)?x.index:0;(own[x.month]||(own[x.month]=[]))[i]={id:x.id||doc.id,name:x.name||'',data:x.data}}});
+      if(snap.size && currentUser!=='admin'){data.ownTournaments=own;if(tCollection==='ownTournaments'){currentPage=0;if(document.getElementById('tournamentMonths')?.classList.contains('active'))renderTournamentMonthOverview();if(document.getElementById('tournaments')?.classList.contains('active')){initTournaments();}}}
+    }catch(e){console.warn('Firebase eigene Turniere:',e);}
   };
   const loadN=async()=>{
     try{
@@ -1106,7 +1164,7 @@ async function autoLoadPublicFirebaseDataV1245(){
     }catch(e){console.warn('Firebase Fotos:',e);}
   };
   // Parallel laden, damit ein großer Foto-Datensatz die Navigation nicht blockiert.
-  return Promise.allSettled([loadT(),loadN(),loadP()]);
+  return Promise.allSettled([loadT(),loadO(),loadN(),loadP()]);
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>(window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245()).then(()=>{if(window.__directRouteV1248)window.__directRouteV1248();}),250));
