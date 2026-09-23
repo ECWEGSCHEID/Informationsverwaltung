@@ -148,6 +148,7 @@ textarea{min-height:120px;resize:vertical}
   <div class="header"><div><div class="title">Turnierplaner</div><div class="subtitle">Terminplan EC Wegscheid</div></div></div>
   <div id="tpStats" class="tp-stats"></div>
   <div id="tpListNote" class="small" style="padding:0 60px 6px;opacity:.85"></div>
+  <div id="routeDiag" class="small" style="padding:0 60px 6px;display:none"></div>
   <div id="tpLoginNote" class="small" style="padding:0 60px 6px;display:none"></div>
   <div class="tp-toolbar"><label style="margin:0">Zeitraum</label><select id="tpPeriodFilter" onchange="tpSyncStatsAndPeriod()"></select><label style="margin:0">Veranstaltungsart</label><select id="tpTypeFilter" onchange="tpSyncStatsAndPeriod()"></select><button type="button" onclick="openTpHistory()">Historie</button><div class="small" style="flex:1;text-align:right">Nach der Anmeldung können „Gemeldet von", die Spieler und die Art der Veranstaltung hier direkt per Dropdown geändert werden.</div></div>
   <div id="tpContent" class="tp-list"></div>
@@ -247,6 +248,8 @@ function tInfoElId(){return tCollection==='ownTournaments'?'firebaseOwnTournamen
 function tStore(){const k=tCfg().store;return data[k]||(data[k]={})}
 function updateTournamentTitles(){const l=(tCollection==='ownTournaments')?'Nächste eigene Turniere':tCfg().label;const a=document.getElementById('tMonthsTitle');if(a)a.textContent=l;const b=document.getElementById('tTitle');if(b)b.textContent=l;}
 function openTournamentSection(kind){window.__adminPreviewMode=false;tCollection=(kind==='ownTournaments')?'ownTournaments':'tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView(tCollection==='ownTournaments'?'tournaments':'tournamentMonths');}
+function openTournamentMonthsOverview(){window.__adminPreviewMode=false;tCollection='tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView('tournamentMonths');}
+function openTournamentListDirect(){openTournamentPlannerGate();}
 let currentMonth=null,currentPage=0,adminTournamentPage=0,newsTimer=null,newsIndex=0,photoAlbumMonth=null,photoTimer=null,photoScrollTimer=null,currentUser=null;
 let pdfPendingFiles=[],pdfPendingIndex=0,pdfSelectedPages=new Set(),editingNewsId=null;
 
@@ -1978,11 +1981,13 @@ window.__directRouteV1248=function(){
     const turn=params.get('turniere');
     const seite=(params.get('seite')||'').toLowerCase();
     if(seite==='eigene-turniere' || hash==='#eigene-turniere') openTournamentSection('ownTournaments');
-    else if(seite==='turnierplaner' || hash==='#turnierplaner'){openTournamentPlannerGate();}
-    else if(turn==='monatsuebersicht' || hash==='#turniere-monatsuebersicht') openTournamentSection('tournaments');
+    else if(seite==='turnierliste' || seite==='turnierplaner' || hash==='#turnierliste' || hash==='#liste' || hash==='#turnierplaner') openTournamentListDirect();
+    else if(seite==='turniere' || hash==='#turniere' || turn==='monatsuebersicht' || hash==='#turniere-monatsuebersicht') openTournamentMonthsOverview();
     else if(seite==='nachrichten' || hash==='#nachrichten') showView('news');
     else if(seite==='fotos' || hash==='#fotos') showView('photos');
     else if(seite==='fotos-sponsoren' || hash==='#fotos-sponsoren') showView('sponsorPhotos');
+    const rd=document.getElementById('routeDiag');
+    if(rd){const matched=[...arguments].length;rd.textContent='Direktaufruf: '+(window.location.hash||'(kein Anker)')+' · '+(window.location.search||'(keine Parameter)');rd.style.display=hash||seite? 'block':'none';}
   }catch(e){console.error('Direktaufruf konnte nicht verarbeitet werden:',e)}
 };
 /* V1.2.45: Öffentliche Firebase-Daten laden, ohne die lokale Sicherung zu überschreiben.
