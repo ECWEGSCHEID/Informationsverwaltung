@@ -55,6 +55,15 @@ textarea{min-height:120px;resize:vertical}
 .tp-stats{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
 .tp-stat{background:rgba(255,255,255,.1);border-radius:10px;padding:6px 12px;font-size:12px;white-space:nowrap}
 .tp-stat b{font-size:15px;display:block}
+.tp-history-modal{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:1000;padding:25px}
+.tp-history-modal.show{display:flex}
+.tp-history-dialog{width:min(560px,96vw);max-height:88vh;background:#f2f2f2;color:#111;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 10px 50px #000}
+.tp-history-dialog h2{margin:0 0 5px}
+.tp-history-list{flex:1;min-height:0;overflow:auto;margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.tp-history-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border-radius:8px;padding:8px 12px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.tp-history-name{font-weight:700}
+.tp-history-counts{font-size:12px;color:#444;text-align:right;white-space:nowrap}
+.tp-history-counts b{font-size:14px;color:#111}
 .tp-date{flex:0 0 130px;width:130px;display:flex;flex-direction:column;align-items:center;gap:1px;font-weight:700;font-size:15px;line-height:1.3;opacity:.9;white-space:nowrap;text-align:center}
 @media(max-width:1100px){.tp-name{width:auto;max-width:none}.tp-date{width:auto}}
 .tp-fields{display:flex;flex-direction:column;gap:4px 0;flex:1;min-width:280px}
@@ -90,7 +99,7 @@ textarea{min-height:120px;resize:vertical}
     <button onclick="openPublicSection('news')">3. Vereinsnachrichten</button>
     <button onclick="openPublicSection('photos')">4. Fotos für Diashow</button>
     <button onclick="openPublicSection('sponsorPhotos')">5. Fotos Sponsoren für Diashow</button>
-    <button onclick="showView('tournamentPlanner')">6. Turnierplaner</button>
+    <button onclick="openTournamentPlannerGate()">6. Turnierplaner</button>
   </div>
 </section>
 
@@ -136,16 +145,16 @@ textarea{min-height:120px;resize:vertical}
 <section id="tournamentPlanner" class="view">
   <div class="header"><div><div class="title">Turnierplaner</div><div class="subtitle">Terminplan EC Wegscheid</div></div></div>
   <div id="tpStats" class="tp-stats"></div>
-  <div class="tp-toolbar"><label style="margin:0">Zeitraum</label><select id="tpPeriodFilter" onchange="renderTournamentPlanner()"></select><div class="small" style="flex:1;text-align:right">„Gemeldet von", die Spieler und die Art der Veranstaltung können hier direkt per Dropdown geändert werden.</div></div>
+  <div class="tp-toolbar"><label style="margin:0">Zeitraum</label><select id="tpPeriodFilter" onchange="renderTournamentPlanner()"></select><button type="button" onclick="openTpHistory()">Historie</button><div class="small" style="flex:1;text-align:right">„Gemeldet von", die Spieler und die Art der Veranstaltung können hier direkt per Dropdown geändert werden.</div></div>
   <div id="tpContent" class="tp-list"></div>
   <div class="bottom"><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
 <section id="login" class="view">
-  <div class="header"><div><div class="title">Verwaltung</div><div class="subtitle">Administrator-Anmeldung</div></div></div>
+  <div class="header"><div><div class="title" id="loginTitle">Verwaltung</div><div class="subtitle" id="loginSubtitle">Administrator-Anmeldung</div></div></div>
   <div class="content" style="max-width:500px;margin:30px auto;width:100%;flex:none">
-    <h2 style="margin-top:0">Administrator anmelden</h2>
-    <p class="small">Bitte mit E-Mail-Adresse und Kennwort des Administrators anmelden.</p>
+    <h2 style="margin-top:0" id="loginHeading">Administrator anmelden</h2>
+    <p class="small" id="loginHint">Bitte mit E-Mail-Adresse und Kennwort des Administrators anmelden.</p>
     <label>E-Mail</label>
     <input id="firebaseLoginEmail" type="text" inputmode="email" autocomplete="username" placeholder="E-Mail-Adresse" onkeydown="if(event.key==='Enter')document.getElementById('firebaseLoginPassword').focus()">
     <label>Kennwort</label>
@@ -164,18 +173,19 @@ textarea{min-height:120px;resize:vertical}
   <div class="admin-grid">
     <div class="admin-side">
       <h2>Bereiche</h2>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('t')">Turniereinladungen</button>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('o')">Eigene Turniereinladungen</button>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('tp')">Turnierplaner</button>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('n')">Vereinsnachrichten</button>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('p')">Fotos für Diashow</button>
-      <button style="width:100%;margin-bottom:8px" onclick="adminSection('sp')">Fotos Sponsoren für Diashow</button>
+      <div class="row" style="margin-bottom:8px;gap:6px"><button style="flex:1" onclick="adminSection('t')">Turniereinladungen</button><button style="flex:none;width:44px;padding:12px 0" title="Anzeigemodus öffnen" onclick="adminPreviewOpen('t')">👁</button></div>
+      <div class="row" style="margin-bottom:8px;gap:6px"><button style="flex:1" onclick="adminSection('o')">Eigene Turniereinladungen</button><button style="flex:none;width:44px;padding:12px 0" title="Anzeigemodus öffnen" onclick="adminPreviewOpen('o')">👁</button></div>
+      <div class="row" style="margin-bottom:8px;gap:6px"><button style="flex:1" onclick="adminSection('tp')">Turnierplaner</button><button style="flex:none;width:44px;padding:12px 0" title="Anzeigemodus öffnen" onclick="adminPreviewOpen('tp')">👁</button></div>
+      <div class="row" style="margin-bottom:8px;gap:6px"><button style="flex:1" onclick="adminSection('n')">Vereinsnachrichten</button><button style="flex:none;width:44px;padding:12px 0" title="Anzeigemodus öffnen" onclick="adminPreviewOpen('n')">👁</button></div>
+      <div class="row" style="margin-bottom:8px;gap:6px"><button style="flex:1" onclick="adminSection('p')">Fotos für Diashow</button><button style="flex:none;width:44px;padding:12px 0" title="Anzeigemodus öffnen" onclick="adminPreviewOpen('p')">👁</button></div>
+      <div class="row" style="margin-bottom:8px;gap:6px"><button style="flex:1" onclick="adminSection('sp')">Fotos Sponsoren für Diashow</button><button style="flex:none;width:44px;padding:12px 0" title="Anzeigemodus öffnen" onclick="adminPreviewOpen('sp')">👁</button></div>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('s')">Speicher verwalten</button><button style="width:100%" onclick="adminSection('u')">Anmeldung</button>
       <hr><div class="small">Lokale Sicherung: Texte/Einstellungen in localStorage, Bilder/PDF-Seiten in IndexedDB.</div><div id="firebaseStatus" class="small" style="margin-top:10px"></div>
     </div>
     <div id="adminMain" class="admin-main"></div>
   </div>
 </section>
+<div id="tpHistoryModal" class="tp-history-modal"><div class="tp-history-dialog"><h2>Spieler-Historie</h2><div class="small">Anzahl bestrittener Turniere und Meisterschaften je Spieler – sortiert nach Gesamteinsätzen.</div><div id="tpHistoryList" class="tp-history-list"></div><div class="row" style="margin-top:14px"><button type="button" onclick="closeTpHistory()">Schließen</button></div></div></div>
 <div id="pdfModal" class="pdf-modal"><div class="pdf-dialog"><h2>PDF-Seiten auswählen</h2><div id="pdfInfo" class="small" style="color:#222"></div><div class="row" style="margin:8px 0"><button onclick="selectAllPdf(true)">Alle auswählen</button><button onclick="selectAllPdf(false)">Alle abwählen</button><button class="primary" onclick="finishPdfImport()">Auswahl speichern</button><button onclick="cancelPdfImport()">Abbrechen</button></div><div id="pdfPages" class="pdf-pages"></div></div></div>
 <div id="toast" class="toast"></div>
 
@@ -192,6 +202,7 @@ const firebaseConfig = {
   appId: "1:298210191410:web:b84d11220a95aaa050f42b"
 };
 let firebaseReady=false, firestoreDb=null, firebaseAuth=null, firebaseAuthUser=null;
+let loginPurpose='admin'; // 'admin' oder 'planner' – steuert Persistenz und Weiterleitung nach der Anmeldung
 try{
   firebase.initializeApp(firebaseConfig);
   firestoreDb=firebase.firestore();
@@ -231,7 +242,7 @@ function pAlbums(){const k=pCfg().albums;return data[k]||(data[k]={})}
 function tInfoElId(){return tCollection==='ownTournaments'?'firebaseOwnTournamentInfo':'firebaseTournamentInfo'}
 function tStore(){const k=tCfg().store;return data[k]||(data[k]={})}
 function updateTournamentTitles(){const l=(tCollection==='ownTournaments')?'Nächste eigene Turniere':tCfg().label;const a=document.getElementById('tMonthsTitle');if(a)a.textContent=l;const b=document.getElementById('tTitle');if(b)b.textContent=l;}
-function openTournamentSection(kind){tCollection=(kind==='ownTournaments')?'ownTournaments':'tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView(tCollection==='ownTournaments'?'tournaments':'tournamentMonths');}
+function openTournamentSection(kind){window.__adminPreviewMode=false;tCollection=(kind==='ownTournaments')?'ownTournaments':'tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView(tCollection==='ownTournaments'?'tournaments':'tournamentMonths');}
 let currentMonth=null,currentPage=0,adminTournamentPage=0,newsTimer=null,newsIndex=0,photoAlbumMonth=null,photoTimer=null,photoScrollTimer=null,currentUser=null;
 let pdfPendingFiles=[],pdfPendingIndex=0,pdfSelectedPages=new Set(),editingNewsId=null;
 
@@ -441,8 +452,23 @@ async function enterPresentationFullscreen(){
 async function leavePresentationFullscreen(){
  try{if(document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();}catch(e){}
 }
+function adminPreviewOpen(kind){
+  if(kind==='t'){ openTournamentSection('tournaments'); window.__adminPreviewMode=true; }
+  else if(kind==='o'){ openTournamentSection('ownTournaments'); window.__adminPreviewMode=true; }
+  else if(kind==='tp'){ if(firebaseAuthUser){ showView('tournamentPlanner'); window.__adminPreviewMode=true; } else { showToast('Bitte zuerst anmelden.'); } }
+  else if(kind==='n'){ openPublicSection('news'); window.__adminPreviewMode=true; }
+  else if(kind==='p'){ openPublicSection('photos'); window.__adminPreviewMode=true; }
+  else if(kind==='sp'){ openPublicSection('sponsorPhotos'); window.__adminPreviewMode=true; }
+}
 function openAdminFromHome(){
   if(firebaseAuthUser){ showView('admin'); return; }
+  loginPurpose='admin';
+  showView('login');
+}
+function openTournamentPlannerGate(){
+  window.__adminPreviewMode=false;
+  if(firebaseAuthUser){ showView('tournamentPlanner'); return; }
+  loginPurpose='planner';
   showView('login');
 }
 function updateHomeAdminButton(){
@@ -454,6 +480,7 @@ function updateHomeAdminButton(){
 
 function openPublicSection(id){
   try{
+    window.__adminPreviewMode=false;
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     const el=document.getElementById(id);
     if(!el)return;
@@ -468,7 +495,16 @@ function showView(id){
  try{closeInvitationZoom()}catch(e){}
  if(id!=='news'){try{stopNews()}catch(e){}}
  if(id==='admin' && !firebaseAuthUser && currentUser!=='admin'){ showView('login'); return; }
- if(id==='login'){const emEl=document.getElementById('firebaseLoginEmail');if(emEl&&!emEl.value){try{emEl.value=localStorage.getItem('verein_admin_email')||''}catch(e){}}}
+ if(id==='login'){
+   const emEl=document.getElementById('firebaseLoginEmail');
+   if(emEl&&!emEl.value){try{emEl.value=localStorage.getItem('verein_admin_email')||''}catch(e){}}
+   const isPlanner=loginPurpose==='planner';
+   const t=document.getElementById('loginTitle'),s=document.getElementById('loginSubtitle'),h=document.getElementById('loginHeading'),hi=document.getElementById('loginHint');
+   if(t)t.textContent=isPlanner?'Turnierplaner':'Verwaltung';
+   if(s)s.textContent=isPlanner?'Anmeldung erforderlich':'Administrator-Anmeldung';
+   if(h)h.textContent=isPlanner?'Turnierplaner-Zugang anmelden':'Administrator anmelden';
+   if(hi)hi.textContent=isPlanner?'Für den Turnierplaner ist eine einmalige Anmeldung mit E-Mail-Adresse und Kennwort erforderlich. Die Anmeldung bleibt danach bestehen.':'Bitte mit E-Mail-Adresse und Kennwort des Administrators anmelden.';
+ }
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
  document.getElementById(id).classList.add('active');
  if(['tournamentMonths','tournaments','news','photos','sponsorPhotos','tournamentPlanner'].includes(id)){
@@ -502,10 +538,14 @@ async function loginFirebaseAdmin(){
  const setStatus=t=>{if(status)status.textContent=t};
  if(!firebaseReady||!window.firebaseAuth){setStatus('Firebase ist nicht verfügbar – Internetverbindung prüfen.');return;}
  if(!email||!pw){setStatus('Bitte E-Mail und Kennwort eingeben.');return;}
+ const purpose=loginPurpose||'admin';
  try{
    setStatus('Anmeldung läuft …');
-   // Anmeldung wird nicht dauerhaft gemerkt: nach Neuladen oder Schließen der Seite ist man wieder abgemeldet.
-   await window.firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.NONE);
+   // Admin-Anmeldung wird wie bisher nicht dauerhaft gemerkt (nach Neuladen/Schließen wieder abgemeldet).
+   // Die Anmeldung für den Turnierplaner (Listenansicht, Button 6) bleibt dagegen dauerhaft bestehen,
+   // damit dort gemachte Eingaben auch nach einem Neuladen in Firebase gespeichert werden.
+   const persistence=(purpose==='planner')?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.NONE;
+   await window.firebaseAuth.setPersistence(persistence);
    await window.firebaseAuth.signInWithEmailAndPassword(email,pw);
  }catch(e){console.error(e);const t=authErrorText(e);setStatus(t);showToast(t,4000);return;}
  try{localStorage.setItem('verein_admin_email',email)}catch(e){}
@@ -515,9 +555,10 @@ async function loginFirebaseAdmin(){
    setStatus('Daten werden geladen …');
    try{await Promise.race([window.__publicLoadPromise,new Promise(r=>setTimeout(r,20000))])}catch(e){}
  }
- currentUser='admin';
  setStatus('Anmeldung erfolgreich.');
  updateHomeAdminButton();
+ if(purpose==='planner'){ loginPurpose='admin'; showView('tournamentPlanner'); return; }
+ currentUser='admin';
  showView('admin');
 }
 async function resetAdminPassword(){
@@ -540,8 +581,19 @@ async function sendOwnPasswordReset(){
 }
 
 function returnToPowerPoint(){
+ if(window.__adminPreviewMode){
+   window.__adminPreviewMode=false;
+   try{leavePresentationFullscreen()}catch(e){}
+   showView('admin');
+   return;
+ }
  currentUser=null;
- try{if(window.firebaseAuth&&firebaseAuthUser)window.firebaseAuth.signOut()}catch(e){}
+ // Beim Verlassen des Turnierplaners (Listenansicht) bleibt die dort erforderliche Firebase-Anmeldung
+ // bestehen (kein Abmelde-Button auf dieser Seite) – der Zugriff kann nur über den Admin-Bereich entzogen werden.
+ const leavingPlanner=document.getElementById('tournamentPlanner')?.classList.contains('active');
+ if(!leavingPlanner){
+   try{if(window.firebaseAuth&&firebaseAuthUser)window.firebaseAuth.signOut()}catch(e){}
+ }
  try{leavePresentationFullscreen()}catch(e){}
  // Wenn diese Seite von PowerPoint/als eigenes Browserfenster geöffnet wurde,
  // versucht der Browser das Fenster direkt zu schließen.
@@ -770,7 +822,7 @@ function tpDayLabel(dateStr){if(!dateStr)return '';const d=new Date(dateStr+'T00
 function tpFormatDate(dateStr){if(!dateStr)return 'Datum offen';const p=dateStr.split('-');if(p.length!==3)return dateStr;return p[2]+'.'+p[1]+'.'+p[0]}
 function tpMonthKey(dateStr){return dateStr?dateStr.slice(0,7):'ohne-datum'}
 function tpExistingMonths(){const s=new Set();(data.tournamentPlanner||[]).forEach(x=>{if(x&&x.date)s.add(tpMonthKey(x.date))});return [...s].sort()}
-const TP_DEFAULT_TYPES=['Turnier','Meisterschaft','Feier','Gremlins'];
+const TP_DEFAULT_TYPES=['Turnier','Turnier als Veranstalter','Meisterschaft','Feier','Gremlins'];
 function tpTypes(){return (data.tournamentPlannerTypes&&data.tournamentPlannerTypes.length)?data.tournamentPlannerTypes:TP_DEFAULT_TYPES}
 function tpTypeOptionsHtml(selected){return '<option value="">– keine –</option>'+tpTypes().map(t=>'<option value="'+esc(t)+'" '+(t===selected?'selected':'')+'>'+esc(t)+'</option>').join('')}
 function tpAddNewType(){
@@ -809,25 +861,100 @@ function tpFilterByPeriod(items,period){
   return items;
 }
 function tpSortedEvents(){return (data.tournamentPlanner||[]).filter(Boolean).slice().sort((a,b)=>String(a.date||'9999').localeCompare(String(b.date||'9999'))||String(a.time||'').localeCompare(String(b.time||'')))}
-function tpAllowsPlayers(type){return type==='Turnier'||type==='Meisterschaft'}
+function tpAllowsPlayers(type){return type==='Turnier'||type==='Turnier als Veranstalter'||type==='Meisterschaft'}
+function tpPlayerHistoryData(){
+  const all=(data.tournamentPlanner||[]).filter(Boolean);
+  const isTournamentType=t=>t==='Turnier'||t==='Turnier als Veranstalter';
+  const counts={};
+  const ensure=n=>counts[n]||(counts[n]={name:n,tournaments:0,championships:0});
+  all.forEach(x=>{
+    if(!isTournamentType(x.type)&&x.type!=='Meisterschaft')return;
+    (x.players||[]).forEach(p=>{
+      const name=(p||'').trim();
+      if(!name||name.toUpperCase()==='X')return;
+      const row=ensure(name);
+      if(isTournamentType(x.type))row.tournaments++;else row.championships++;
+    });
+  });
+  return Object.values(counts).map(r=>({...r,total:r.tournaments+r.championships})).sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'de'));
+}
+function renderTpHistory(){
+  const el=document.getElementById('tpHistoryList');if(!el)return;
+  const rows=tpPlayerHistoryData();
+  if(!rows.length){el.innerHTML='<div class="tp-empty">Noch keine Teilnahmen erfasst.</div>';return}
+  el.innerHTML=rows.map(r=>'<div class="tp-history-row"><div class="tp-history-name">'+esc(r.name)+'</div><div class="tp-history-counts">Turniere: '+r.tournaments+' · Meisterschaften: '+r.championships+'<br>Gesamt: <b>'+r.total+'</b></div></div>').join('');
+}
+function openTpHistory(){renderTpHistory();document.getElementById('tpHistoryModal')?.classList.add('show');}
+function closeTpHistory(){document.getElementById('tpHistoryModal')?.classList.remove('show');}
 function tpRenderStats(){
   const el=document.getElementById('tpStats');if(!el)return;
   const all=(data.tournamentPlanner||[]).filter(Boolean);
-  const tCount=all.filter(x=>x.type==='Turnier').length;
-  const mCount=all.filter(x=>x.type==='Meisterschaft').length;
-  el.innerHTML='<div class="tp-stat">Gemeldete Turniere<b>'+tCount+'</b></div>'
-    +'<div class="tp-stat">Gemeldete Meisterschaften<b>'+mCount+'</b></div>'
-    +'<div class="tp-stat">Veranstaltungen gesamt<b>'+all.length+'</b></div>';
+  const today=todayStr();
+  const filterVal=document.getElementById('tpPeriodFilter')?.value||'';
+  // Ist im Zeitraum-Filter ein konkretes Jahr gewählt, beziehen sich die Kacheln auf dieses Jahr.
+  // Bei "Alle Termine"/"Termine in Zukunft" (oder solange kein Filter gesetzt ist) gilt automatisch
+  // das laufende Kalenderjahr – das schaltet mit Jahreswechsel von selbst weiter.
+  const year=(filterVal&&filterVal.charAt(0)==='y')?filterVal.slice(1):String(new Date().getFullYear());
+  const isTournamentType=t=>t==='Turnier'||t==='Turnier als Veranstalter';
+  const isHost=x=>!x.internal&&(x.type==='Turnier als Veranstalter'||(x.type==='Turnier'&&(x.location||'').toLowerCase().includes('wegscheid')));
+  // "Gemeldete Turniere/Meisterschaften" beziehen sich auf das gewählte Jahr. "Turnier als Veranstalter"
+  // zählt zusätzlich zu den normalen Turnieren mit.
+  const tCount=all.filter(x=>isTournamentType(x.type)&&x.date&&x.date.slice(0,4)===year).length;
+  const mCount=all.filter(x=>x.type==='Meisterschaft'&&x.date&&x.date.slice(0,4)===year).length;
+  // "besucht": alle Veranstaltungen dieses Typs im gewählten Jahr bis zum gestrigen Datum (also bereits stattgefunden)
+  const tVisited=all.filter(x=>isTournamentType(x.type)&&x.date&&x.date.slice(0,4)===year&&x.date<today).length;
+  const mVisited=all.filter(x=>x.type==='Meisterschaft'&&x.date&&x.date.slice(0,4)===year&&x.date<today).length;
+  // "als Ausrichter": Veranstaltungsart "Turnier als Veranstalter" ODER ein "Turnier" mit Austragungsort
+  // Wegscheid/Wegscheid Halle – jeweils im gewählten Jahr. Zählt zusätzlich zu den Turnieren.
+  const tHost=all.filter(x=>isHost(x)&&x.date&&x.date.slice(0,4)===year).length;
+  // "Veranstaltungen ... Gesamt" folgt derselben Jahres-Logik (Filter-Jahr bzw. laufendes Kalenderjahr).
+  const allCount=all.filter(x=>x.date&&x.date.slice(0,4)===year).length;
+  el.innerHTML='<div class="tp-stat">Veranstaltungen '+year+' Gesamt<b>'+allCount+'</b></div>'
+    +'<div class="tp-stat">Gemeldete Turniere '+year+'<b>'+tCount+'</b></div>'
+    +'<div class="tp-stat">Turniere besucht '+year+' bis jetzt<b>'+tVisited+'</b></div>'
+    +'<div class="tp-stat">Gemeldete Meisterschaften '+year+'<b>'+mCount+'</b></div>'
+    +'<div class="tp-stat">Meisterschaften besucht '+year+' bis jetzt<b>'+mVisited+'</b></div>'
+    +'<div class="tp-stat">Turniere als Ausrichter '+year+'<b>'+tHost+'</b></div>';
 }
-function tpPlayerOptionsHtml(selected){const opts=['<option value="">– auswählen –</option>'];const list=TP_PLAYER_NAMES.slice();if(selected&&!list.includes(selected))list.push(selected);opts.push(list.map(n=>'<option value="'+esc(n)+'" '+(n===selected?'selected':'')+'>'+esc(n)+'</option>').join(''));return opts.join('')}
+function tpPlayers(){const list=(data.tournamentPlannerPlayers&&data.tournamentPlannerPlayers.length)?data.tournamentPlannerPlayers.slice():TP_PLAYER_NAMES.slice();if(!list.includes('X'))list.push('X');return list}
+function tpPlayerOptionsHtml(selected){const opts=['<option value="">– auswählen –</option>'];const list=tpPlayers();if(selected&&!list.includes(selected))list.push(selected);opts.push(list.map(n=>'<option value="'+esc(n)+'" '+(n===selected?'selected':'')+'>'+esc(n)+'</option>').join(''));return opts.join('')}
+function renderTpPlayersAdminList(){
+  const el=document.getElementById('tpPlayersAdminList');if(!el)return;
+  const players=tpPlayers().filter(p=>p!=='X').sort((a,b)=>a.localeCompare(b,'de'));
+  if(!players.length){el.innerHTML='<div class="small">Keine Spieler vorhanden.</div>';return}
+  el.innerHTML=players.map(p=>'<div class="list-item"><div><b>'+esc(p)+'</b></div><button class="danger" onclick="tpRemovePlayer('+jsArg(p)+')">Entfernen</button></div>').join('');
+}
+function tpAddPlayer(){
+  const input=document.getElementById('tpNewPlayer');
+  const name=(input?.value||'').trim();
+  if(!name){showToast('Bitte einen Namen eingeben');return}
+  if(!data.tournamentPlannerPlayers||!data.tournamentPlannerPlayers.length)data.tournamentPlannerPlayers=TP_PLAYER_NAMES.slice();
+  if(data.tournamentPlannerPlayers.includes(name)){showToast('Spieler ist bereits in der Liste');return}
+  data.tournamentPlannerPlayers.push(name);
+  save();
+  if(input)input.value='';
+  renderTpPlayersAdminList();
+  showToast('Spieler hinzugefügt');
+}
+function tpRemovePlayer(name){
+  if(!confirm('Spieler "'+name+'" wirklich aus der Auswahlliste entfernen?'))return;
+  if(!data.tournamentPlannerPlayers||!data.tournamentPlannerPlayers.length)data.tournamentPlannerPlayers=TP_PLAYER_NAMES.slice();
+  data.tournamentPlannerPlayers=data.tournamentPlannerPlayers.filter(p=>p!==name);
+  save();
+  renderTpPlayersAdminList();
+  showToast('Spieler entfernt');
+}
 function tpLocationOptionsHtml(){const locs=[...new Set((data.tournamentPlanner||[]).map(x=>x&&x.location).filter(Boolean))].sort();return locs.map(l=>'<option value="'+esc(l)+'">').join('')}
 function renderTournamentPlanner(){
   const el=document.getElementById('tpContent');if(!el)return;
-  tpRenderStats();
   tpPopulatePeriodFilter('tpPeriodFilter','upcoming');
+  tpRenderStats();
   const filter=document.getElementById('tpPeriodFilter')?.value||'upcoming';
   let items=tpFilterByPeriod(tpSortedEvents(),filter);
   if(!items.length){el.innerHTML='<div class="tp-empty">Keine Veranstaltungen in diesem Zeitraum.</div>';return}
+  // Veranstaltungen unten weniger anzeigen, damit der "Hauptmenü"-Button am unteren Rand nichts verdeckt.
+  if(items.length>2)items=items.slice(0,items.length-2);
+  else if(items.length>1)items=items.slice(0,items.length-1);
   const today=todayStr();
   el.innerHTML=items.map(x=>{
     const players=(x.players&&x.players.length===4)?x.players:['','','',''];
@@ -842,6 +969,7 @@ function renderTournamentPlanner(){
       +'<div class="tp-fields-row">'
       +'<div class="tp-row"><label>Art</label><select onchange="tpTypeChanged('+jsArg(x.id)+',this)">'+tpTypeOptionsHtml(x.type)+'</select></div>'
       +'<div class="tp-row"><label>Gemeldet von</label><select onchange="tpUpdateField('+jsArg(x.id)+',\'reportedBy\',null,this.value)">'+tpPlayerOptionsHtml(x.reportedBy)+'</select></div>'
+      +'<div class="tp-row tp-internal-row"><label style="display:flex;align-items:center;gap:6px;margin:0"><input type="checkbox" style="width:auto;margin:0" '+(x.internal?'checked':'')+' onchange="tpUpdateField('+jsArg(x.id)+',\'internal\',null,this.checked)">Internes Turnier</label></div>'
       +(x.location?'<div class="tp-loc">📍 '+esc(x.location)+'</div>':'')
       +'</div>'
       +'<div class="tp-fields-row">'
@@ -878,7 +1006,7 @@ async function tpSyncEventToFirebase(item){
     await fbTimeout(firestoreDb.collection('tournamentPlanner').doc(String(item.id)).set({
       id:String(item.id),name:String(item.name||''),date:String(item.date||''),time:String(item.time||''),
       reportedBy:String(item.reportedBy||''),players:[0,1,2,3].map(i=>String((item.players||[])[i]||'')),
-      location:String(item.location||''),type:String(item.type||''),calendarExported:!!item.calendarExported,updatedAt:new Date().toISOString()
+      location:String(item.location||''),type:String(item.type||''),internal:!!item.internal,calendarExported:!!item.calendarExported,updatedAt:new Date().toISOString()
     },{merge:true}),20000,'Firebase');
   }catch(e){console.error('Firebase Turnierplaner:',e);showToast('Änderung nur lokal gespeichert – Firebase nicht erreichbar',4500);}
 }
@@ -950,34 +1078,36 @@ function tpAdminFormHtml(){
     +'<label>Veranstaltungsname</label><input id="tpName" type="text" placeholder="z. B. Turnier Hochwinkl" oninput="tpAutoDetectType()">'
     +'<div class="row"><div style="flex:1"><label>Datum</label><input id="tpDate" type="date"></div><div style="flex:1"><label>Uhrzeit (optional)</label><input id="tpTime" type="time"></div></div>'
     +'<div class="row"><div style="flex:1"><label>Veranstaltungsart</label><select id="tpType" onchange="this.dataset.manual=\'1\'">'+tpTypeOptionsHtml('')+'</select></div><div style="flex:none;display:flex;align-items:flex-end"><button type="button" onclick="tpAddNewType()">+ Neue Art</button></div></div>'
+    +'<div class="row" style="align-items:center;gap:8px;margin-top:6px"><input id="tpInternal" type="checkbox" style="width:auto;margin:0"><label for="tpInternal" style="margin:0">Internes Turnier (zählt nicht als Ausrichter-Turnier)</label></div>'
     +'<label>Gemeldet von</label><select id="tpReportedBy">'+tpPlayerOptionsHtml('')+'</select>'
     +'<div class="tp-players" style="margin-top:6px">'+[0,1,2,3].map(i=>'<div><label>Spieler '+(i+1)+'</label><select id="tpPlayer'+i+'">'+tpPlayerOptionsHtml('')+'</select></div>').join('')+'</div>'
     +'<label>Veranstaltungsort</label><input id="tpLocation" type="text" list="tpLocationList" placeholder="z. B. Waldkirchen Eishalle"><datalist id="tpLocationList">'+tpLocationOptionsHtml()+'</datalist>'
-    +'<div class="row" style="margin-top:14px"><button id="tpAddBtn" class="primary" onclick="tpAdminAddOrUpdate()">Veranstaltung hinzufügen</button><button id="tpCancelBtn" style="display:none" onclick="tpCancelEdit()">Bearbeitung abbrechen</button></div>'
-    +'<div class="row" style="margin-top:10px"><button class="primary" style="width:100%" onclick="saveAllTournamentPlannerChanges()">Speichern</button></div>'
+    +'<div class="row" style="margin-top:14px"><button id="tpCancelBtn" style="display:none" onclick="tpCancelEdit()">Bearbeitung abbrechen</button></div>'
+    +'<div class="row" style="margin-top:10px"><button class="primary" style="width:100%" onclick="saveAllTournamentPlannerChanges()">Veranstaltung speichern</button></div>'
     +'<div id="firebaseTpInfo" class="small" style="margin-top:10px"></div>'
     +'</div>';
 }
-function tpAdminAddOrUpdate(){
-  const name=(document.getElementById('tpName').value||'').trim();
+function tpCommitFormIfFilled(){
+  const nameEl=document.getElementById('tpName');if(!nameEl)return;
+  const name=(nameEl.value||'').trim();
+  if(!name)return; // Formular leer – nichts zu übernehmen, einfach normal weiter speichern
   const date=document.getElementById('tpDate').value||'';
+  if(!date){showToast('Bitte Datum eingeben');return}
   const time=document.getElementById('tpTime').value||'';
   const reportedBy=document.getElementById('tpReportedBy').value||'';
   const players=[0,1,2,3].map(i=>document.getElementById('tpPlayer'+i).value||'');
   const location=(document.getElementById('tpLocation').value||'').trim();
   const type=document.getElementById('tpType')?.value||'';
-  if(!name){showToast('Bitte Veranstaltungsnamen eingeben');return}
-  if(!date){showToast('Bitte Datum eingeben');return}
+  const internal=!!document.getElementById('tpInternal')?.checked;
   const editId=document.getElementById('tpEditId').value;
   if(editId){
     const item=tpFindEvent(editId);
-    if(item){item.name=name;item.date=date;item.time=time;item.reportedBy=reportedBy;item.players=players;item.location=location;item.type=type}
+    if(item){item.name=name;item.date=date;item.time=time;item.reportedBy=reportedBy;item.players=players;item.location=location;item.type=type;item.internal=internal}
   }else{
-    data.tournamentPlanner.push({id:'tp_'+Date.now()+'_'+Math.random().toString(36).slice(2),name,date,time,reportedBy,players,location,type});
+    data.tournamentPlanner.push({id:'tp_'+Date.now()+'_'+Math.random().toString(36).slice(2),name,date,time,reportedBy,players,location,type,internal});
   }
   tpCancelEdit();
   renderTournamentPlannerAdminList();
-  showToast('In Liste übernommen – bitte unten Speichern');
 }
 function tpEditEvent(id){
   const x=tpFindEvent(id);if(!x)return;
@@ -989,8 +1119,8 @@ function tpEditEvent(id){
   [0,1,2,3].forEach(i=>{document.getElementById('tpPlayer'+i).value=(x.players||[])[i]||''});
   document.getElementById('tpLocation').value=x.location||'';
   const typeSel=document.getElementById('tpType');if(typeSel){typeSel.innerHTML=tpTypeOptionsHtml(x.type||'');typeSel.value=x.type||'';typeSel.dataset.manual='1';}
+  const internalEl=document.getElementById('tpInternal');if(internalEl)internalEl.checked=!!x.internal;
   document.getElementById('tpCancelBtn').style.display='inline-block';
-  document.getElementById('tpAddBtn').textContent='Änderung übernehmen';
   document.getElementById('tpName').focus();
 }
 function tpCancelEdit(){
@@ -1002,8 +1132,8 @@ function tpCancelEdit(){
   [0,1,2,3].forEach(i=>{const el=document.getElementById('tpPlayer'+i);if(el)el.value=''});
   document.getElementById('tpLocation').value='';
   const typeSel=document.getElementById('tpType');if(typeSel){typeSel.innerHTML=tpTypeOptionsHtml('');typeSel.value='';typeSel.dataset.manual='';}
+  const internalEl=document.getElementById('tpInternal');if(internalEl)internalEl.checked=false;
   document.getElementById('tpCancelBtn').style.display='none';
-  document.getElementById('tpAddBtn').textContent='Veranstaltung hinzufügen';
 }
 function tpDeleteEvent(id){
   if(!confirm('Veranstaltung wirklich löschen?'))return;
@@ -1039,7 +1169,7 @@ async function syncTournamentPlannerToFirebase(){
     let count=0;
     for(const x of (data.tournamentPlanner||[])){
       if(!x||!x.id)continue;
-      const payload={id:String(x.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),calendarExported:!!x.calendarExported,updatedAt:new Date().toISOString()};
+      const payload={id:String(x.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),internal:!!x.internal,calendarExported:!!x.calendarExported,updatedAt:new Date().toISOString()};
       await fbTimeout(firestoreDb.collection('tournamentPlanner').doc(String(x.id)).set(payload),60000,'Firebase');
       count++;
     }
@@ -1059,7 +1189,7 @@ async function loadTournamentPlannerFromFirebase(){
   try{
     const snap=await firestoreDb.collection('tournamentPlanner').get();
     const list=[];
-    snap.forEach(doc=>{const x=doc.data()||{};list.push({id:String(x.id||doc.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),calendarExported:!!x.calendarExported})});
+    snap.forEach(doc=>{const x=doc.data()||{};list.push({id:String(x.id||doc.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),internal:!!x.internal,calendarExported:!!x.calendarExported})});
     if(snap.size){data.tournamentPlanner=list;save()}
   }catch(e){console.warn('Firebase Turnierplaner:',e);}
 }
@@ -1073,6 +1203,7 @@ function tpSaveCalendarSettings(){
   showToast('Kalendereinstellungen gespeichert');
 }
 async function saveAllTournamentPlannerChanges(){
+  tpCommitFormIfFilled();
   if(!save()){const i=document.getElementById('firebaseTpInfo');if(i)i.textContent='Fehler: lokales Speichern fehlgeschlagen';return}
   const info=document.getElementById('firebaseTpInfo');
   if(info)info.textContent='Turnierplaner wird in Programm und Firebase gespeichert …';
@@ -1086,6 +1217,14 @@ async function saveAllTournamentPlannerChanges(){
 }
 /* ===== Ende Turnierplaner ===== */
 
+function tpAdminSubSection(sub){
+ ['plan','cal','players','events'].forEach(k=>{
+  const el=document.getElementById('tpSub-'+k);
+  if(el)el.style.display=(k===sub?'':'none');
+  const b=document.getElementById('tpSubBtn-'+k);
+  if(b)b.className=(k===sub?'primary':'');
+ });
+}
 function adminSection(s){
  const a=document.getElementById('adminMain');
  if(s==='t'){
@@ -1100,8 +1239,20 @@ function adminSection(s){
   a.innerHTML='<h2>Eigene Turniereinladungen</h2><div class="card"><label>Einladungen hinzufügen (PDF, PNG, JPG oder BMP)</label><input id="ofiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,.jpg,.jpeg,image/png,image/bmp,image/jpeg"><button class="primary" style="width:100%;margin-top:10px" onclick="saveOwnTournamentFiles()">Speichern</button><div id="firebaseOwnTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Es werden maximal 7 Einladungen gleichzeitig angezeigt – zuerst die mit dem nächsten Enddatum. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div id="oAdminList"></div>';
   renderOwnTournamentAdminList();
  }else if(s==='tp'){
-  a.innerHTML='<h2>Turnierplaner</h2>'+tpAdminFormHtml()+'<h3>Kalendereinstellungen</h3><div class="card"><label>Vereinsname (für Kalendereinträge)</label><input id="tpCalOrgName" type="text" value="'+esc((data.settings&&data.settings.tpCalendarOrgName)||'EC Wegscheid')+'" onchange="tpSaveCalendarSettings()"><label style="margin-top:8px">Standarddauer bei Veranstaltungen mit Uhrzeit (Stunden)</label><input id="tpCalDuration" type="number" min="1" max="24" value="'+esc(String((data.settings&&data.settings.tpCalendarDurationHours)||2))+'" onchange="tpSaveCalendarSettings()"><div class="small" style="margin-top:8px">Der Kalender-Export (📅) steht nur im Admin-Bereich zur Verfügung. Nach dem Export wird die Veranstaltung ausgegraut, damit sie nicht versehentlich mehrfach exportiert wird – über ↺ lässt sich der Export bei Bedarf wieder freigeben.</div></div><h3>Vorhandene Veranstaltungen</h3><div class="tp-toolbar" style="margin:0 0 10px"><label style="margin:0">Zeitraum</label><select id="tpAdminPeriodFilter" onchange="renderTournamentPlannerAdminList()"></select></div><div id="tpAdminList"></div>';
+  a.innerHTML='<h2>Turnierplaner</h2>'
+   +'<div class="tp-toolbar" style="margin:0 0 16px">'
+    +'<button type="button" id="tpSubBtn-plan" onclick="tpAdminSubSection(\'plan\')">Turnierplaner</button>'
+    +'<button type="button" id="tpSubBtn-cal" onclick="tpAdminSubSection(\'cal\')">Kalendereinstellungen</button>'
+    +'<button type="button" id="tpSubBtn-players" onclick="tpAdminSubSection(\'players\')">Spielerliste</button>'
+    +'<button type="button" id="tpSubBtn-events" onclick="tpAdminSubSection(\'events\')">Vorhandene Veranstaltungen</button>'
+   +'</div>'
+   +'<div id="tpSub-plan">'+tpAdminFormHtml()+'</div>'
+   +'<div id="tpSub-cal"><h3>Kalendereinstellungen</h3><div class="card"><label>Vereinsname (für Kalendereinträge)</label><input id="tpCalOrgName" type="text" value="'+esc((data.settings&&data.settings.tpCalendarOrgName)||'EC Wegscheid')+'" onchange="tpSaveCalendarSettings()"><label style="margin-top:8px">Standarddauer bei Veranstaltungen mit Uhrzeit (Stunden)</label><input id="tpCalDuration" type="number" min="1" max="24" value="'+esc(String((data.settings&&data.settings.tpCalendarDurationHours)||2))+'" onchange="tpSaveCalendarSettings()"><div class="small" style="margin-top:8px">Der Kalender-Export (📅) steht nur im Admin-Bereich zur Verfügung. Nach dem Export wird die Veranstaltung ausgegraut, damit sie nicht versehentlich mehrfach exportiert wird – über ↺ lässt sich der Export bei Bedarf wieder freigeben.</div></div></div>'
+   +'<div id="tpSub-players"><h3>Spielerliste (Auswahl für Turniere/Meisterschaften)</h3><div class="card"><div class="row"><input id="tpNewPlayer" type="text" placeholder="Name, z. B. Mustermann Max" style="flex:1" onkeydown="if(event.key===\'Enter\')tpAddPlayer()"><button type="button" onclick="tpAddPlayer()">Hinzufügen</button></div><div id="tpPlayersAdminList" style="margin-top:10px"></div></div></div>'
+   +'<div id="tpSub-events"><h3>Vorhandene Veranstaltungen</h3><div class="tp-toolbar" style="margin:0 0 10px"><label style="margin:0">Zeitraum</label><select id="tpAdminPeriodFilter" onchange="renderTournamentPlannerAdminList()"></select></div><div id="tpAdminList"></div></div>';
+  renderTpPlayersAdminList();
   renderTournamentPlannerAdminList();
+  tpAdminSubSection('plan');
  }else if(s==='n'){
   a.innerHTML='<h2>Vereinsnachrichten</h2><div class="card"><input id="neditid" type="hidden"><label>Überschrift</label><input id="ntitle" type="text" placeholder="z. B. Vereinsmeisterschaft"><label style="margin-top:8px"><input id="nshowtitle" type="checkbox" style="width:auto;margin-right:8px"> Überschrift oben</label><label>Nachricht</label><textarea id="ntext" placeholder="Text der Nachricht..."></textarea><label>Anzeigeart</label><select id="nmode" onchange="updateNewsModeFields()"><option value="static">Feststehend</option><option value="fade">Ein-/Ausblenden</option><option value="ticker">Lauftext</option></select><div id="ndurWrap"><label>Anzeigedauer pro Nachricht (Sekunden)</label><input id="ndur" type="number" min="1" max="180" value="18"><div class="small">Bei „Lauftext“ bestimmt dieser Wert die Dauer eines kompletten Durchlaufs.</div></div><div id="ngapWrap"><label>Zeit zwischen den jeweiligen Texten (Sekunden)</label><input id="ngap" type="number" min="0" max="180" value="2"><div class="small">Diese Pause wird beim Wechsel zwischen mehreren Nachrichten verwendet.</div></div><div class="row"><div style="flex:1"><label>Startdatum</label><input id="nstart" type="date"></div><div style="flex:1"><label>Enddatum</label><input id="nend" type="date"></div></div><div class="small">Ohne Start- oder Enddatum ist die Nachricht zeitlich unbegrenzt aktiv.</div><div class="row" style="margin-top:14px"><button id="newsCancelBtn" style="display:none" onclick="cancelNewsEdit()">Bearbeitung abbrechen</button></div></div><h3>Gespeicherte Nachrichten</h3><div id="newsAdminList"></div><div class="card" style="margin-top:16px"><div id="firebaseNewsInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllNewsChanges()">Speichern</button></div>';renderNewsAdminList();updateNewsModeFields();
  }else if(s==='s'){
@@ -1673,7 +1824,7 @@ async function autoLoadPublicFirebaseDataV1245(){
     try{
       const snap=await firestoreDb.collection('tournamentPlanner').get();
       const list=[];
-      snap.forEach(doc=>{const x=doc.data()||{};list.push({id:String(x.id||doc.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),calendarExported:!!x.calendarExported})});
+      snap.forEach(doc=>{const x=doc.data()||{};list.push({id:String(x.id||doc.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),internal:!!x.internal,calendarExported:!!x.calendarExported})});
       if(snap.size && currentUser!=='admin'){data.tournamentPlanner=list;if(document.getElementById('tournamentPlanner')?.classList.contains('active'))renderTournamentPlanner();}
     }catch(e){console.warn('Firebase Turnierplaner:',e);}
   };
