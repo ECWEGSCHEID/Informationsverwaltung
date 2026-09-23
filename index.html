@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vereins-Informationssystem – V2.5.1</title>
+<title>Vereins-Informationssystem – V2.5.2</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;overflow:hidden}
@@ -92,9 +92,9 @@ textarea{min-height:120px;resize:vertical}
 .inv-zoom-close{position:absolute;top:14px;right:18px;width:48px;height:48px;min-width:0;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(0,0,0,.6);color:#fff;border:2px solid rgba(255,255,255,.55)}
 </style>
 </head>
-<body><div id="appVersion" class="app-version">Version 2.5.1</div>
+<body><div id="appVersion" class="app-version">Version 2.5.2</div>
 <section id="home" class="view active">
-  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.5.1</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
+  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.5.2</div><div id="routeDiagHome" class="small" style="display:none"></div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
   <div class="menu">
     <button onclick="openTournamentSection('tournaments')">1. Turniereinladungen</button>
     <button onclick="openTournamentSection('ownTournaments')">2. Eigene Turniereinladungen</button>
@@ -112,7 +112,7 @@ textarea{min-height:120px;resize:vertical}
 </section>
 
 <section id="tournaments" class="view">
-  <div class="header tournament-header"><div class="tournament-version">Version 2.5.1</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
+  <div class="header tournament-header"><div class="tournament-version">Version 2.5.2</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
   <div id="tContent" class="tournament-pages"></div>
   <div id="tFooter" class="tournament-footer" style="display:none">Über eine Meldung würden wir uns freuen!</div>
   <div class="bottom tournament-bottom">
@@ -216,7 +216,7 @@ try{
 }catch(e){console.error("Firebase Initialisierung:",e);}
 </script>
 <script>
-const APP_VERSION='2.5.1';
+const APP_VERSION='2.5.2';
 const DBKEY='verein_info_test_v2';
 const OLD_DBKEY='verein_info_test_v1';
 const DEFAULT_DB={tournaments:{},ownTournaments:{},news:[],photos:[],photoAlbums:{},settings:{tournamentPerPage:12},users:[{id:'admin',name:'Administrator',protected:true}]};
@@ -249,7 +249,14 @@ function tStore(){const k=tCfg().store;return data[k]||(data[k]={})}
 function updateTournamentTitles(){const l=(tCollection==='ownTournaments')?'Nächste eigene Turniere':tCfg().label;const a=document.getElementById('tMonthsTitle');if(a)a.textContent=l;const b=document.getElementById('tTitle');if(b)b.textContent=l;}
 function openTournamentSection(kind){window.__adminPreviewMode=false;tCollection=(kind==='ownTournaments')?'ownTournaments':'tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView(tCollection==='ownTournaments'?'tournaments':'tournamentMonths');}
 function openTournamentMonthsOverview(){window.__adminPreviewMode=false;tCollection='tournaments';currentMonth=null;currentPage=0;adminTournamentPage=0;showView('tournamentMonths');}
-function openTournamentListDirect(){openTournamentPlannerGate();}
+function openTournamentListDirect(){
+  // Direkt in die Turnierlisten-Anzeige. Nur wenn eine Anmeldung möglich ist
+  // (Firebase-Auth vorhanden), wird sie auch verlangt; sonst bleibt die Liste
+  // im Nur-Ansicht-Modus erreichbar.
+  window.__adminPreviewMode=false;
+  try{ if(window.firebaseAuth){ loginPurpose='planner'; } }catch(e){}
+  showView('tournamentPlanner');
+}
 let currentMonth=null,currentPage=0,adminTournamentPage=0,newsTimer=null,newsIndex=0,photoAlbumMonth=null,photoTimer=null,photoScrollTimer=null,currentUser=null;
 let pdfPendingFiles=[],pdfPendingIndex=0,pdfSelectedPages=new Set(),editingNewsId=null;
 
@@ -1986,6 +1993,8 @@ window.__directRouteV1248=function(){
     else if(seite==='nachrichten' || hash==='#nachrichten') showView('news');
     else if(seite==='fotos' || hash==='#fotos') showView('photos');
     else if(seite==='fotos-sponsoren' || hash==='#fotos-sponsoren') showView('sponsorPhotos');
+    const rh=document.getElementById('routeDiagHome');
+    if(rh&&(hash||seite)){rh.textContent='Direktaufruf erkannt: '+(window.location.hash||'')+(window.location.search||'');rh.style.display='block';}
     const rd=document.getElementById('routeDiag');
     if(rd){const matched=[...arguments].length;rd.textContent='Direktaufruf: '+(window.location.hash||'(kein Anker)')+' · '+(window.location.search||'(keine Parameter)');rd.style.display=hash||seite? 'block':'none';}
   }catch(e){console.error('Direktaufruf konnte nicht verarbeitet werden:',e)}
