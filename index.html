@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vereins-Informationssystem – V2.1.1</title>
+<title>Vereins-Informationssystem – V2.1.5</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;overflow:hidden}
@@ -42,6 +42,30 @@ textarea{min-height:120px;resize:vertical}
 .page-slot{width:100%;height:100%;aspect-ratio:210/297;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 5px 18px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
 .page-slot img{width:100%;height:100%;object-fit:contain;display:block;}.empty{opacity:.75;text-align:center;padding:40px}
 .toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#111;padding:12px 18px;border-radius:10px;display:none;z-index:200}
+.tp-toolbar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:18px 0 14px}
+.tp-toolbar select{width:auto;min-width:220px;margin:0}
+.tp-list{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px 4px 100px}
+.tp-card{background:rgba(0,0,0,.66);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:7px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;transition:opacity .3s}
+.tp-card.tp-past{opacity:.4}
+.tp-name{flex:0 0 200px;width:200px;font-weight:800;font-size:14px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tp-name.tp-name-wrap{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:clip}
+.tp-type-badge{font-size:11px;font-weight:700;opacity:.85;background:rgba(255,255,255,.15);padding:2px 9px;border-radius:20px;white-space:nowrap;flex:none}
+.tp-row.tp-players-disabled select{opacity:.35;pointer-events:none;background:rgba(255,255,255,.05)}
+.tp-row.tp-players-disabled label{opacity:.35}
+.tp-stats{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 10px}
+.tp-stat{background:rgba(255,255,255,.1);border-radius:10px;padding:6px 12px;font-size:12px;white-space:nowrap}
+.tp-stat b{font-size:15px;display:block}
+.tp-date{flex:0 0 130px;width:130px;display:flex;flex-direction:column;align-items:center;gap:1px;font-weight:700;font-size:15px;line-height:1.3;opacity:.9;white-space:nowrap;text-align:center}
+@media(max-width:1100px){.tp-name{width:auto;max-width:none}.tp-date{width:auto}}
+.tp-fields{display:flex;flex-direction:column;gap:4px 0;flex:1;min-width:280px}
+.tp-fields-row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:flex-end}
+.tp-row{display:flex;align-items:center;gap:6px}
+.tp-row label{margin:0;font-weight:600;font-size:11px;opacity:.8;white-space:nowrap}
+.tp-row select{width:auto;min-width:140px;margin:0;padding:4px 7px;font-size:12px}
+.tp-loc{font-size:13px;opacity:.85;white-space:nowrap}
+.tp-empty{text-align:center;padding:60px;opacity:.8;font-size:18px}
+@media(min-width:1101px){.tp-card{padding:5px 16px}.tp-row select{padding:3px 6px}}
+@media(max-width:1100px){.tp-card{flex-direction:column;align-items:stretch;padding:10px 16px}.tp-fields-row{justify-content:flex-start}}
 @media(max-width:900px){.admin-grid{grid-template-columns:1fr;overflow:auto}.menu button{min-width:0;width:94%}}
 
 .pdf-modal{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:1000;padding:25px}.pdf-modal.show{display:flex}.pdf-dialog{width:min(1200px,96vw);height:min(88vh,900px);background:#f2f2f2;color:#111;border-radius:14px;padding:18px;display:flex;flex-direction:column;box-shadow:0 10px 50px #000}.pdf-dialog h2{margin:0 0 5px}.pdf-pages{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;padding:14px}.pdf-page{background:#fff;border:4px solid transparent;border-radius:8px;padding:5px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);text-align:center}.pdf-page.selected{border-color:#b30000}.admin-preview{padding:12px;background:rgba(255,255,255,.05);border-radius:10px;overflow:auto}.admin-tournament-page{display:grid;gap:10px;align-content:start;justify-content:start;padding:10px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.2);border-radius:10px;min-width:680px}.admin-tournament-slot{position:relative;background:rgba(255,255,255,.06);border:2px dashed rgba(255,255,255,.28);border-radius:8px;min-width:0;overflow:hidden;cursor:grab;display:flex;align-items:center;justify-content:center}.admin-tournament-slot:active{cursor:grabbing}.admin-tournament-slot.filled{background:#fff;border-style:solid;border-color:rgba(255,255,255,.75)}.admin-tournament-slot.drag-over{outline:4px solid #b30000;outline-offset:-3px;background:rgba(179,0,0,.22)}.admin-tournament-slot img{width:100%;height:100%;object-fit:contain;display:block}.admin-tournament-placeholder{font-size:12px;font-weight:700;opacity:.7;text-align:center;padding:8px}.admin-tournament-position{position:absolute;left:5px;top:5px;background:rgba(0,0,0,.7);color:#fff;border-radius:5px;padding:2px 5px;font-size:10px;z-index:2}.admin-tournament-delete{position:absolute;right:4px;bottom:4px;z-index:3;padding:4px 7px!important;font-size:11px!important}.admin-preview-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}.admin-preview-pageinfo{font-weight:700}.admin-preview-help{margin-top:8px}.pdf-page canvas{max-width:100%;height:auto;display:block;margin:auto}.photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.photo-item{background:rgba(0,0,0,.55);border-radius:12px;padding:8px}.photo-item img{width:100%;height:260px;object-fit:contain;background:#111;border-radius:8px}.photo-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}.photo-stage img{max-width:95%;max-height:88%;object-fit:contain;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.5)}.photo-carousel{width:100%;}.photo-carousel-track{width:100%;height:100%;position:relative;overflow:visible}.photo-carousel-item{position:absolute;top:8%;display:flex;align-items:center;justify-content:center;transition:left .8s ease,width .8s ease,height .8s ease,opacity .8s ease;pointer-events:none}.photo-carousel-item img{display:block;width:100%;height:100%;object-fit:contain;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.5)}.photo-carousel-item.center{width:58%;height:88%;left:21%;z-index:3;opacity:1}.photo-carousel-item.side{width:18%;height:48%;z-index:2;opacity:.72}.photo-carousel-item.side img{width:100%;height:100%;}.photo-carousel-item.left{left:2%;top:48%;}.photo-carousel-item.right{left:80%;top:8%;}.photo-carousel-item.incoming{left:101%;top:8%;width:18%;height:48%;z-index:1;opacity:0;visibility:hidden}#photos .header .title{text-align:center;width:100%}.photo-carousel-item.leaving{left:-20%;top:48%;width:18%;height:48%;z-index:1;opacity:0;visibility:hidden}.photo-slide{animation:photoFade 1s ease both}@keyframes photoFade{from{opacity:0}to{opacity:1}}.photo-scroll{width:100%;overflow:hidden;white-space:nowrap}.photo-scroll-track{display:inline-flex;gap:18px;animation:photoScroll 30s linear infinite}.photo-scroll-track img{width:320px;height:240px;object-fit:contain;background:#111;border-radius:10px}@keyframes photoScroll{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
@@ -57,15 +81,16 @@ textarea{min-height:120px;resize:vertical}
 .inv-zoom-close{position:absolute;top:14px;right:18px;width:48px;height:48px;min-width:0;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(0,0,0,.6);color:#fff;border:2px solid rgba(255,255,255,.55)}
 </style>
 </head>
-<body><div id="appVersion" class="app-version">Version 2.1.1</div>
+<body><div id="appVersion" class="app-version">Version 2.1.5</div>
 <section id="home" class="view active">
-  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.1.1</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
+  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.1.5</div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
   <div class="menu">
     <button onclick="openTournamentSection('tournaments')">1. Turniereinladungen</button>
     <button onclick="openTournamentSection('ownTournaments')">2. Eigene Turniereinladungen</button>
     <button onclick="openPublicSection('news')">3. Vereinsnachrichten</button>
     <button onclick="openPublicSection('photos')">4. Fotos für Diashow</button>
     <button onclick="openPublicSection('sponsorPhotos')">5. Fotos Sponsoren für Diashow</button>
+    <button onclick="showView('tournamentPlanner')">6. Turnierplaner</button>
   </div>
 </section>
 
@@ -76,7 +101,7 @@ textarea{min-height:120px;resize:vertical}
 </section>
 
 <section id="tournaments" class="view">
-  <div class="header tournament-header"><div class="tournament-version">Version 2.1.1</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
+  <div class="header tournament-header"><div class="tournament-version">Version 2.1.5</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
   <div id="tContent" class="tournament-pages"></div>
   <div id="tFooter" class="tournament-footer" style="display:none">Über eine Meldung würden wir uns freuen</div>
   <div class="bottom tournament-bottom">
@@ -108,6 +133,14 @@ textarea{min-height:120px;resize:vertical}
   <div class="bottom"><button id="sponsorPhotoPrev" onclick="changePhotoAlbum(-1)">Voriger Monat</button><button id="sponsorPhotoNext" onclick="changePhotoAlbum(1)">Nächster Monat</button><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
 </section>
 
+<section id="tournamentPlanner" class="view">
+  <div class="header"><div><div class="title">Turnierplaner</div><div class="subtitle">Terminplan EC Wegscheid</div></div></div>
+  <div id="tpStats" class="tp-stats"></div>
+  <div class="tp-toolbar"><label style="margin:0">Zeitraum</label><select id="tpPeriodFilter" onchange="renderTournamentPlanner()"></select><div class="small" style="flex:1;text-align:right">„Gemeldet von", die Spieler und die Art der Veranstaltung können hier direkt per Dropdown geändert werden.</div></div>
+  <div id="tpContent" class="tp-list"></div>
+  <div class="bottom"><button onclick="returnToPowerPoint()">Hauptmenü</button></div>
+</section>
+
 <section id="login" class="view">
   <div class="header"><div><div class="title">Verwaltung</div><div class="subtitle">Administrator-Anmeldung</div></div></div>
   <div class="content" style="max-width:500px;margin:30px auto;width:100%;flex:none">
@@ -133,6 +166,7 @@ textarea{min-height:120px;resize:vertical}
       <h2>Bereiche</h2>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('t')">Turniereinladungen</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('o')">Eigene Turniereinladungen</button>
+      <button style="width:100%;margin-bottom:8px" onclick="adminSection('tp')">Turnierplaner</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('n')">Vereinsnachrichten</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('p')">Fotos für Diashow</button>
       <button style="width:100%;margin-bottom:8px" onclick="adminSection('sp')">Fotos Sponsoren für Diashow</button>
@@ -166,7 +200,7 @@ try{
 }catch(e){console.error("Firebase Initialisierung:",e);}
 </script>
 <script>
-const APP_VERSION='2.1.1';
+const APP_VERSION='2.1.5';
 const DBKEY='verein_info_test_v2';
 const OLD_DBKEY='verein_info_test_v1';
 const DEFAULT_DB={tournaments:{},ownTournaments:{},news:[],photos:[],photoAlbums:{},settings:{tournamentPerPage:12},users:[{id:'admin',name:'Administrator',protected:true}]};
@@ -174,6 +208,12 @@ let data=JSON.parse(localStorage.getItem(DBKEY)||'null');
 if(!data){try{data=JSON.parse(localStorage.getItem(OLD_DBKEY)||'null')}catch(e){data=null}}
 data=data||JSON.parse(JSON.stringify(DEFAULT_DB));
 data.tournaments=data.tournaments||{};data.ownTournaments=data.ownTournaments||{};data.news=data.news||[];data.photos=data.photos||[];data.photoAlbums=data.photoAlbums||{};data.sponsorPhotos=data.sponsorPhotos||[];data.sponsorPhotoAlbums=data.sponsorPhotoAlbums||{};data.settings=data.settings||{};data.settings.tournamentPerPage=Number(data.settings.tournamentPerPage)||12;data.users=Array.isArray(data.users)&&data.users.length?data.users:[{id:'admin',name:'Administrator',protected:true}];if(!data.users.some(u=>u.id==='admin'))data.users.unshift({id:'admin',name:'Administrator',protected:true});{let hadPw=false;data.users.forEach(u=>{if(u&&'password' in u){delete u.password;hadPw=true}});if(hadPw){try{localStorage.setItem(DBKEY,JSON.stringify(data))}catch(e){}}}
+const TP_PLAYER_NAMES=["Allmannsberger Adi", "Bauer Patrick", "Breitenfellner Astrid", "Breitenfellner Lisa", "Breitenfellner Paul", "Breitenfellner Philipp", "Breitenfellner Thomas", "Dobretsberger Bettina", "Eberhardt Christian", "Eberhardt Toni", "Fesl Simon", "Fesl Thomas", "Freund Heiner", "Freund Johannes", "Freund Jonas", "Freund Stefan", "Gottinger Klaus", "Gottinger Renate", "Grimbs Daniela", "Haselbeck Wolfgang", "Heidinger Günter", "Hellauer Herbert", "Hellauer Manfred", "Hellauer Matthias", "Hogger Diana", "Hogger Luca", "Hogger Madeleine", "Hogger Matthias", "Höglinger Heinz", "Höglinger Juliane", "Höglinger Paul", "Hoheneder Angelika", "Hoheneder Tobias", "Kasberger Tobias", "Knollmüller Heinz", "Kössler Julian", "Krause Joachim", "Kutnik Michael", "Ledermüller Martina", "Ledermüller Michael", "Münichshofer Timo", "Neussl Josef", "Pendelin Manuel", "Pendelin Neo", "Pilsl Alexander", "Resch Christina", "Resch Daniel", "Resch Johannes", "Resch Katharina", "Resch Michael", "Richtsfeld Thomas", "Schaubschläger Monika", "Schaubschläger Thomas", "Schichl Josef", "Simml Felix", "Simml Hannah", "Simml Lothar", "Simml Renate", "Simml Thomas", "Stadler Annemarie", "Stadler Martin", "Steininger Dirk", "Steininger Fritz", "Steininger Jürgen", "Stemplinger Kerstin", "Stögbauer Lukas", "Stögmüller Gerhard", "Stoiber Franz", "Weiss Wolfgang", "X"];
+const TP_SEED_EVENTS=[{"id":"seed_1","name":"Turnier Hochwinkl","date":"2026-01-04","time":"09:00","reportedBy":"Fesl Thomas","players":["Fesl Thomas","Höglinger Heinz","Stadler Martin","Steininger Jürgen"],"location":"Waldkirchen Eishalle"},{"id":"seed_2","name":"Turnier Hauzenberg","date":"2026-01-06","time":"07:30","reportedBy":"Freund Heiner","players":["X","X","X","X"],"location":"Waldkirchen Eishalle"},{"id":"seed_3","name":"Heimspiel Gremlins","date":"2026-01-10","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Stüberl"},{"id":"seed_4","name":"Turnier Perlesreut","date":"2026-01-16","time":"18:00","reportedBy":"Höglinger Heinz","players":["X","X","X","X"],"location":"Waldkirchen Eishalle"},{"id":"seed_5","name":"Eispartie Hinzenbach 1 Mannschaften","date":"2026-01-17","time":"12:30","reportedBy":"Stadler Martin","players":["Stadler Martin","Stadler Annemarie","Stemplinger Kerstin","Resch Katharina"],"location":"Hinzenbach"},{"id":"seed_6","name":"Eispartie Hinzenbach 2. Mannschaft","date":"2026-01-17","time":"12:30","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Resch Michael","Hellauer Manfred","Pendelin Manuel"],"location":"Hinzenbach"},{"id":"seed_7","name":"Turnier Ulrichsberg","date":"2026-01-17","time":"13:00","reportedBy":"Höglinger Paul","players":["Höglinger Paul","Stögbauer Lukas","",""],"location":"Halle Ulrichsberg"},{"id":"seed_8","name":"Heimspiel Gremlins","date":"2026-01-17","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Stüberl"},{"id":"seed_9","name":"Mannschaftssitzung EC Wegscheid","date":"2026-01-18","time":"10:00","reportedBy":"X","players":["X","X","X","X"],"location":"Stüberl"},{"id":"seed_10","name":"Schardenberg Turnier","date":"2026-01-30","time":"18:30","reportedBy":"Stadler Martin","players":["Stadler Martin","Hellauer Manfred","Eberhardt Christian","Münichshofer Timo"],"location":"Halle Schardenberg"},{"id":"seed_11","name":"Turnier Neustift SPÖ auf Eis","date":"2026-02-07","time":"08:00","reportedBy":"Simml Felix","players":["Simml Felix","Höglinger Heinz","Breitenfellner Philipp","Schaubschläger Thomas"],"location":"Sarleinsbach Halle"},{"id":"seed_12","name":"Faschingsschiessen EC Wegscheid","date":"2026-02-07","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_13","name":"Bezirksliga Ost Eis 1.Spieltag Mannschaft 1","date":"2026-02-07","time":"08:00","reportedBy":"Freund Heiner","players":["Freund Heiner","Höglinger Paul","Hellauer Matthias","Kasberger Tobias"],"location":"Waldkirchen Eishalle"},{"id":"seed_14","name":"Bezirksliga Ost Eis 2.Spieltag Mannschaft 1","date":"2026-02-21","time":"08:00","reportedBy":"Freund Heiner","players":["Freund Heiner","Höglinger Paul","Hellauer Matthias","Kasberger Tobias"],"location":"Waldkirchen Eishalle"},{"id":"seed_15","name":"Esternberg Turnier DUO","date":"2026-02-28","time":"14:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Hogger Mathias","X","X"],"location":"Esternberg Halle"},{"id":"seed_16","name":"Kreisoberliga Eis Mannschaft 2","date":"2026-03-01","time":"08:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Fesl Thomas","Freund Johannes","Steininger Jürgen"],"location":"Waldkirchen Eishalle"},{"id":"seed_17","name":"Kreisoberliga Eis Mannschaft 3","date":"2026-03-01","time":"08:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Münichshofer Timo","Hellauer Manfred","Schaubschläger Thomas"],"location":"Waldkirchen Eishalle"},{"id":"seed_18","name":"Turnier U14 Rackling","date":"2026-03-01","time":"10:00","reportedBy":"Freund Johannes","players":["Freund Jonas","Hogger Madeleine","Hogger Luca","X"],"location":"Rackling Halle"},{"id":"seed_19","name":"Turnier U19 Rackling","date":"2026-03-01","time":"16:00","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Breitenfellner Paul","Resch Markus","Resch Luis"],"location":"Rackling Halle"},{"id":"seed_20","name":"Turnier Vichtenstein","date":"2026-03-06","time":"18:00","reportedBy":"Heidinger Günter","players":["Heidinger Günter","Hoheneder Angelika","Freund Johannes","Hellauer Manfred"],"location":"Vichtenstein Halle"},{"id":"seed_21","name":"Turnier Sarleinsbach","date":"2026-03-06","time":"18:00","reportedBy":"Freund Heiner","players":["Schichl Josef","Breitenfellner Thomas","Resch Daniel","Freund Stefan"],"location":"Sarleinsbach Halle"},{"id":"seed_22","name":"Arbeitseinsatz Halle","date":"2026-03-07","time":"09:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_23","name":"Mixed Turnier Sarleinsbach","date":"2026-03-08","time":"08:30","reportedBy":"Stadler Annemarie","players":["Stadler Martin","Stadler Annemarie","Hellauer Herbert","Schaubschläger Moni"],"location":"Sarleinsbach Halle"},{"id":"seed_24","name":"Mixed Turnier Sarleinsbach","date":"2026-03-08","time":"08:30","reportedBy":"Simml Lothar","players":["Simml Renate","Höglinger Juliane","Höglinger Paul","Münichshofer Timo"],"location":"Sarleinsbach Halle"},{"id":"seed_25","name":"Haas Cup Unteriglbach","date":"2026-03-12","time":"18:30","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Fesl Thomas","Krause Joachim","Ledermüller Michael"],"location":"Unteriglbach Halle"},{"id":"seed_26","name":"Turnier St.Martin","date":"2026-03-13","time":"18:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Freund Stefan","Allmannsberger Adi","Resch Daniel"],"location":"St.Martin Halle"},{"id":"seed_27","name":"1.Vorrunde Preisgeldturnier","date":"2026-03-13","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_28","name":"Haas Cup Finale","date":"2026-03-14","time":"09:00","reportedBy":"Höglinger Heinz","players":["Münichshofer Timo","Höglinger Heinz","Krause Joachim","Fesl Thomas"],"location":"Unteriglbach Halle"},{"id":"seed_29","name":"Mixed Turnier 1","date":"2026-03-14","time":"08:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_30","name":"Brotzeitturnier 1","date":"2026-03-14","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_31","name":"St.Willibald Turnier","date":"2026-03-14","time":"16:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Höglinger Paul","Krause Joachim","Resch Johannes"],"location":"Halle St.Willibald"},{"id":"seed_32","name":"Montags Solo Turnier 1","date":"2026-03-16","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_33","name":"Turnier St.Peter","date":"2026-03-20","time":"18:00","reportedBy":"Steininger Jürgen","players":["Steininger Jürgen","Ledermüller Michael","Freund Johannes","Münichshofer Timo"],"location":"St.Peter Halle"},{"id":"seed_34","name":"2.Vorrunde Preisgeldturnier","date":"2026-03-20","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_35","name":"Mixed Turnier 2","date":"2026-03-21","time":"08:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_36","name":"Brotzeitturnier 2","date":"2026-03-21","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_37","name":"Turnier St.Peter Mixed","date":"2026-03-21","time":"14:00","reportedBy":"Hellauer Herbert","players":["Hellauer Herbert","Stadler Martin","Stadler Annemarie","Simml Renate"],"location":"St.Peter Halle"},{"id":"seed_38","name":"Montags Solo Turnier 2","date":"2026-03-23","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_39","name":"Kreisversammlung Kreis 107","date":"2026-03-27","time":"19:00","reportedBy":"Steininger Jürgen","players":["Höglinger Heinz","X","X","X"],"location":"Waldkirchen Hallenbad"},{"id":"seed_40","name":"3.Vorrunde Preisgeldturnier","date":"2026-03-27","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_41","name":"Finale Preisgeldturnier","date":"2026-03-28","time":"10:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_42","name":"Generalversammlung","date":"2026-03-28","time":"20:00","reportedBy":"X","players":["X","X","X","X"],"location":"Escherich"},{"id":"seed_43","name":"Montags Solo Turnier 3","date":"2026-03-30","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_44","name":"Solo Montags Turnier Finale","date":"2026-04-06","time":"15:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_45","name":"Beginn Solo Pyramide","date":"2026-04-06","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_46","name":"Turnier Passau Neustift","date":"2026-04-11","time":"08:00","reportedBy":"Allmannsberger Adi","players":["Allmannsberger Adi","","",""],"location":"Passau Neustift Halle"},{"id":"seed_47","name":"Kreisjubiläumsturnier 1","date":"2026-04-11","time":"08:00","reportedBy":"Freund Johannes","players":["Freund Johannes","Hellauer Manfred","Hellauer Matthias",""],"location":"Wegscheid Halle"},{"id":"seed_48","name":"Kreisjubiläumsturnier 2","date":"2026-04-11","time":"08:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Ledermüller Michael","Fesl Thomas","Hogger Matthias"],"location":"Rackling Halle"},{"id":"seed_49","name":"Kreisjubiläumsturnier Finale wenn Quali","date":"2026-04-11","time":"13:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Ledermüller Michael","Fesl Thomas","Höglinger Paul"],"location":"Sassbach Halle"},{"id":"seed_50","name":"Turnier Rackling","date":"2026-04-18","time":"15:00","reportedBy":"Freund Heiner","players":["Freund Heiner","Freund Stefan","Breitenfellner Thomas","Resch Daniel"],"location":"Rackling Halle"},{"id":"seed_51","name":"Gremlins Heimspiel","date":"2026-04-18","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_52","name":"Jugendmeisterschaften U14 U16 U19 U23","date":"2026-04-19","time":"09:00","reportedBy":"X","players":["X","X","X","X"],"location":"Rackling Halle"},{"id":"seed_53","name":"Turnier Batavia","date":"2026-04-24","time":"17:30","reportedBy":"Steininger Jürgen","players":["Steininger Jürgen","","",""],"location":"Freinberg Halle"},{"id":"seed_54","name":"Turnier Kollerschlag","date":"2026-04-25","time":"08:00","reportedBy":"Freund Johannes","players":["Freund Johannes","Münichshofer Timo","Breitenfellner Paul","Steininger Jürgen"],"location":"Kollerschlag Halle"},{"id":"seed_55","name":"Abschlussturnier Frauen Cup","date":"2026-04-25","time":"13:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_56","name":"Abschlussturnier DUO Cup EC Wegscheid","date":"2026-05-02","time":"13:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_57","name":"Kreispokal Damen Kreis 107 + Kreis 102  M1","date":"2026-05-03","time":"09:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Resch Katharina","Simml Renate","Stemplinger Kerstin"],"location":"Wegscheid Halle"},{"id":"seed_58","name":"Kreispokal Damen Kreis 107 + Kreis 102 M2","date":"2026-05-03","time":"09:00","reportedBy":"Hoheneder Angelika","players":["Hoheneder Angelika","Resch Kchristina","Höglinger Juliane","Schaubschläger Monika"],"location":"Wegscheid Halle"},{"id":"seed_59","name":"Bezirksmeisterschaft Ziel U19","date":"2026-05-03","time":"","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Münichshofer Timo","Pendelin Neo","X"],"location":"Plattling"},{"id":"seed_60","name":"Mixed Turnier Lacken","date":"2026-05-08","time":"18:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Schaubschläger Monika","Grimbs Daniela","Gottinger Klaus"],"location":"Lacken Halle"},{"id":"seed_61","name":"Turnier Haidmühle","date":"2026-05-08","time":"17:30","reportedBy":"Freund Heiner","players":["Schichl Josef","Breitenfellner Thomas","Resch Daniel","Freund Stefan"],"location":"Haidmühle"},{"id":"seed_62","name":"Turnier Sulzbach","date":"2026-05-08","time":"17:30","reportedBy":"Hellauer Manfred","players":["Freund Heiner","Höglinger Heinz","Höglinger Paul","Krause Joachim"],"location":"Sulzbach"},{"id":"seed_63","name":"Sittenberg Turnier","date":"2026-05-09","time":"08:30","reportedBy":"Höglinger Paul","players":["Höglinger Heinz","Höglinger Paul","Krause Joachim","Münichshofer Timo"],"location":"Sittenberg Halle"},{"id":"seed_64","name":"Mixed Meisterschaft Kreis 107 M1","date":"2026-05-09","time":"14:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Hellauer Herbert","Stadler Annemarie","Gottinger Renate"],"location":"Wegscheid Halle"},{"id":"seed_65","name":"Mixed Meisterschaft Kreis 107 M2","date":"2026-05-09","time":"14:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Simml Thomas","Simml Renate","Höglinger Juliane"],"location":"Wegscheid Halle"},{"id":"seed_66","name":"Mixed Meisterschaft Kreis 107 M3","date":"2026-05-09","time":"14:00","reportedBy":"Gottinger Klaus","players":["Gottinger Klaus","Haselbeck Wolfgang","Grimbs Daniela","Schaubschläger Monika"],"location":"Wegscheid Halle"},{"id":"seed_67","name":"Mixed Meisterschaft Kreis 107 M4","date":"2026-05-09","time":"14:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Ledermüller Michael","Hoheneder Angelika","Resch Christina"],"location":"Wegscheid Halle"},{"id":"seed_68","name":"Zielschiessen Damen","date":"2026-05-09","time":"17:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_69","name":"Gremlins Heimspiel","date":"2026-05-09","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_70","name":"Kreiscup Wegscheid 3 gg Salzweg","date":"2026-05-13","time":"18:00","reportedBy":"Freund Johannes","players":["Freund Johannes","Hellauer Herbert","X","X"],"location":"Salzweg"},{"id":"seed_71","name":"Kreiscup Wegscheid 2 gg Salzweg","date":"2026-05-13","time":"18:00","reportedBy":"Höglinger Heinz","players":["Ledermüller Michael","Höglinger Paul","X","X"],"location":"Salzweg"},{"id":"seed_72","name":"Vatertagsschiessen EC Wegscheid","date":"2026-05-14","time":"10:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_73","name":"Bezirksmeisterschaft U19","date":"2026-05-16","time":"16:30","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Münichshofer Timo","Breitenfellner Paul","Pilsl Alexander"],"location":"Plattling"},{"id":"seed_74","name":"Gremlins Heimspiel","date":"2026-05-16","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_75","name":"Bezirksmeisterschaft U14 Ziel","date":"2026-05-17","time":"","reportedBy":"Höglinger Heinz","players":["Freund Jonas","X","X","X"],"location":"Plattling"},{"id":"seed_76","name":"Kreiscup Wegscheid 2 gg Salzweg","date":"2026-05-19","time":"18:00","reportedBy":"Höglinger Heinz","players":["Fesl Thomas","Ledermüller Michael","X","X"],"location":"Wegscheid Halle"},{"id":"seed_77","name":"Kreiscup Wegscheid 3 gg Salzweg","date":"2026-05-19","time":"18:00","reportedBy":"Freund Johannes","players":["Haselbeck Wolfgang","Hellauer Herbert","X","X"],"location":"Wegscheid Halle"},{"id":"seed_78","name":"Kreiscup Wegscheid 1 gg Herzogsreut","date":"2026-05-21","time":"19:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Hellauer Manfred","X","X"],"location":"Wegscheid Halle"},{"id":"seed_79","name":"Duo Turnier Harburg M1","date":"2026-05-22","time":"18:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Breitenfellner Tom","X","X"],"location":"Harburg"},{"id":"seed_80","name":"Duo Turnier Harburg M2","date":"2026-05-22","time":"18:00","reportedBy":"Gottinger Klaus","players":["Gottinger Klaus","Simml Thomas","X","X"],"location":"Harburg"},{"id":"seed_81","name":"Turnier Harburg","date":"2026-05-23","time":"08:30","reportedBy":"Stadler Martin","players":["Stadler Martin","Simml Thomas","Gottinger Klaus","Breitenfellner Thomas"],"location":"Harburg"},{"id":"seed_82","name":"Turnier Rathsmannsdorf","date":"2026-05-23","time":"09:00","reportedBy":"Resch Johannes","players":["Resch Johannes","Münichshofer Timo","Allmannsberger Adi","Krause Joachim"],"location":"Rathsmannsdorf"},{"id":"seed_83","name":"Turnier Haidmühle Mixed","date":"2026-05-23","time":"14:00","reportedBy":"Simml Lothar","players":["Simml Renate","Simml Lothar","Höglinger Juliane","Breitenfellner Philipp"],"location":"Haidmühle"},{"id":"seed_84","name":"Turnier Hauzenberg","date":"2026-05-30","time":"13:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Gottinger Klaus","Münichshofer Timo","Pendelin Neo"],"location":"Hauzenberg Halle"},{"id":"seed_85","name":"Gremlins Heimspiel","date":"2026-05-30","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_86","name":"Turnier Hauzenberg","date":"2026-05-30","time":"13:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Simml Thomas","Hellauer Herbert","Stadler Martin"],"location":"Hauzenberg Halle"},{"id":"seed_87","name":"Bezirkspokal Damen","date":"2026-05-31","time":"08:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Stemplinger Kerstin","Simml Renate","Resch Katharina"],"location":"Pilgramsberg"},{"id":"seed_88","name":"Kreiscup Wegscheid 3 gg Vorderfreundorf","date":"2026-06-03","time":"19:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Simml Thomas","x","x"],"location":"Wegscheid Halle"},{"id":"seed_89","name":"Kreiscup Wegscheid 2 gg Herzogsreut","date":"2026-06-03","time":"18:30","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Höglinger Paul","X","X"],"location":"Herzogsreut Halle"},{"id":"seed_90","name":"Turnier Rackling","date":"2026-06-04","time":"17:00","reportedBy":"Resch Katharina","players":["Resch Katharina","Stadler Annemarie","Stemplinger Kerstin","Stadler Martin"],"location":"Rackling Halle"},{"id":"seed_91","name":"Kreiscup Wegscheid 1 gg. Sittenberg","date":"2026-06-04","time":"17:00","reportedBy":"Stadler Martin","players":["Hellauer Manfred","Hogger Mathias","X","X"],"location":"Sittenberg Halle"},{"id":"seed_92","name":"Turnier Lichtenhaag","date":"2026-06-05","time":"17:00","reportedBy":"Resch Johannes","players":["Resch Johannes","","",""],"location":"Lichtenhaag"},{"id":"seed_93","name":"Turnier Kumreut","date":"2026-06-06","time":"13:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Hogger Mathias","Freund Heiner","Gottinger Klaus"],"location":"Kumreut"},{"id":"seed_94","name":"Gremlins Heimspiel","date":"2026-06-06","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_95","name":"Bezirksmeisterschaft Herren","date":"2026-06-06","time":"13:00","reportedBy":"X","players":["Stadler Martin","Höglinger Paul","X","X"],"location":"Plattling"},{"id":"seed_96","name":"Bayrische Meisterschaft U19","date":"2026-06-07","time":"09:00","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Breitenfellner Paul","Münichshofer Timo","Pilsl Alexander"],"location":"Schorndorf"},{"id":"seed_97","name":"Turnier Preying","date":"2026-06-07","time":"08:30","reportedBy":"Ledermüller Michael","players":["Ledermüller Michael","Freund Johannes","Hellauer Manfred","Gottinger Klaus"],"location":"Preying Halle"},{"id":"seed_98","name":"Kreiscup Wegscheid 1 gg. Sittenberg 1","date":"2026-06-11","time":"18:30","reportedBy":"Stadler Martin","players":["Stadler Martin","Hellauer Manfred","X","X"],"location":"Wegscheid Halle"},{"id":"seed_99","name":"Turnier Innernzell","date":"2026-06-12","time":"18:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Hellauer Manfred","Eberhart Christian","Münichshofer Timo"],"location":"Innernzell Halle"},{"id":"seed_100","name":"Turnier Kellberg","date":"2026-06-12","time":"18:00","reportedBy":"Haselbeck Wolfgang","players":["Freund Heiner","Freund Johannes","Freund Stefan","Simml Thomas"],"location":"Kellberg"},{"id":"seed_101","name":"Turnier Kellberg","date":"2026-06-12","time":"18:00","reportedBy":"Allmannsberger Adi","players":["Allmannsberger Adi","Höglinger Heinz","Breitenfellner Paul","Kutnik Michael"],"location":"Kellberg"},{"id":"seed_102","name":"Turnier Herren Aufham","date":"2026-06-13","time":"13:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Münichshofer Timo","Hellauer Manfred","Hogger Mathias"],"location":"Aufham Halle"},{"id":"seed_103","name":"Turnier Herren Aufham","date":"2026-06-13","time":"13:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Höglinger Heinz","Höglinger Paul","Fesl Thomas"],"location":"Aufham Halle"},{"id":"seed_104","name":"Turnier Damen Aufham","date":"2026-06-13","time":"17:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Stemplinger Kerstin","Resch Katharina","Simml Renate"],"location":"Aufham Halle"},{"id":"seed_105","name":"Gremlins Heimspiel","date":"2026-06-13","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_106","name":"Mixed Turnier Rathsmannsdorf","date":"2026-06-14","time":"10:00","reportedBy":"Gottinger Klaus","players":["Gottinger Klaus","Haselbeck Wolfgang","Resch Christina","Hoheneder Angelika"],"location":"Rathsmannsdorf"},{"id":"seed_107","name":"Festzug Messnerschlag","date":"2026-06-14","time":"09:00","reportedBy":"X","players":["X","X","X","X"],"location":"Messnerschlag"},{"id":"seed_108","name":"Kreiscup Wegscheid 3 gg. Vorderfreundorf","date":"2026-06-18","time":"19:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Simml Thomas","X","X"],"location":"Vorderfreundorf Halle"},{"id":"seed_109","name":"Kreiscup Wegscheid 2 gg. Kellberg 2","date":"2026-06-19","time":"17:30","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Höglinger Paul","X","X"],"location":"Wegscheid Halle"},{"id":"seed_110","name":"Turnier Haidmühle","date":"2026-06-19","time":"17:30","reportedBy":"Allmannsberger Adi","players":["Allmannsberger Adi","Krause Joachim","Breitenfellner Paul","Resch Johannes"],"location":"Haidmühle"},{"id":"seed_111","name":"Turnier Weiß Blau Windorf","date":"2026-06-20","time":"09:00","reportedBy":"Stadler Martin","players":["Höglinger Heinz","Hellauer Manfred","Hogger Mathias","Münichshofer Timo"],"location":"Windorf"},{"id":"seed_112","name":"Turnier Oberkreuzberg","date":"2026-06-27","time":"14:00","reportedBy":"Resch Johannes","players":["Resch Johannes","Stoiber Franz","Gottinger Klaus","Krause Achim"],"location":"Preying Halle"},{"id":"seed_113","name":"Turnier Rothau","date":"2026-06-27","time":"13:30","reportedBy":"Höglinger Paul","players":["Höglinger Paul","Höglinger Heinz","Ledermüller Michael","Steininger Dirk"],"location":"Rothau"},{"id":"seed_114","name":"Fürstenzell Mixed Turnier","date":"2026-06-27","time":"09:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Simml Renate","Breitenfellner Philipp","Höglinger Juliane"],"location":"Fürstenzell Halle"},{"id":"seed_115","name":"Bayrische Meisterschaft U19 Ziel","date":"2026-06-28","time":"","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","X","X","X"],"location":"Huglfing"},{"id":"seed_116","name":"Bayrische Meisterschaft U14 Ziel","date":"2026-06-28","time":"","reportedBy":"Höglinger Heinz","players":["Freund Jonas","X","X","X"],"location":"Huglfing"},{"id":"seed_117","name":"Turnier Zaundorf Damen","date":"2026-06-28","time":"09:00","reportedBy":"Hoheneder Angelika","players":["Hoheneder Angelika","Höglinger Juliane","Breitenfellner Astrid","Resch Christina"],"location":"Zaundorf Halle"},{"id":"seed_118","name":"Gremlins Heimspiel","date":"2026-07-04","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_119","name":"Turnier Untergriesbach","date":"2026-07-04","time":"13:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Gottinger Klaus","Kössler Julian","Steininger Jürgen"],"location":"Untergriesbach"},{"id":"seed_120","name":"Turnier Untergriesbach","date":"2026-07-04","time":"13:00","reportedBy":"Allmannsberger Adi","players":["Allmannsberger Adi","Simml Tom","Krause Achim","Pendelin Manuel"],"location":"Untergriesbach"},{"id":"seed_121","name":"Ländervergleich U19","date":"2026-07-04","time":"09:00","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Breitenfellner Paul","Münichshofer Timo","Pendelin Neo"],"location":"Pilgramsberg"},{"id":"seed_122","name":"Vorrunde Bezirksoberliga","date":"2026-07-05","time":"09:00","reportedBy":"Hellauer Manfred","players":["Hellauer Manfred","Stadler Martin","Hogger Mathias","Eberhardt Christian"],"location":"Vilshofen Stockhalle"},{"id":"seed_123","name":"Schalding Heining Damen Trio","date":"2026-07-05","time":"09:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Stemplinger Kerstin","Resch Katharina","X"],"location":"Schalding Heining"},{"id":"seed_124","name":"KreisCup Wegscheid 1 gg Rackling","date":"2026-07-10","time":"18:30","reportedBy":"Stadler Martin","players":["Hellauer Manfred","Hogger Mathias","X","X"],"location":"Rackling Halle"},{"id":"seed_125","name":"Turnier Zaundorf","date":"2026-07-10","time":"18:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Resch Daniel","Ledermüller Michael","Steininger Jürgen"],"location":"Zaundorf Halle"},{"id":"seed_126","name":"Deutsche Talentsichtung U19","date":"2026-07-11","time":"13:30","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","X","X","X"],"location":"Huglfing"},{"id":"seed_127","name":"Turnier TKC Neureichenau","date":"2026-07-11","time":"","reportedBy":"Steininger Fritz","players":["Steininger Fritz","Hellauer Herbert","Krause Joachim","Allmannsberger Adi"],"location":"Lackenhäuser"},{"id":"seed_128","name":"Turnier Peilstein","date":"2026-07-11","time":"15:00","reportedBy":"Hoheneder Angelika","players":["Hoheneder Angelika","Dobretsberger Bettina","Resch Christina","Höglinger Juliane"],"location":"Peilstein Halle"},{"id":"seed_129","name":"Turnier Oberkümmering","date":"2026-07-11","time":"13:00","reportedBy":"Simml Felix","players":["Simml Felix","Schaubschläger Thomas","Kutnik Michael","Freund Heiner"],"location":"Oberkümmering"},{"id":"seed_130","name":"Turnier Böhmzwiesel","date":"2026-07-11","time":"13:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Freund Johannes","Simml Thomas","Freund Stefan"],"location":"Böhmzwiesel"},{"id":"seed_131","name":"Turnier Kammer","date":"2026-07-11","time":"13:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Fesl Thomas","Steininger Jürgen","Hogger Mathias"],"location":"Kammer"},{"id":"seed_132","name":"Turnier Aich","date":"2026-07-12","time":"14:00","reportedBy":"Ledermüller Michael","players":["Ledermüller Michael","Höglinger Heinz","Hellauer Manfred","Höglinger Paul"],"location":"Aich"},{"id":"seed_133","name":"Damentraining in Rackling","date":"2026-07-14","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Rackling Halle"},{"id":"seed_134","name":"Turnier Sonnen","date":"2026-07-18","time":"","reportedBy":"Steininger Fritz","players":["Steininger Fritz","Resch Daniel","Allmannsberger Adi","Freund Heiner"],"location":"Sonnen"},{"id":"seed_135","name":"Turnier Karlsbach","date":"2026-07-18","time":"09:00","reportedBy":"Münichshofer Timo","players":["Münichshofer Timo","Stadler Martin","Freund Johannes","Freund Jonas"],"location":"Karlsbach"},{"id":"seed_136","name":"Turnier Niederkappel","date":"2026-07-18","time":"08:00","reportedBy":"Steininger Jürgen","players":["Steininger Jürgen","Gottinger Klaus","Resch Johannes","Simml Lothar"],"location":"Niederkappel"},{"id":"seed_137","name":"Rückrunde Bezirksoberliga","date":"2026-07-19","time":"09:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Hellauer Manfred","Münichshofer Timo","Eberhardt Christian"],"location":"Vilshofen Stockhalle"},{"id":"seed_138","name":"Bezirksoberliga Damen","date":"2026-07-19","time":"08:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Resch Katharina","Stemplinger Kerstin","Simml Renate"],"location":"Plattling"},{"id":"seed_139","name":"Bezirksliga Damen","date":"2026-07-19","time":"09:00","reportedBy":"Hoheneder Angelika","players":["Hoheneder Angelika","Resch Christina","Breitenfellner Astrid","Höglinger Juliane"],"location":"Garham Halle"},{"id":"seed_140","name":"Kreiscup Wegscheid 2 gg. Kellberg 2","date":"2026-07-23","time":"19:00","reportedBy":"Höglinger Heinz","players":["Fels Thomas","Ledermüller Michael","X","X"],"location":"Wegscheid Halle"},{"id":"seed_141","name":"Turnier Obermühl","date":"2026-07-25","time":"09:00","reportedBy":"Simml Tom","players":["Simml Thomas","Stadler Martin","Allmannsberger Adi","Gottinger Klaus"],"location":"Obermühl"},{"id":"seed_142","name":"Turnier Obermühl Mixed","date":"2026-07-25","time":"14:00","reportedBy":"Hellauer Herbert","players":["Hellauer Herbert","Schaubschläger Monika","Steininger Fritz","Höglinger Juliane"],"location":"Obermühl"},{"id":"seed_143","name":"Turnier Vorderfreundorf","date":"2026-07-31","time":"18:00","reportedBy":"Stadler Martin","players":["Hellauer Manfred","Hogger Mathias","Haselbeck Wolfgang","Gottinger Klaus"],"location":"Vorderfreundorf Halle"},{"id":"seed_144","name":"Turnier Lembach","date":"2026-07-31","time":"18:00","reportedBy":"Freund Heiner","players":["Freund Heiner","Resch Daniel","Breitenfellner Thomas","Freund Johannes"],"location":"Putzleinsdorf Halle"},{"id":"seed_145","name":"Turnier Vorderfreundorf","date":"2026-08-01","time":"14:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Gottinger Klaus","Steininger Jürgen","Resch Johannes"],"location":"Vorderfreundorf Halle"},{"id":"seed_146","name":"Turnier Schalding Heining","date":"2026-08-01","time":"15:00","reportedBy":"Freund Johannes","players":["Freund Johannes","Hellauer Herbert","Simml Thomas","Resch Daniel"],"location":"Schalding Halle"},{"id":"seed_147","name":"Turnier Mollmannsreith","date":"2026-08-01","time":"15:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Fesl Thomas","Resch Michael","Dobretsberger Michael"],"location":"Mollmannsreith/Kollerschlag"},{"id":"seed_148","name":"Turnier Schalding Heining Mixed","date":"2026-08-02","time":"09:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Stadler Martin","Stemplinger Kerstin","Hellauer Herbert"],"location":"Schalding Halle"},{"id":"seed_149","name":"Euro U19 MI-SA","date":"2026-08-05","time":"","reportedBy":"Höglinger Paul","players":["Höglinger Paul","X","X","X"],"location":"Oberwart"},{"id":"seed_150","name":"Turnier Salzweg","date":"2026-08-07","time":"18:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Münichshofer Timo","Fesl Thomas","Simml Thomas"],"location":"Salzweg"},{"id":"seed_151","name":"Turnier Esternberg","date":"2026-08-07","time":"18:00","reportedBy":"Hellauer Manfred","players":["Hellauer Manfred","Resch Daniel","Resch Johannes","Allmannsberger Adi"],"location":"Esternberg Halle"},{"id":"seed_152","name":"Turnier Esternberg Mixed","date":"2026-08-08","time":"15:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Stadler Annemarie","Stemplinger Kerstin","Fesl Thomas"],"location":"Esternberg Halle"},{"id":"seed_153","name":"Turnier Längenfeld","date":"2026-08-08","time":"13:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Steininger Jürgen","Gottinger Klaus","Hogger Mathias"],"location":"Längenfeld / Tirol"},{"id":"seed_154","name":"Kreiscup Wegscheid 1 gg. Rackling","date":"2026-08-14","time":"18:00","reportedBy":"Stadler Martin","players":["Hellauer Manfred","Münichshofer Timo","X","X"],"location":"Halle Wegscheid"},{"id":"seed_155","name":"Turnier Altreichenau","date":"2026-08-15","time":"13:00","reportedBy":"Freund Johannes","players":["Freund Johannes","Höglinger Heinz","Steininger Dirk","Hellauer Manfred"],"location":"Altreichenau"},{"id":"seed_156","name":"Turnier Putzleinsdorf","date":"2026-08-21","time":"18:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Höglinger Heinz","Fesl Thomas","Hellauer Manfred"],"location":"Putzleinsdorf Halle"},{"id":"seed_157","name":"Turnier St.Roman","date":"2026-08-22","time":"09:00","reportedBy":"Gottinger Klaus","players":["Gottinger Klaus","Lothar Simml","Simml Felix","Steininger Jürgen"],"location":"St.Roman"},{"id":"seed_158","name":"Turnier Mixed Putzleinsdorf","date":"2026-08-22","time":"14:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Hoheneder Angelika","Ledermüller Michael","Resch Christina"],"location":"Putzleinsdorf Halle"},{"id":"seed_159","name":"Bezirkspokal Mixed","date":"2026-08-23","time":"08:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Stadler Annemarie","Stemplinger Kerstin","Hellauer Herbert"],"location":"Pilgramsberg"},{"id":"seed_160","name":"Kreiscup Wegscheid 1 gg. Herzogsreut","date":"2026-08-27","time":"17:00","reportedBy":"Stadler Martin","players":["Hogger Mathias","Münichshofer Timo","X","X"],"location":"Halle Herzogsreut"},{"id":"seed_161","name":"Turnier Gsenget","date":"2026-08-28","time":"18:00","reportedBy":"Hellauer Herbert","players":["Hellauer Herbert","Stadler Martin","Steininger Fritz","Höglinger Heinz"],"location":"Gsenget"},{"id":"seed_162","name":"Turnier Altenfelden","date":"2026-08-28","time":"18:30","reportedBy":"Simml Lothar","players":["Simml Lothar","Gottinger Klaus","Simml Thomas","Hellauer Manfred"],"location":"Altenfelden Halle"},{"id":"seed_163","name":"Turnier Altenfelden Mixed","date":"2026-08-29","time":"08:30","reportedBy":"Simml Lothar","players":["Simml Lothar","Simml Renate","Höglinger Juliane","Simml Thomas"],"location":"Altenfelden Halle"},{"id":"seed_164","name":"Turnier Arnreit","date":"2026-09-04","time":"18:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Pendelin Manuel","Breitenfellner Thomas","Resch Daniel"],"location":"Arnreit Halle"},{"id":"seed_165","name":"Turnier Sittenberg Damen","date":"2026-09-04","time":"18:00","reportedBy":"Stadler Annemarie","players":["Stadler Annemarie","Simml Renate","Resch Katharina","Stemplinger Kerstin"],"location":"Sittenberg Halle"},{"id":"seed_166","name":"Turnier Obernzell","date":"2026-09-05","time":"13:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Resch Johannes","Resch Michael","Heidinger Günter"],"location":"Obernzell"},{"id":"seed_167","name":"Turnier Freinberg","date":"2026-09-05","time":"08:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Freund Johannes","Simml Thomas","Hellauer Herbert"],"location":"Freinberg Halle"},{"id":"seed_168","name":"Turnier Herzogsreut","date":"2026-09-11","time":"18:00","reportedBy":"Heidinger Günter","players":["Heidinger Günter","Allmannsberger Adi","Höglinger Paul","Hellauer Matthias"],"location":"Halle Herzogsreut"},{"id":"seed_169","name":"Turnier Röhrnbach","date":"2026-09-12","time":"08:00","reportedBy":"Freund Heiner","players":["Freund Heiner","Freund Stefan","Breitenfellner Thomas","Resch Daniel"],"location":"Röhrnbach"},{"id":"seed_170","name":"Turnier Altwasser Windorf","date":"2026-09-12","time":"09:00","reportedBy":"Breitenfellner Philipp","players":["Breitenfellner Philipp","Simml Felix","Schaubschläger Thomas","Allmannsberger Adi"],"location":"Halle Zaundorf"},{"id":"seed_171","name":"Turnier Oepping Mixed","date":"2026-09-12","time":"14:00","reportedBy":"Hellauer Manfred","players":["Hellauer Manfred","Hoheneder Angelika","Breitenfellner Astrid",""],"location":"Halle Oepping"},{"id":"seed_172","name":"Kreisoberliga Mannschaft 2","date":"2026-09-12","time":"08:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Ledermüller Michael","Fesl Thomas","Höglinger Paul"],"location":"Hauzenberg Halle"},{"id":"seed_173","name":"Kreisoberliga Mannschaft 3","date":"2026-09-12","time":"08:00","reportedBy":"Haselbeck Wolfgang","players":["Haselbeck Wolfgang","Freund Johannes","Simml Thomas","Hellauer Herbert"],"location":"Hauzenberg Halle"},{"id":"seed_174","name":"Kreisliga Mannschaft 4","date":"2026-09-12","time":"13:00","reportedBy":"Simml Lothar","players":["Simml Lothar","Steininger Jürgen","Gottinger Klaus","Kössler Julian"],"location":"Hauzenberg Halle"},{"id":"seed_175","name":"Kreisliga Mannschaft 5","date":"2026-09-12","time":"13:00","reportedBy":"Hellauer Matthias","players":["Hellauer Matthias","Heidinger Günter","Pendelin Manuel","Steininger Fritz"],"location":"Hauzenberg Halle"},{"id":"seed_176","name":"Deutsche Meisterschaft U19","date":"2026-09-13","time":"09:00","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Münichshofer Timo","Breitenfellner Paul","Pendelin Neo"],"location":"Kühbach"},{"id":"seed_177","name":"Turnier Neufelden","date":"2026-09-18","time":"18:00","reportedBy":"Hellauer Manfred","players":["Münichshofer Timo","Fesl Thomas","Höglinger Heinz","Steininger Dirk"],"location":"Halle St.Peter"},{"id":"seed_178","name":"Gremlins Heimspiel","date":"2026-09-18","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_179","name":"Kreis A-Klasse Mannschaft 6","date":"2026-09-19","time":"08:00","reportedBy":"Freund Heiner","players":["Freund Heiner","Breitenfellner Thomas","Freund Stefan","Resch Daniel"],"location":"Hauzenberg Halle"},{"id":"seed_180","name":"Kreis A-Klasse Mannschaft 7","date":"2026-09-19","time":"08:00","reportedBy":"Simml Felix","players":["Simml Felix","Breitenfellner Philipp","Kasberger Tobias","Schaubschläger Thomas"],"location":"Hauzenberg Halle"},{"id":"seed_181","name":"Kreis A-Klasse Mannschaft 8","date":"2026-09-19","time":"08:00","reportedBy":"Allmannsberger Adi","players":["Allmannsberger Adi","Breitenfellner Paul","Kutnik Michael","Pendelin Neo"],"location":"Hauzenberg Halle"},{"id":"seed_182","name":"Kreis B-Klasse Mannschaft 9","date":"2026-09-19","time":"13:00","reportedBy":"Resch Johannes","players":["Resch Johannes","Stoiber Franz","Krause Joachim","Steininger Dirk"],"location":"Hauzenberg Halle"},{"id":"seed_183","name":"Turnier Niederwaldkirchen","date":"2026-09-24","time":"18:30","reportedBy":"Stadler Martin","players":["Stadler Martin","","",""],"location":"Niederwaldkirchen Halle"},{"id":"seed_184","name":"Kreisversammlung Kreis 107","date":"2026-09-25","time":"19:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","Freund Johannes","Steininger Jürgen","X"],"location":"Happiness Waldkirchen"},{"id":"seed_185","name":"Herbstturnier","date":"2026-09-25","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_186","name":"Damenturnier","date":"2026-09-26","time":"08:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_187","name":"Freundschaftsturnier","date":"2026-09-26","time":"13:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_188","name":"Kreis Cup Finale Wegscheid 1","date":"2026-09-26","time":"","reportedBy":"Stadler Martin","players":["Hogger Mathias","Münichshofer Timo","X","X"],"location":"Vorderfreundorf"},{"id":"seed_189","name":"Kreis Cup Finale Wegscheid 2","date":"2026-09-26","time":"","reportedBy":"Höglinger Heinz","players":["Höglinger Paul","Ledermüller Michael","X","X"],"location":"Herzogsreut"},{"id":"seed_190","name":"Kollerschlag Turnier","date":"2026-10-02","time":"18:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Höglinger Heinz","Münichshofer Timo",""],"location":"Kollerschlag Halle"},{"id":"seed_191","name":"Kollerschlag Turnier Mixed","date":"2026-10-03","time":"14:00","reportedBy":"Hellauer Herbert","players":["Hellauer Herbert","Stadler Annemarie","Stemplinger Kerstin","Knollmüller Heinz"],"location":"Kollerschlag Halle"},{"id":"seed_192","name":"Stock Dart Turnier","date":"2026-10-03","time":"13:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_193","name":"Turnier Kirchberg","date":"2026-10-04","time":"08:00","reportedBy":"Gottinger Klaus","players":["Gottinger Klaus","","",""],"location":"Kirchberg"},{"id":"seed_194","name":"Gremlins Heimspiel","date":"2026-10-09","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_195","name":"Vereinsausflug Tag 1","date":"2026-10-10","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"X"},{"id":"seed_196","name":"Vereinsausflug Tag 2","date":"2026-10-11","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"X"},{"id":"seed_197","name":"Turnier Neustift","date":"2026-10-16","time":"18:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","","",""],"location":"Altenhof Halle"},{"id":"seed_198","name":"Duo Mixed Turnier Fürstenzell","date":"2026-10-17","time":"08:00","reportedBy":"Stadler Martin","players":["Stadler Martin","Stadler Annemarie","X","X"],"location":"Fürstenzell Halle"},{"id":"seed_199","name":"Brotzeitturnier 3 EC Wegscheid","date":"2026-10-17","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_200","name":"Mixed Turnier Rohrbach","date":"2026-10-17","time":"13:30","reportedBy":"Simml Renate","players":["Simml Renate","Simml Lothar","",""],"location":"Rohrbach Halle"},{"id":"seed_201","name":"Mixed Turnier Rohrbach","date":"2026-10-17","time":"13:30","reportedBy":"Gottinger Klaus","players":["Gottinger Klaus","Grimbs Daniela","Schaubschläger Monika",""],"location":"Rohrbach Halle"},{"id":"seed_202","name":"Turnier Vichtenstein","date":"2026-10-23","time":"18:00","reportedBy":"Stadler Martin","players":["Stadler Martin","","",""],"location":"Vichtenstein Halle"},{"id":"seed_203","name":"Turnier Herzogsreut","date":"2026-10-24","time":"13:00","reportedBy":"Stadler Martin","players":["Stadler Martin","","",""],"location":"Herzogsreut Halle"},{"id":"seed_204","name":"Gremlins Heimspiel","date":"2026-10-24","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_205","name":"Kreispokal Ziel","date":"2026-10-25","time":"","reportedBy":"Fesl Thomas","players":["","","",""],"location":"Waldkirchen Eishalle"},{"id":"seed_206","name":"Kreispokal Mixed EIS","date":"2026-10-25","time":"","reportedBy":"Fesl Thomas","players":["","","",""],"location":"Waldkirchen Eishalle"},{"id":"seed_207","name":"Turnier Schardenberg","date":"2026-10-30","time":"18:30","reportedBy":"","players":["","","",""],"location":"Schardenberg Halle"},{"id":"seed_208","name":"Turnier Hinzenbach","date":"2026-10-31","time":"08:00","reportedBy":"Höglinger Heinz","players":["Höglinger Heinz","","",""],"location":"Hinzenbach Halle"},{"id":"seed_209","name":"Ende Solo Pyramide","date":"2026-11-05","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_210","name":"Vereinsmeisterschaft EC Wegscheid","date":"2026-11-07","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_211","name":"Beginn Frauencup","date":"2026-11-08","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_212","name":"Beginn Duo CUP","date":"2026-11-08","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_213","name":"Gremlins Heimspiel","date":"2026-11-13","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinheim"},{"id":"seed_214","name":"Solo Pyramide Abschlussturnier","date":"2026-11-14","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_215","name":"Kreispokal Herren","date":"2026-11-21","time":"07:00","reportedBy":"","players":["","","",""],"location":"Waldkirchen Eishalle"},{"id":"seed_216","name":"Weihnachtsfeier EC Wegscheid","date":"2026-11-28","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Stüberl"},{"id":"seed_217","name":"Gremlins Heimspiel","date":"2026-12-05","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinheim"},{"id":"seed_218","name":"Betriebe Vereine Turnier","date":"2026-12-28","time":"09:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_219","name":"Betriebe Vereine Turnier","date":"2026-12-28","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_220","name":"Gremlins Heimspiel","date":"2027-01-02","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_221","name":"Gremlins Heimspiel","date":"2027-01-16","time":"19:00","reportedBy":"X","players":["X","X","X","X"],"location":"Vereinsheim"},{"id":"seed_222","name":"Mannschaftssitzung EC Wegscheid","date":"2027-01-24","time":"10:00","reportedBy":"X","players":["X","X","X","X"],"location":"Stüberl"},{"id":"seed_223","name":"Faschingsschiessen EC Wegscheid","date":"2027-01-30","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_224","name":"Bezirksliga Ost Mannschaft 1 1.Spt.","date":"2027-01-30","time":"07:00","reportedBy":"","players":["","","",""],"location":"Waldkirchen Eishalle"},{"id":"seed_225","name":"Bezirksliga Ost Mannschaft 1 2.Spt","date":"2027-02-20","time":"07:00","reportedBy":"","players":["","","",""],"location":"Waldkirchen Eishalle"},{"id":"seed_226","name":"Kreismeisterschaft Mannschaft 2","date":"2027-02-28","time":"08:00","reportedBy":"","players":["","","",""],"location":"Waldkirchen Eishalle"},{"id":"seed_227","name":"Montags Solo Turnier 1","date":"2027-03-08","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_228","name":"Preisgeldturnier 1 EC Wegscheid","date":"2027-03-12","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_229","name":"Mixed Turnier 1 EC Wegscheid","date":"2027-03-13","time":"08:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_230","name":"Brotzeitturnier 1 EC Wegscheid","date":"2027-03-13","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_231","name":"Montags Solo Turnier 2","date":"2027-03-15","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_232","name":"Preisgeldturnier 2 EC Wegscheid","date":"2027-03-19","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_233","name":"Mixed Turnier 2 EC Wegscheid","date":"2027-03-20","time":"08:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_234","name":"Brotzeitturnier 2 EC Wegscheid","date":"2027-03-20","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_235","name":"Montags Solo Turnier 3","date":"2027-03-22","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_236","name":"Preisgeldturnier 3 EC Wegscheid","date":"2027-03-26","time":"18:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_237","name":"Preisgeldturnier Finale EC Wegscheid","date":"2027-03-27","time":"10:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_238","name":"Generalversammlung","date":"2027-03-27","time":"20:00","reportedBy":"X","players":["X","X","X","X"],"location":"Gasthaus Escherich"},{"id":"seed_239","name":"Montags Solo Turnier Finale","date":"2027-03-29","time":"16:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_240","name":"Beginn Solo Pyramide EC Wegscheid","date":"2027-03-30","time":"","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"},{"id":"seed_241","name":"Bezirksliga Ost Mannschaft 1 / 1. Spieltag","date":"2027-07-24","time":"","reportedBy":"","players":["","","",""],"location":"Wegscheid Halle"},{"id":"seed_242","name":"Bezirksliga Ost Mannschaft 1 / 2.Spieltag","date":"2027-08-28","time":"","reportedBy":"","players":["","","",""],"location":"Wegscheid Halle"},{"id":"seed_243","name":"Vereinsmeisterschaft","date":"2027-11-06","time":"14:00","reportedBy":"X","players":["X","X","X","X"],"location":"Wegscheid Halle"}];
+data.tournamentPlanner=Array.isArray(data.tournamentPlanner)?data.tournamentPlanner:[];
+if(!data.settings.tpSeeded){data.tournamentPlanner=JSON.parse(JSON.stringify(TP_SEED_EVENTS));data.settings.tpSeeded=true;}
+data.tournamentPlannerTypes=(Array.isArray(data.tournamentPlannerTypes)&&data.tournamentPlannerTypes.length)?data.tournamentPlannerTypes:['Turnier','Meisterschaft','Feier','Gremlins'];
+
 const T_COLLECTIONS={
   tournaments:{store:'tournaments',prefix:'t',fb:'tournamentInvitations',label:'Turniereinladungen'},
   ownTournaments:{store:'ownTournaments',prefix:'o',fb:'ownTournamentInvitations',label:'Eigene Turniereinladungen'}
@@ -431,7 +471,7 @@ function showView(id){
  if(id==='login'){const emEl=document.getElementById('firebaseLoginEmail');if(emEl&&!emEl.value){try{emEl.value=localStorage.getItem('verein_admin_email')||''}catch(e){}}}
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
  document.getElementById(id).classList.add('active');
- if(['tournamentMonths','tournaments','news','photos','sponsorPhotos'].includes(id)){
+ if(['tournamentMonths','tournaments','news','photos','sponsorPhotos','tournamentPlanner'].includes(id)){
    enterPresentationFullscreen();
  }else{
    leavePresentationFullscreen();
@@ -440,6 +480,7 @@ function showView(id){
  if(id==='tournamentMonths')renderTournamentMonthOverview();
  if(id==='tournaments'){hydrateMedia().then(()=>initTournaments()).catch(()=>initTournaments());}
  if(id==='news')renderNews();
+ if(id==='tournamentPlanner'){renderTournamentPlanner();loadTournamentPlannerFromFirebase().then(renderTournamentPlanner).catch(()=>{});}
  if(id==='photos'||id==='sponsorPhotos'){pCollection=(id==='sponsorPhotos')?'sponsorPhotos':'photos';hydrateMedia().then(()=>initPhotos()).catch(()=>initPhotos());}
  if(id==='admin'){const u=data.users.find(x=>x.id===currentUser);const lab=document.getElementById('currentUserLabel');if(lab)lab.textContent=firebaseAuthUser?.email||(u?u.name:'');adminSection('t');}
 }
@@ -723,6 +764,328 @@ function closeInvitationZoom(){
 }
 function changePage(d){currentPage+=d;renderTournaments()}
 function changeMonth(d){const ms=existingMonths();let i=ms.indexOf(currentMonth);if(i<0)i=d>0?-1:ms.length;i+=d;if(i>=0&&i<ms.length){currentMonth=ms[i];currentPage=0;renderTournaments()}}
+/* ===== Turnierplaner ===== */
+function tpFindEvent(id){return (data.tournamentPlanner||[]).find(x=>x&&String(x.id)===String(id))}
+function tpDayLabel(dateStr){if(!dateStr)return '';const d=new Date(dateStr+'T00:00:00');if(isNaN(d))return '';return new Intl.DateTimeFormat('de-DE',{weekday:'short'}).format(d).toUpperCase().replace('.','')}
+function tpFormatDate(dateStr){if(!dateStr)return 'Datum offen';const p=dateStr.split('-');if(p.length!==3)return dateStr;return p[2]+'.'+p[1]+'.'+p[0]}
+function tpMonthKey(dateStr){return dateStr?dateStr.slice(0,7):'ohne-datum'}
+function tpExistingMonths(){const s=new Set();(data.tournamentPlanner||[]).forEach(x=>{if(x&&x.date)s.add(tpMonthKey(x.date))});return [...s].sort()}
+const TP_DEFAULT_TYPES=['Turnier','Meisterschaft','Feier','Gremlins'];
+function tpTypes(){return (data.tournamentPlannerTypes&&data.tournamentPlannerTypes.length)?data.tournamentPlannerTypes:TP_DEFAULT_TYPES}
+function tpTypeOptionsHtml(selected){return '<option value="">– keine –</option>'+tpTypes().map(t=>'<option value="'+esc(t)+'" '+(t===selected?'selected':'')+'>'+esc(t)+'</option>').join('')}
+function tpAddNewType(){
+  const name=(prompt('Neue Veranstaltungsart eingeben:')||'').trim();
+  if(!name)return;
+  if(!data.tournamentPlannerTypes||!data.tournamentPlannerTypes.length)data.tournamentPlannerTypes=TP_DEFAULT_TYPES.slice();
+  if(!data.tournamentPlannerTypes.includes(name)){data.tournamentPlannerTypes.push(name);save();}
+  const sel=document.getElementById('tpType');
+  if(sel){sel.innerHTML=tpTypeOptionsHtml(name);sel.value=name;sel.dataset.manual='1';}
+  showToast('Veranstaltungsart hinzugefügt');
+}
+function tpAutoDetectType(){
+  const nameEl=document.getElementById('tpName'),typeEl=document.getElementById('tpType');
+  if(!nameEl||!typeEl||typeEl.dataset.manual==='1')return;
+  const name=(nameEl.value||'').toLowerCase();
+  const match=tpTypes().find(t=>name.includes(t.toLowerCase()));
+  if(match)typeEl.value=match;
+}
+function tpExistingYears(){const s=new Set();(data.tournamentPlanner||[]).forEach(x=>{if(x&&x.date)s.add(x.date.slice(0,4))});return [...s].sort()}
+function tpPeriodOptionsHtml(){
+  let html='<option value="all">Alle Termine</option><option value="upcoming">Termine in Zukunft</option>';
+  tpExistingYears().forEach(y=>{html+='<option value="y'+y+'">Termine '+y+'</option>'});
+  return html;
+}
+function tpPopulatePeriodFilter(selectId,defaultValue){
+  const sel=document.getElementById(selectId);if(!sel)return;
+  const prev=sel.value;
+  sel.innerHTML=tpPeriodOptionsHtml();
+  const values=[...sel.options].map(o=>o.value);
+  sel.value=(prev&&values.includes(prev))?prev:(values.includes(defaultValue)?defaultValue:'all');
+}
+function tpFilterByPeriod(items,period){
+  const today=todayStr();
+  if(period==='upcoming')return items.filter(x=>x&&x.date&&x.date>=today);
+  if(period&&period.charAt(0)==='y')return items.filter(x=>x&&x.date&&x.date.slice(0,4)===period.slice(1));
+  return items;
+}
+function tpSortedEvents(){return (data.tournamentPlanner||[]).filter(Boolean).slice().sort((a,b)=>String(a.date||'9999').localeCompare(String(b.date||'9999'))||String(a.time||'').localeCompare(String(b.time||'')))}
+function tpAllowsPlayers(type){return type==='Turnier'||type==='Meisterschaft'}
+function tpRenderStats(){
+  const el=document.getElementById('tpStats');if(!el)return;
+  const all=(data.tournamentPlanner||[]).filter(Boolean);
+  const tCount=all.filter(x=>x.type==='Turnier').length;
+  const mCount=all.filter(x=>x.type==='Meisterschaft').length;
+  el.innerHTML='<div class="tp-stat">Gemeldete Turniere<b>'+tCount+'</b></div>'
+    +'<div class="tp-stat">Gemeldete Meisterschaften<b>'+mCount+'</b></div>'
+    +'<div class="tp-stat">Veranstaltungen gesamt<b>'+all.length+'</b></div>';
+}
+function tpPlayerOptionsHtml(selected){const opts=['<option value="">– auswählen –</option>'];const list=TP_PLAYER_NAMES.slice();if(selected&&!list.includes(selected))list.push(selected);opts.push(list.map(n=>'<option value="'+esc(n)+'" '+(n===selected?'selected':'')+'>'+esc(n)+'</option>').join(''));return opts.join('')}
+function tpLocationOptionsHtml(){const locs=[...new Set((data.tournamentPlanner||[]).map(x=>x&&x.location).filter(Boolean))].sort();return locs.map(l=>'<option value="'+esc(l)+'">').join('')}
+function renderTournamentPlanner(){
+  const el=document.getElementById('tpContent');if(!el)return;
+  tpRenderStats();
+  tpPopulatePeriodFilter('tpPeriodFilter','upcoming');
+  const filter=document.getElementById('tpPeriodFilter')?.value||'upcoming';
+  let items=tpFilterByPeriod(tpSortedEvents(),filter);
+  if(!items.length){el.innerHTML='<div class="tp-empty">Keine Veranstaltungen in diesem Zeitraum.</div>';return}
+  const today=todayStr();
+  el.innerHTML=items.map(x=>{
+    const players=(x.players&&x.players.length===4)?x.players:['','','',''];
+    const isPast=x.date&&x.date<today;
+    const playersDisabled=!tpAllowsPlayers(x.type);
+    const playerFields=[0,1,2,3].map(i=>'<div class="tp-row'+(playersDisabled?' tp-players-disabled':'')+'"><label>Spieler '+(i+1)+'</label><select '+(playersDisabled?'disabled ':'')+'onchange="tpUpdateField('+jsArg(x.id)+',\'players\','+i+',this.value)">'+tpPlayerOptionsHtml(players[i])+'</select></div>').join('');
+    const nameWraps=x.name&&x.name.trim().split(/\s+/).filter(Boolean).length>=2;
+    return '<div class="tp-card'+(isPast?' tp-past':'')+'" data-tp-id="'+esc(String(x.id))+'">'
+      +'<div class="tp-name'+(nameWraps?' tp-name-wrap':'')+'">'+esc(x.name)+'</div>'
+      +'<div class="tp-date"><div>'+(tpDayLabel(x.date)?esc(tpDayLabel(x.date))+' · ':'')+esc(tpFormatDate(x.date))+'</div>'+(x.time?'<div>'+esc(x.time)+' Uhr</div>':'<div>&nbsp;</div>')+'</div>'
+      +'<div class="tp-fields">'
+      +'<div class="tp-fields-row">'
+      +'<div class="tp-row"><label>Art</label><select onchange="tpTypeChanged('+jsArg(x.id)+',this)">'+tpTypeOptionsHtml(x.type)+'</select></div>'
+      +'<div class="tp-row"><label>Gemeldet von</label><select onchange="tpUpdateField('+jsArg(x.id)+',\'reportedBy\',null,this.value)">'+tpPlayerOptionsHtml(x.reportedBy)+'</select></div>'
+      +(x.location?'<div class="tp-loc">📍 '+esc(x.location)+'</div>':'')
+      +'</div>'
+      +'<div class="tp-fields-row">'
+      +playerFields
+      +'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+function tpTypeChanged(id,selectEl){
+  const value=selectEl.value;
+  tpUpdateField(id,'type',null,value);
+  tpRenderStats();
+  const card=selectEl.closest('.tp-card');
+  if(!card)return;
+  const allow=tpAllowsPlayers(value);
+  card.querySelectorAll('.tp-fields-row:last-child .tp-row').forEach(row=>{
+    row.classList.toggle('tp-players-disabled',!allow);
+    const sel=row.querySelector('select');
+    if(sel)sel.disabled=!allow;
+  });
+}
+function tpUpdateField(id,field,idx,value){
+  const item=tpFindEvent(id);if(!item)return;
+  if(field==='players'){item.players=(item.players&&item.players.length===4)?item.players:['','','',''];item.players[idx]=value}
+  else{item[field]=value}
+  save();
+  tpSyncEventToFirebase(item);
+  showToast('Änderung gespeichert');
+}
+async function tpSyncEventToFirebase(item){
+  if(!firebaseReady||!firestoreDb)return;
+  try{
+    await fbTimeout(firestoreDb.collection('tournamentPlanner').doc(String(item.id)).set({
+      id:String(item.id),name:String(item.name||''),date:String(item.date||''),time:String(item.time||''),
+      reportedBy:String(item.reportedBy||''),players:[0,1,2,3].map(i=>String((item.players||[])[i]||'')),
+      location:String(item.location||''),type:String(item.type||''),calendarExported:!!item.calendarExported,updatedAt:new Date().toISOString()
+    },{merge:true}),20000,'Firebase');
+  }catch(e){console.error('Firebase Turnierplaner:',e);showToast('Änderung nur lokal gespeichert – Firebase nicht erreichbar',4500);}
+}
+function tpPad(n){return String(n).padStart(2,'0')}
+function tpIcsEscape(s){return String(s||'').replace(/[\\;,]/g,m=>'\\'+m).replace(/\n/g,'\\n')}
+function tpCalendarSettings(){
+  const s=data.settings||{};
+  return {
+    orgName:s.tpCalendarOrgName||'EC Wegscheid',
+    durationHours:Number(s.tpCalendarDurationHours)>0?Number(s.tpCalendarDurationHours):2
+  };
+}
+function tpBuildIcs(x){
+  const dateStr=(x.date||'').replace(/-/g,'');
+  if(!dateStr)return null;
+  const cfg=tpCalendarSettings();
+  let dtStart,dtEnd,allDay=false;
+  if(x.time&&/^\d{2}:\d{2}$/.test(x.time)){
+    const hh=x.time.slice(0,2),mm=x.time.slice(3,5);
+    dtStart=dateStr+'T'+hh+mm+'00';
+    const endDate=new Date(x.date+'T'+x.time+':00');endDate.setHours(endDate.getHours()+cfg.durationHours);
+    dtEnd=endDate.getFullYear()+tpPad(endDate.getMonth()+1)+tpPad(endDate.getDate())+'T'+tpPad(endDate.getHours())+tpPad(endDate.getMinutes())+'00';
+  }else{
+    allDay=true;dtStart=dateStr;
+    const d=new Date(x.date+'T00:00:00');d.setDate(d.getDate()+1);
+    dtEnd=d.getFullYear()+tpPad(d.getMonth()+1)+tpPad(d.getDate());
+  }
+  const players=(x.players||[]).filter(Boolean).join(', ');
+  const descParts=[];
+  if(x.reportedBy)descParts.push('Gemeldet von: '+x.reportedBy);
+  if(players)descParts.push('Spieler: '+players);
+  const desc=descParts.join('\\n');
+  const orgId=cfg.orgName.toLowerCase().replace(/[^a-z0-9]+/g,'')||'verein';
+  const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//'+cfg.orgName+'//Turnierplaner//DE','BEGIN:VEVENT',
+    'UID:'+String(x.id)+'@'+orgId,
+    'DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').split('.')[0]+'Z',
+    (allDay?'DTSTART;VALUE=DATE:'+dtStart:'DTSTART:'+dtStart),
+    (allDay?'DTEND;VALUE=DATE:'+dtEnd:'DTEND:'+dtEnd),
+    'SUMMARY:'+tpIcsEscape(x.name),
+    (x.location?'LOCATION:'+tpIcsEscape(x.location):''),
+    (desc?'DESCRIPTION:'+tpIcsEscape(desc):''),
+    'END:VEVENT','END:VCALENDAR'];
+  return lines.filter(Boolean).join('\r\n');
+}
+function tpAddToCalendar(id){
+  const x=tpFindEvent(id);if(!x){showToast('Veranstaltung nicht gefunden');return}
+  const ics=tpBuildIcs(x);if(!ics){showToast('Kein Datum hinterlegt');return}
+  const blob=new Blob([ics],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=(x.name||'Termin').replace(/[^a-z0-9äöüß _-]/gi,'_')+'.ics';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  x.calendarExported=true;
+  save();
+  tpSyncEventToFirebase(x);
+  renderTournamentPlannerAdminList();
+  showToast('Kalendereintrag heruntergeladen');
+}
+function tpResetCalendarExport(id){
+  const x=tpFindEvent(id);if(!x)return;
+  x.calendarExported=false;
+  save();
+  tpSyncEventToFirebase(x);
+  renderTournamentPlannerAdminList();
+  showToast('Export zurückgesetzt – kann erneut heruntergeladen werden');
+}
+function tpAdminFormHtml(){
+  return '<div class="card"><input id="tpEditId" type="hidden">'
+    +'<label>Veranstaltungsname</label><input id="tpName" type="text" placeholder="z. B. Turnier Hochwinkl" oninput="tpAutoDetectType()">'
+    +'<div class="row"><div style="flex:1"><label>Datum</label><input id="tpDate" type="date"></div><div style="flex:1"><label>Uhrzeit (optional)</label><input id="tpTime" type="time"></div></div>'
+    +'<div class="row"><div style="flex:1"><label>Veranstaltungsart</label><select id="tpType" onchange="this.dataset.manual=\'1\'">'+tpTypeOptionsHtml('')+'</select></div><div style="flex:none;display:flex;align-items:flex-end"><button type="button" onclick="tpAddNewType()">+ Neue Art</button></div></div>'
+    +'<label>Gemeldet von</label><select id="tpReportedBy">'+tpPlayerOptionsHtml('')+'</select>'
+    +'<div class="tp-players" style="margin-top:6px">'+[0,1,2,3].map(i=>'<div><label>Spieler '+(i+1)+'</label><select id="tpPlayer'+i+'">'+tpPlayerOptionsHtml('')+'</select></div>').join('')+'</div>'
+    +'<label>Veranstaltungsort</label><input id="tpLocation" type="text" list="tpLocationList" placeholder="z. B. Waldkirchen Eishalle"><datalist id="tpLocationList">'+tpLocationOptionsHtml()+'</datalist>'
+    +'<div class="row" style="margin-top:14px"><button id="tpAddBtn" class="primary" onclick="tpAdminAddOrUpdate()">Veranstaltung hinzufügen</button><button id="tpCancelBtn" style="display:none" onclick="tpCancelEdit()">Bearbeitung abbrechen</button></div>'
+    +'<div class="row" style="margin-top:10px"><button class="primary" style="width:100%" onclick="saveAllTournamentPlannerChanges()">Speichern</button></div>'
+    +'<div id="firebaseTpInfo" class="small" style="margin-top:10px"></div>'
+    +'</div>';
+}
+function tpAdminAddOrUpdate(){
+  const name=(document.getElementById('tpName').value||'').trim();
+  const date=document.getElementById('tpDate').value||'';
+  const time=document.getElementById('tpTime').value||'';
+  const reportedBy=document.getElementById('tpReportedBy').value||'';
+  const players=[0,1,2,3].map(i=>document.getElementById('tpPlayer'+i).value||'');
+  const location=(document.getElementById('tpLocation').value||'').trim();
+  const type=document.getElementById('tpType')?.value||'';
+  if(!name){showToast('Bitte Veranstaltungsnamen eingeben');return}
+  if(!date){showToast('Bitte Datum eingeben');return}
+  const editId=document.getElementById('tpEditId').value;
+  if(editId){
+    const item=tpFindEvent(editId);
+    if(item){item.name=name;item.date=date;item.time=time;item.reportedBy=reportedBy;item.players=players;item.location=location;item.type=type}
+  }else{
+    data.tournamentPlanner.push({id:'tp_'+Date.now()+'_'+Math.random().toString(36).slice(2),name,date,time,reportedBy,players,location,type});
+  }
+  tpCancelEdit();
+  renderTournamentPlannerAdminList();
+  showToast('In Liste übernommen – bitte unten Speichern');
+}
+function tpEditEvent(id){
+  const x=tpFindEvent(id);if(!x)return;
+  document.getElementById('tpEditId').value=x.id;
+  document.getElementById('tpName').value=x.name||'';
+  document.getElementById('tpDate').value=x.date||'';
+  document.getElementById('tpTime').value=x.time||'';
+  document.getElementById('tpReportedBy').value=x.reportedBy||'';
+  [0,1,2,3].forEach(i=>{document.getElementById('tpPlayer'+i).value=(x.players||[])[i]||''});
+  document.getElementById('tpLocation').value=x.location||'';
+  const typeSel=document.getElementById('tpType');if(typeSel){typeSel.innerHTML=tpTypeOptionsHtml(x.type||'');typeSel.value=x.type||'';typeSel.dataset.manual='1';}
+  document.getElementById('tpCancelBtn').style.display='inline-block';
+  document.getElementById('tpAddBtn').textContent='Änderung übernehmen';
+  document.getElementById('tpName').focus();
+}
+function tpCancelEdit(){
+  document.getElementById('tpEditId').value='';
+  document.getElementById('tpName').value='';
+  document.getElementById('tpDate').value='';
+  document.getElementById('tpTime').value='';
+  document.getElementById('tpReportedBy').value='';
+  [0,1,2,3].forEach(i=>{const el=document.getElementById('tpPlayer'+i);if(el)el.value=''});
+  document.getElementById('tpLocation').value='';
+  const typeSel=document.getElementById('tpType');if(typeSel){typeSel.innerHTML=tpTypeOptionsHtml('');typeSel.value='';typeSel.dataset.manual='';}
+  document.getElementById('tpCancelBtn').style.display='none';
+  document.getElementById('tpAddBtn').textContent='Veranstaltung hinzufügen';
+}
+function tpDeleteEvent(id){
+  if(!confirm('Veranstaltung wirklich löschen?'))return;
+  data.tournamentPlanner=(data.tournamentPlanner||[]).filter(x=>x&&String(x.id)!==String(id));
+  renderTournamentPlannerAdminList();
+  showToast('Veranstaltung gelöscht – bitte unten Speichern');
+}
+function renderTournamentPlannerAdminList(){
+  const el=document.getElementById('tpAdminList');if(!el)return;
+  tpPopulatePeriodFilter('tpAdminPeriodFilter','all');
+  const filter=document.getElementById('tpAdminPeriodFilter')?.value||'all';
+  const items=tpFilterByPeriod(tpSortedEvents(),filter);
+  if(!items.length){el.innerHTML='<div class="small">Keine Veranstaltungen in diesem Zeitraum.</div>';return}
+  const today=todayStr();
+  let curMonth='',html='';
+  items.forEach(x=>{
+    const mk=tpMonthKey(x.date);
+    if(mk!==curMonth){curMonth=mk;html+='<h4 style="margin-top:14px">'+(x.date?monthLabel(mk):'Ohne Datum')+'</h4>'}
+    const players=(x.players||[]).filter(Boolean).join(', ');
+    const isPast=x.date&&x.date<today;
+    const calBtn=x.calendarExported
+      ?'<button disabled title="Bereits exportiert" style="opacity:.4;cursor:not-allowed">📅 Exportiert</button><button title="Erneuten Export erlauben" onclick="tpResetCalendarExport('+jsArg(x.id)+')">↺</button>'
+      :'<button onclick="tpAddToCalendar('+jsArg(x.id)+')" title="Kalendereintrag exportieren">📅 Exportieren</button>';
+    html+='<div class="list-item"'+(isPast?' style="opacity:.45"':'')+'><div><b>'+esc(x.name)+'</b>'+(x.type?' <span class="tp-type-badge">'+esc(x.type)+'</span>':'')+'<div class="small">'+esc(tpFormatDate(x.date))+(x.time?' · '+esc(x.time)+' Uhr':'')+(x.location?' · '+esc(x.location):'')+'</div><div class="small">'+(x.reportedBy?'Gemeldet von '+esc(x.reportedBy)+' · ':'')+(players||'keine Spieler eingetragen')+'</div></div><div class="row">'+calBtn+'<button onclick="tpEditEvent('+jsArg(x.id)+')">Bearbeiten</button><button class="danger" onclick="tpDeleteEvent('+jsArg(x.id)+')">Löschen</button></div></div>';
+  });
+  el.innerHTML=html;
+}
+async function syncTournamentPlannerToFirebase(){
+  if(!firebaseReady||!firestoreDb){showToast('Firebase ist nicht verbunden',5000);return {ok:false,error:'Firebase ist nicht verbunden'}}
+  const info=document.getElementById('firebaseTpInfo');
+  if(info)info.textContent='Übertragung wird vorbereitet …';
+  try{
+    let count=0;
+    for(const x of (data.tournamentPlanner||[])){
+      if(!x||!x.id)continue;
+      const payload={id:String(x.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),calendarExported:!!x.calendarExported,updatedAt:new Date().toISOString()};
+      await fbTimeout(firestoreDb.collection('tournamentPlanner').doc(String(x.id)).set(payload),60000,'Firebase');
+      count++;
+    }
+    await removeFirebaseDocsNotInSet('tournamentPlanner', new Set((data.tournamentPlanner||[]).filter(x=>x&&x.id).map(x=>String(x.id))));
+    const message=count+' Veranstaltung(en) zu Firebase übertragen.';
+    if(info)info.textContent=message;
+    return {ok:true,count,message};
+  }catch(e){
+    console.error(e);
+    const error=firebaseErrorText(e);
+    if(info)info.textContent='Fehler: '+error;
+    return {ok:false,error};
+  }
+}
+async function loadTournamentPlannerFromFirebase(){
+  if(!firebaseReady||!firestoreDb)return;
+  try{
+    const snap=await firestoreDb.collection('tournamentPlanner').get();
+    const list=[];
+    snap.forEach(doc=>{const x=doc.data()||{};list.push({id:String(x.id||doc.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),calendarExported:!!x.calendarExported})});
+    if(snap.size){data.tournamentPlanner=list;save()}
+  }catch(e){console.warn('Firebase Turnierplaner:',e);}
+}
+function tpSaveCalendarSettings(){
+  if(!data.settings)data.settings={};
+  const org=(document.getElementById('tpCalOrgName')?.value||'').trim()||'EC Wegscheid';
+  const dur=Number(document.getElementById('tpCalDuration')?.value)||2;
+  data.settings.tpCalendarOrgName=org;
+  data.settings.tpCalendarDurationHours=dur;
+  save();
+  showToast('Kalendereinstellungen gespeichert');
+}
+async function saveAllTournamentPlannerChanges(){
+  if(!save()){const i=document.getElementById('firebaseTpInfo');if(i)i.textContent='Fehler: lokales Speichern fehlgeschlagen';return}
+  const info=document.getElementById('firebaseTpInfo');
+  if(info)info.textContent='Turnierplaner wird in Programm und Firebase gespeichert …';
+  try{
+    let fb=null;
+    if(firebaseReady&&firestoreDb)fb=await syncTournamentPlannerToFirebase();
+    if(document.getElementById('tournamentPlanner')?.classList.contains('active'))renderTournamentPlanner();
+    if(fb&&!fb.ok)showToast('Lokal gespeichert – aber Firebase: '+(fb.error||fb.message),8000);
+    else showToast('Turnierplaner gespeichert'+(fb?' und Firebase aktualisiert':' (nur lokal – Firebase nicht verbunden)'));
+  }catch(e){console.error(e);showToast('Speichern des Turnierplaners fehlgeschlagen: '+(e?.message||e),6000);}
+}
+/* ===== Ende Turnierplaner ===== */
+
 function adminSection(s){
  const a=document.getElementById('adminMain');
  if(s==='t'){
@@ -736,6 +1099,9 @@ function adminSection(s){
   tCollection='ownTournaments';
   a.innerHTML='<h2>Eigene Turniereinladungen</h2><div class="card"><label>Einladungen hinzufügen (PDF, PNG, JPG oder BMP)</label><input id="ofiles" type="file" multiple accept="application/pdf,.pdf,.png,.bmp,.jpg,.jpeg,image/png,image/bmp,image/jpeg"><button class="primary" style="width:100%;margin-top:10px" onclick="saveOwnTournamentFiles()">Speichern</button><div id="firebaseOwnTournamentInfo" class="small" style="margin-top:10px"></div><p class="small" style="margin-top:10px">Es werden maximal 7 Einladungen gleichzeitig angezeigt – zuerst die mit dem nächsten Enddatum. PDF-Dateien werden automatisch seitenweise übernommen.</p></div><h3>Vorhandene Einladungen</h3><div id="oAdminList"></div>';
   renderOwnTournamentAdminList();
+ }else if(s==='tp'){
+  a.innerHTML='<h2>Turnierplaner</h2>'+tpAdminFormHtml()+'<h3>Kalendereinstellungen</h3><div class="card"><label>Vereinsname (für Kalendereinträge)</label><input id="tpCalOrgName" type="text" value="'+esc((data.settings&&data.settings.tpCalendarOrgName)||'EC Wegscheid')+'" onchange="tpSaveCalendarSettings()"><label style="margin-top:8px">Standarddauer bei Veranstaltungen mit Uhrzeit (Stunden)</label><input id="tpCalDuration" type="number" min="1" max="24" value="'+esc(String((data.settings&&data.settings.tpCalendarDurationHours)||2))+'" onchange="tpSaveCalendarSettings()"><div class="small" style="margin-top:8px">Der Kalender-Export (📅) steht nur im Admin-Bereich zur Verfügung. Nach dem Export wird die Veranstaltung ausgegraut, damit sie nicht versehentlich mehrfach exportiert wird – über ↺ lässt sich der Export bei Bedarf wieder freigeben.</div></div><h3>Vorhandene Veranstaltungen</h3><div class="tp-toolbar" style="margin:0 0 10px"><label style="margin:0">Zeitraum</label><select id="tpAdminPeriodFilter" onchange="renderTournamentPlannerAdminList()"></select></div><div id="tpAdminList"></div>';
+  renderTournamentPlannerAdminList();
  }else if(s==='n'){
   a.innerHTML='<h2>Vereinsnachrichten</h2><div class="card"><input id="neditid" type="hidden"><label>Überschrift</label><input id="ntitle" type="text" placeholder="z. B. Vereinsmeisterschaft"><label style="margin-top:8px"><input id="nshowtitle" type="checkbox" style="width:auto;margin-right:8px"> Überschrift oben</label><label>Nachricht</label><textarea id="ntext" placeholder="Text der Nachricht..."></textarea><label>Anzeigeart</label><select id="nmode" onchange="updateNewsModeFields()"><option value="static">Feststehend</option><option value="fade">Ein-/Ausblenden</option><option value="ticker">Lauftext</option></select><div id="ndurWrap"><label>Anzeigedauer pro Nachricht (Sekunden)</label><input id="ndur" type="number" min="1" max="180" value="18"><div class="small">Bei „Lauftext“ bestimmt dieser Wert die Dauer eines kompletten Durchlaufs.</div></div><div id="ngapWrap"><label>Zeit zwischen den jeweiligen Texten (Sekunden)</label><input id="ngap" type="number" min="0" max="180" value="2"><div class="small">Diese Pause wird beim Wechsel zwischen mehreren Nachrichten verwendet.</div></div><div class="row"><div style="flex:1"><label>Startdatum</label><input id="nstart" type="date"></div><div style="flex:1"><label>Enddatum</label><input id="nend" type="date"></div></div><div class="small">Ohne Start- oder Enddatum ist die Nachricht zeitlich unbegrenzt aktiv.</div><div class="row" style="margin-top:14px"><button id="newsCancelBtn" style="display:none" onclick="cancelNewsEdit()">Bearbeitung abbrechen</button></div></div><h3>Gespeicherte Nachrichten</h3><div id="newsAdminList"></div><div class="card" style="margin-top:16px"><div id="firebaseNewsInfo" class="small" style="margin-bottom:10px"></div><button class="primary" style="width:100%" onclick="saveAllNewsChanges()">Speichern</button></div>';renderNewsAdminList();updateNewsModeFields();
  }else if(s==='s'){
@@ -1303,8 +1669,16 @@ async function autoLoadPublicFirebaseDataV1245(){
       if(snap.size && currentUser!=='admin'){photos.sort(comparePhotos);data.sponsorPhotos=photos;data.sponsorPhotoAlbums=albums;if(pCollection==='sponsorPhotos'){photoAlbumMonth=null;if(document.getElementById('sponsorPhotos')?.classList.contains('active')){try{initPhotos()}catch(e){console.error('Firebase Sponsoren-Fotos Anzeige:',e);}}}}
     }catch(e){console.warn('Firebase Sponsoren-Fotos:',e);}
   };
+  const loadTP=async()=>{
+    try{
+      const snap=await firestoreDb.collection('tournamentPlanner').get();
+      const list=[];
+      snap.forEach(doc=>{const x=doc.data()||{};list.push({id:String(x.id||doc.id),name:String(x.name||''),date:String(x.date||''),time:String(x.time||''),reportedBy:String(x.reportedBy||''),players:[0,1,2,3].map(i=>String((x.players||[])[i]||'')),location:String(x.location||''),type:String(x.type||''),calendarExported:!!x.calendarExported})});
+      if(snap.size && currentUser!=='admin'){data.tournamentPlanner=list;if(document.getElementById('tournamentPlanner')?.classList.contains('active'))renderTournamentPlanner();}
+    }catch(e){console.warn('Firebase Turnierplaner:',e);}
+  };
   // Parallel laden, damit ein großer Foto-Datensatz die Navigation nicht blockiert.
-  return Promise.allSettled([loadT(),loadO(),loadN(),loadP(),loadSP()]);
+  return Promise.allSettled([loadT(),loadO(),loadN(),loadP(),loadSP(),loadTP()]);
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>(window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245()).then(()=>{if(window.__directRouteV1248)window.__directRouteV1248();}),250));
