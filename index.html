@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vereins-Informationssystem – V2.5.2</title>
+<title>Vereins-Informationssystem – V2.5.3</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;overflow:hidden}
@@ -104,9 +104,9 @@ textarea{min-height:120px;resize:vertical}
 .inv-zoom-close{position:absolute;top:14px;right:18px;width:48px;height:48px;min-width:0;padding:0;border-radius:50%;font-size:22px;line-height:1;background:rgba(0,0,0,.6);color:#fff;border:2px solid rgba(255,255,255,.55)}
 </style>
 </head>
-<body><div id="appVersion" class="app-version">Version 2.5.2</div>
+<body><div id="appVersion" class="app-version">Version 2.5.3</div>
 <section id="home" class="view active">
-  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.5.2</div><div id="routeDiagHome" class="small" style="display:none"></div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
+  <div class="header"><div><div class="title">Vereins-Informationssystem</div><div class="subtitle">Version 2.5.3</div><div id="routeDiagHome" class="small" style="display:none"></div></div><button id="homeAdminButton" onclick="openAdminFromHome()">🔐 Verwaltung</button></div>
   <div class="menu">
     <button onclick="openTournamentPlannerGate()">Turnierplaner</button>
     <button onclick="openTournamentSection('tournaments')">Turniereinladungen</button>
@@ -124,7 +124,7 @@ textarea{min-height:120px;resize:vertical}
 </section>
 
 <section id="tournaments" class="view">
-  <div class="header tournament-header"><div class="tournament-version">Version 2.5.2</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
+  <div class="header tournament-header"><div class="tournament-version">Version 2.5.3</div><div class="tournament-title" id="tTitle">Turniereinladungen</div><div id="tMonth" class="tournament-month"></div></div>
   <div id="tContent" class="tournament-pages"></div>
   <div id="tFooter" class="tournament-footer" style="display:none">Über eine Meldung würden wir uns freuen!</div>
   <div class="bottom tournament-bottom">
@@ -157,7 +157,7 @@ textarea{min-height:120px;resize:vertical}
 </section>
 
 <section id="tournamentPlanner" class="view">
-  <div class="header tp-header"><div class="tp-header-left">Terminplan EC Wegscheid</div><div class="tp-header-title">Turnierplaner</div><div class="tp-header-version">Version 2.5.2</div></div>
+  <div class="header tp-header"><div class="tp-header-left">Terminplan EC Wegscheid</div><div class="tp-header-title">Turnierplaner</div><div class="tp-header-version">Version 2.5.3</div></div>
   <div id="tpStats" class="tp-stats"></div>
   <div id="routeDiag" class="small" style="padding:0 60px 6px;display:none"></div>
   <div id="tpLoginNote" class="small" style="padding:0 60px 6px;display:none"></div>
@@ -227,7 +227,7 @@ try{
 }catch(e){console.error("Firebase Initialisierung:",e);}
 </script>
 <script>
-const APP_VERSION='2.5.2';
+const APP_VERSION='2.5.3';
 const DBKEY='verein_info_test_v2';
 const OLD_DBKEY='verein_info_test_v1';
 const DEFAULT_DB={tournaments:{},ownTournaments:{},news:[],photos:[],photoAlbums:{},settings:{tournamentPerPage:12},users:[{id:'admin',name:'Administrator',protected:true}]};
@@ -2164,8 +2164,11 @@ async function autoLoadPublicFirebaseDataV1245(){
   return Promise.allSettled([loadT(),loadO(),loadN(),loadP(),loadSP(),loadTP()]);
 }
 
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>(window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245()).then(()=>{if(window.__directRouteV1248)window.__directRouteV1248();}),250));
-else setTimeout(()=>(window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245()).then(()=>{if(window.__directRouteV1248)window.__directRouteV1248();}),250);
+// V2.5.3: Direktaufruf sofort ausführen (nicht erst nach dem Firebase-Laden), damit keine Übersichtsseite dazwischen erscheint.
+// Die Anzeigen aktualisieren sich selbst, sobald die Firebase-Daten geladen sind (siehe autoLoadPublicFirebaseDataV1245).
+try{ if(window.__directRouteV1248) window.__directRouteV1248(); }catch(e){ console.error('Direktaufruf:',e); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245();},250));
+else setTimeout(()=>{window.__publicLoadPromise=autoLoadPublicFirebaseDataV1245();},250);
 </script>
 </body>
 </html>
