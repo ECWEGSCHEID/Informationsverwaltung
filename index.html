@@ -650,8 +650,17 @@ function shRender(){
  g.style.setProperty('--cd',SH.cols);g.style.setProperty('--rd',rows);g.style.setProperty('--rp',Math.ceil(SH.buttons.length/2)||1);
  g.replaceChildren(...SH.buttons.map(b=>{const a=document.createElement('a'),u=shSafeUrl(b.u);
   a.className='shbtn';a.textContent=b.t;
-  if(u)a.href=u;else{a.classList.add('nolink');a.onclick=()=>showToast('Für diesen Button ist noch kein Link hinterlegt.')}
+  if(u){a.href=u;const h=shInternalHash(u);if(h)a.onclick=e=>{e.preventDefault();shGo(h)}}else{a.classList.add('nolink');a.onclick=()=>showToast('Für diesen Button ist noch kein Link hinterlegt.')}
   return a}));shUpdateBack()}
+function shNorm(u){return String(u).split('#')[0].split('?')[0].replace(/index\.html$/i,'')}
+function shInternalHash(u){let x;try{x=new URL(u,location.href)}catch(e){return ''}
+ if(!x.hash||x.hash.length<2)return '';
+ const t=shNorm(x.origin+x.pathname);
+ const ok=[location.origin+location.pathname,getBaseUrl(),SH_B].map(shNorm);
+ return ok.includes(t)?x.hash:''}
+function shGo(h){window.__adminPreviewMode=false;try{history.replaceState(null,'',location.pathname+h)}catch(e){}
+ if(window.__directRouteV1248)window.__directRouteV1248()}
+window.addEventListener('hashchange',()=>{try{if(window.__directRouteV1248)window.__directRouteV1248()}catch(e){}});
 function shUpdateBack(){const g=document.getElementById('shGear');if(g)g.style.display=window.__adminPreviewMode?'block':'none'}
 function shFullscreen(){const d=document,e=d.documentElement;if(d.fullscreenElement||d.webkitFullscreenElement)(d.exitFullscreen||d.webkitExitFullscreen).call(d);else(e.requestFullscreen||e.webkitRequestFullscreen).call(e)}
 function shImg(file){return new Promise((res,rej)=>{const r=new FileReader();r.onerror=rej;r.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{const s=Math.min(1,1920/im.width),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.85))};im.src=r.result};r.readAsDataURL(file)})}
